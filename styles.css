@@ -1,5 +1,5 @@
 :root {
-    /* --- MD3 Color Tokens (Purple/Violet Theme) --- */
+    /* MD3 Colors (Purple Theme) */
     --md-sys-color-primary: #6750A4;
     --md-sys-color-on-primary: #FFFFFF;
     --md-sys-color-primary-container: #EADDFF;
@@ -17,8 +17,6 @@
     --md-sys-color-on-surface-variant: #49454F;
     
     --md-sys-color-outline: #79747E;
-
-    /* --- Shape --- */
     --md-sys-shape-corner-extra-large: 28px;
 }
 
@@ -32,18 +30,18 @@ body {
     align-items: center;
 }
 
-/* --- Layout --- */
+/* Layout */
 .feed-container {
     max-width: 680px;
     width: 90%;
     margin-top: 20px;
-    padding-bottom: 100px; /* Space for FAB */
+    padding-bottom: 100px;
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-/* --- App Bar --- */
+/* App Bar */
 .top-app-bar {
     width: 100%;
     max-width: 680px;
@@ -51,26 +49,29 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--md-sys-color-on-surface);
 }
-
 .headline { font-size: 28px; font-weight: 500; }
 .icon-btn { background: none; border: none; cursor: pointer; color: inherit; }
 
-/* --- Cards --- */
+/* Cards */
 .card {
     background-color: var(--md-sys-color-surface-container);
     border-radius: var(--md-sys-shape-corner-extra-large);
     overflow: hidden;
     box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
 }
-
 .card-padding { padding: 24px; }
 .timestamp { font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 12px; display: block; font-weight: 500; }
 
-/* --- Post Types --- */
+/* Post Types */
 .text-title { font-size: 22px; font-weight: 700; margin: 0 0 12px 0; }
 .text-body { line-height: 1.6; color: var(--md-sys-color-on-surface-variant); }
+
+/* Markdown Specifics inside Cards */
+.text-body p { margin-top: 0; margin-bottom: 16px; }
+.text-body a { color: var(--md-sys-color-primary); text-decoration: none; font-weight: 500; }
+.text-body ul, .text-body ol { padding-left: 24px; margin-bottom: 16px; }
+.text-body blockquote { border-left: 4px solid var(--md-sys-color-primary); margin-left: 0; padding-left: 16px; font-style: italic; }
 
 .card-image img { width: 100%; height: auto; display: block; }
 .image-caption { padding: 16px 24px 24px; }
@@ -91,7 +92,7 @@ body {
 .quote-text { font-size: 24px; font-style: italic; margin: 8px 0; }
 .quote-author { font-weight: 700; text-transform: uppercase; color: var(--md-sys-color-tertiary); margin-top: 16px; }
 
-/* --- FAB & Dialog --- */
+/* UI Elements */
 .fab {
     position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
     border-radius: 16px; background-color: var(--md-sys-color-primary-container);
@@ -116,7 +117,6 @@ input, select, textarea {
     background-color: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline);
     border-radius: 4px; padding: 10px; font-family: inherit; color: inherit; width: 93%;
 }
-
 .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
 .btn-text { background: none; border: none; color: var(--md-sys-color-primary); font-weight: 500; padding: 10px 20px; cursor: pointer; }
 .btn-filled { background-color: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); border: none; padding: 10px 24px; border-radius: 20px; font-weight: 500; cursor: pointer; }
