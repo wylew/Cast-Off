@@ -1,21 +1,27 @@
 Type: recap
 Date: Jan 03, 2026
-Title: The Shattered Isles
+Title: Setting Sail to learn of our Bounties
 
-Session 2 took us into dangerous waters as we pursued the Tide Callers to their base in the Shattered Isles.
+Session 2 took us to the high seas on The Wedding Downry to the isle of Traitor Joe's where we learn the details of our bounties and the dangers that await us.
 
-## :star2: Key Events
+## :star2: Key Details
 
-- **The Sea Chase**: An intense ship combat where Mira took the helm and pulled off impossible maneuvers
-- **The Kraken Attack**: A young kraken, apparently allied with the Tide Callers, ambushed us mid-journey
-- **Kaelen's Revelation**: During the kraken fight, Kaelen displayed mysterious water-controlling abilities they didn't know they had
+- **:face_with_spiral_eyes: Dream States**: We all awaken on the ship in various states of dreamy confusion
+- **:anchor: The Wedding Downry**: The ship we are aboard
+- **:pirate_flag: Traitor Joe's**: An island safe harbor for pirates. Haggling is REQUIRED.
+- **:crab: The Rusty Crab**: A divey pirate bar.
+- **:tropical_drink: Salt & Aire**: the fancy schmancy bar.
+- **:hook: Bait & Tackle**: The hidden in a regular looking house speakeasy.
+- **:smile: The Golden Grin**: The prior gang/crew that Clovis sailed with.
+- **:school: Tieem**: The mage school/city. Luigi is from here
 
 ## :disguised_face: NPCs Introduced
 
-- **Captain Seraphina Vale**: A rival pirate captain who offered to help us (for a price)
-- **The Kraken**: Not killed, but driven away. It will remember us.
+- **:magic_wand: Mages of Tieem**: they act high and mighty. Locals find them annoying and arrogant.
+- **:mage: Denton Fellridge**: The prior head master of the Tieem magic school that Luigi attended. Luigi killed him.
+- **:mage: Zim Grayson**: the classmate of Luigi when at the Tieem school. He is now the head master.
 
-## :open_book: Cliffhanger
+## :open_book: The Adventure
 
 We discovered the Tide Callers aren't just pirates—they're trying to awaken an ancient sea deity. And Kaelen might be the key to stopping them... or helping them.
 ---
