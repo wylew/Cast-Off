@@ -6,7 +6,7 @@
     <meta name="description" content="Campaign session diary for Ringside of the Sea">
     <title>Ringside of the Sea | Session Diary</title>
     
-    <!-- Fonts -->
+    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     
     <!-- Markdown Parser -->
@@ -17,13 +17,10 @@
 </head>
 <body>
 
-    <!-- Masthead with Background Image -->
+    <!-- Masthead -->
     <header class="masthead">
         <div class="masthead-overlay"></div>
         <h1 class="masthead-title">Ringside of the Sea</h1>
-        <button id="settings-btn" class="masthead-settings-btn" aria-label="Settings" type="button">
-            <span class="material-symbols-outlined">settings</span>
-        </button>
     </header>
 
     <div class="main-container">
@@ -39,9 +36,6 @@
                 <!-- Sessions will be dynamically loaded here -->
                 <div class="loading-sessions">Loading sessions...</div>
             </nav>
-            <button id="fab-add" class="fab" aria-label="Create new post" type="button">
-                <span class="material-symbols-outlined">add</span>
-            </button>
         </aside>
 
         <!-- Main Content Area -->
@@ -54,6 +48,11 @@
             </div>
         </main>
     </div>
+
+    <!-- FAB Button -->
+    <button id="fab-add" class="fab" aria-label="Create new post" type="button">
+        <span class="material-symbols-outlined">add</span>
+    </button>
 
     <!-- New Post Dialog -->
     <dialog id="post-dialog" class="dialog" aria-labelledby="dialog-title">
@@ -76,82 +75,7 @@
 
             <div class="dialog-actions">
                 <button type="button" id="btn-cancel" class="btn-text">Cancel</button>
-                <button type="submit" id="btn-submit" class="btn-filled">Publish Post</button>
-            </div>
-        </form>
-    </dialog>
-
-    <!-- Settings Dialog -->
-    <dialog id="settings-dialog" class="dialog settings-dialog" aria-labelledby="settings-title">
-        <form id="settings-form">
-            <h3 id="settings-title">Settings</h3>
-            
-            <!-- Masthead Settings -->
-            <div class="settings-section">
-                <h4 class="settings-section-title">
-                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">title</span>
-                    Campaign Title
-                </h4>
-                <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
-                    Customize your campaign title (displayed on the masthead).
-                </p>
-
-                <div class="input-group">
-                    <label for="masthead-title">Campaign Title</label>
-                    <input type="text" id="masthead-title" name="mastheadTitle" placeholder="Ringside of the Sea" autocomplete="off">
-                    <small>The title displayed on the masthead</small>
-                </div>
-                
-                <p style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-top: 16px; font-style: italic;">
-                    💡 To change the background image, replace <code>masthead.jpg</code> in your repository.
-                </p>
-            </div>
-
-            <!-- GitHub Settings Section -->
-            <div class="settings-section">
-                <h4 class="settings-section-title">
-                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">cloud</span>
-                    GitHub Integration
-                </h4>
-                <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
-                    Configure automatic publishing to your GitHub repository.
-                </p>
-
-                <div class="input-group">
-                    <label for="github-owner">Repository Owner</label>
-                    <input type="text" id="github-owner" name="owner" placeholder="yourusername" autocomplete="off">
-                    <small>Your GitHub username or organization</small>
-                </div>
-
-                <div class="input-group">
-                    <label for="github-repo">Repository Name</label>
-                    <input type="text" id="github-repo" name="repo" placeholder="Ringside-of-the-Sea" autocomplete="off">
-                    <small>The name of your repository</small>
-                </div>
-
-                <div class="input-group">
-                    <label for="github-branch">Branch</label>
-                    <input type="text" id="github-branch" name="branch" placeholder="main" value="main" autocomplete="off">
-                    <small>Target branch (usually 'main' or 'gh-pages')</small>
-                </div>
-
-                <div class="input-group">
-                    <label for="github-token">Personal Access Token</label>
-                    <input type="password" id="github-token" name="token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
-                    <small>Create at: GitHub → Settings → Developer settings → Personal access tokens<br>
-                    Required permission: <strong>repo</strong></small>
-                </div>
-
-                <div style="background: rgba(186, 26, 26, 0.1); padding: 12px; border-radius: 8px; margin-top: 12px;">
-                    <p style="margin: 0; font-size: 12px; color: var(--md-sys-color-error);">
-                        ⚠️ <strong>Security:</strong> Your token is stored locally in your browser only.
-                    </p>
-                </div>
-            </div>
-
-            <div class="dialog-actions">
-                <button type="button" id="btn-cancel-settings" class="btn-text">Cancel</button>
-                <button type="submit" class="btn-filled">Save Settings</button>
+                <button type="submit" id="btn-submit" class="btn-filled">Create Post</button>
             </div>
         </form>
     </dialog>
