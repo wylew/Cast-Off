@@ -4,7 +4,6 @@ const sidebarToggle = document.getElementById('sidebar-toggle');
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const sidebar = document.getElementById('sidebar');
 const campaignDetailsBtn = document.getElementById('campaign-details-btn');
-const homeBtn = document.getElementById('home-btn');
 
 let sessions = {};
 let currentSessionNumber = null;
@@ -66,15 +65,19 @@ function parseMarkdownFile(mdContent) {
         let bodyLines = [];
 
         lines.forEach(line => {
-            if (!isBody && line.trim() === '') {
-                isBody = true;
-                return;
-            }
-
             if (!isBody) {
+                if (line.trim() === '') {
+                    isBody = true;
+                    return;
+                }
+
                 const match = line.match(/^([a-zA-Z]+):\s*(.*)$/);
                 if (match) {
                     post[match[1].toLowerCase()] = match[2].trim();
+                } else {
+                    // Not a metadata line and not empty, must be the body
+                    isBody = true;
+                    bodyLines.push(line);
                 }
             } else {
                 bodyLines.push(line);
@@ -87,9 +90,11 @@ function parseMarkdownFile(mdContent) {
 }
 
 function organizeSessionPosts(sessionNumber, posts) {
+    const recapPost = posts.find(p => p.type === 'recap');
     return {
         number: sessionNumber,
         date: posts.length > 0 ? posts[0].date : formatDate(),
+        title: recapPost ? recapPost.title : '',
         posts: posts
     };
 }
@@ -150,7 +155,9 @@ function renderSessionList() {
 
         return `
             <div class="session-item" data-session="${sessionNum}">
+                <span class="material-symbols-outlined session-item-icon">history_edu</span>
                 <div class="session-item-number">Session ${sessionNum}</div>
+                ${session.title ? `<div class="session-item-title">${session.title}</div>` : ''}
                 <div class="session-item-date">${session.date}</div>
                 <div class="session-item-count">${postCount} ${postCount === 1 ? 'entry' : 'entries'}${recapCount > 0 ? ` • ${recapCount} recap` : ''}</div>
             </div>
@@ -177,9 +184,6 @@ function displaySession(sessionNum) {
         item.classList.toggle('active', item.dataset.session === sessionNum);
     });
 
-    if (homeBtn) {
-        homeBtn.classList.remove('active');
-    }
     if (campaignDetailsBtn) {
         campaignDetailsBtn.classList.remove('active');
     }
@@ -233,28 +237,24 @@ async function displayCampaignDetails() {
         campaignDetailsBtn.classList.add('active');
     }
 
-    if (homeBtn) {
-        homeBtn.classList.remove('active');
-    }
-
     try {
         const response = await fetch('campaign.md');
         if (!response.ok) throw new Error('Could not load campaign details');
 
         const content = await response.text();
-        const bodyWithEmojis = convertEmojis(content || '');
-        const bodyHtml = marked.parse(bodyWithEmojis);
+        const posts = parseMarkdownFile(content);
 
-        sessionContent.innerHTML = `
+        let html = `
             <div class="session-header">
                 <h1 class="session-header-title">Campaign Details</h1>
             </div>
-            <article class="post-card">
-                <div class="card-padding">
-                    <div class="text-body">${bodyHtml}</div>
-                </div>
-            </article>
         `;
+
+        posts.forEach(post => {
+            html += createPostCardHtml(post, false);
+        });
+
+        sessionContent.innerHTML = html;
 
         // Close sidebar on mobile
         if (window.innerWidth <= 768) {
@@ -272,38 +272,6 @@ async function displayCampaignDetails() {
             </div>
         `;
     }
-}
-
-function displayWelcome() {
-    currentSessionNumber = null;
-
-    // Update active states
-    document.querySelectorAll('.session-item').forEach(item => {
-        item.classList.remove('active');
-    });
-
-    if (campaignDetailsBtn) {
-        campaignDetailsBtn.classList.remove('active');
-    }
-
-    if (homeBtn) {
-        homeBtn.classList.add('active');
-    }
-
-    sessionContent.innerHTML = `
-        <div class="welcome-message">
-            <h2>Welcome to Cast Off!</h2>
-            <p>Select a session from the sidebar to view its diary entries.</p>
-        </div>
-    `;
-
-    // Close sidebar on mobile
-    if (window.innerWidth <= 768) {
-        sidebar.classList.remove('open');
-    }
-
-    // Scroll to top
-    document.querySelector('.content-area').scrollTop = 0;
 }
 
 function createPostCardHtml(post, isRecap) {
@@ -415,11 +383,6 @@ async function initDiary() {
     // Add listener for campaign details
     if (campaignDetailsBtn) {
         campaignDetailsBtn.addEventListener('click', displayCampaignDetails);
-    }
-
-    // Add listener for home button
-    if (homeBtn) {
-        homeBtn.addEventListener('click', displayWelcome);
     }
 }
 
