@@ -250,7 +250,7 @@ body {
     font-size: 16px;
     font-weight: 600;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 4px rgba(160, 160, 160, 0.258);
 }
 
 .campaign-details-btn:hover {
@@ -848,7 +848,7 @@ body {
 
 .travel-point-label {
     font-family: var(--font-quote);
-    font-size: 20px;
+    font-size: 30px;
     color: var(--md-sys-color-on-primary-container);
     text-align: center;
     line-height: 1.2;
@@ -879,7 +879,7 @@ body {
 
 .travel-ship-icon {
     position: absolute;
-    font-size: 40px;
+    font-size: 60px;
     color: #80cbc4;
     top: 50%;
     transform: translateY(-50%);

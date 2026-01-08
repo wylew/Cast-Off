@@ -9,7 +9,7 @@ A beautiful, Material Design 3 session diary for tabletop RPG campaigns. Track y
 - 📚 **Session-Based Organization** - Each session in its own markdown file
 - 🎨 **Customizable Theme** - Change colors to match your campaign (colors currently here:https://colorpeek.com/#a8c7fa,0a2540,0d47a1,d3e4fd,bac8db,243140,3a4857,d6e3f7,d0bcff,1f1635,5a4570,eaddff,0f1419,0f1419,34393e,0a0e13,171c21,1b2025,252a30,30353b,e1e3e6,c1c7ce,8b9198,41484d,ffb4ab,690005,93000a,ffdad6)
 - 🖼️ **Custom Masthead** - Add your own background image and title
-- 📝 **Multiple Post Types** - Recaps, conversations, quotes, and text entries
+- 📝 **Multiple Post Types** - Recaps, characters, locations, travel, conversations, quotes, and text entries
 - 🔄 **GitHub Integration** - Automatic commits to your repository
 - 📱 **Responsive Design** - Works beautifully on desktop and mobile
 - 🎲 **Custom Fonts** - Use your own fantasy fonts
@@ -68,51 +68,79 @@ Click the **+** button to create your first session post.
 **With GitHub configured:** Automatically commits to `sessions/session-X.md`  
 **Without GitHub:** Downloads the file for manual upload
 
-### Post Types
+### Post Types & Formatting
+
+Separated by `---` (three dashes on their own line), each post uses metadata at the top followed by the content.
 
 #### **Session Recap**
-The main summary of what happened in the session. Always appears first.
-
+The main summary of what happened. Featured at the top.
 ```markdown
 Type: recap
 Date: Dec 20, 2024
 Title: The Port of Saltmere
 
-Your session summary with markdown formatting...
+Your summary here...
 ```
 
-#### **Text Entry**
-Additional notes, discoveries, or player thoughts.
-
+#### **Character**
+A card for NPCs or Player Characters. Feature a portrait (matching the Name to `portraits.json`).
 ```markdown
-Type: text
-Date: Dec 20, 2024
-Title: Mira's Discovery
+Type: character
+Name: Phinneas
+Date: Jan 03, 2026
 
-Detailed notes or player journal entries...
+Detailed description of the character...
+```
+
+#### **Location**
+A card for important places with a map icon and golden theme.
+```markdown
+Type: location
+Name: New Haven
+Date: Jan 08, 2026
+
+Description of the harbor, trade, and important landmarks...
+```
+
+#### **Travel**
+A nautical journey visualization with a wavy dashed line and bobbing ship.
+```markdown
+Type: travel
+From: New Haven
+To: Traitor Joe's
+Date: Jan 10, 2026
+
+We set sail at dawn, navigating the choppy waters...
 ```
 
 #### **Conversation**
-Dialogue between characters, NPCs, or the DM.
-
+Dialogue between characters or the DM in chat bubbles.
 ```markdown
 Type: conversation
 Date: Dec 20, 2024
 
 DM: You see a figure in the distance.
-Player: Can I make out any details?
-DM: Roll perception.
+Kaelen: Can I make out any details?
 ```
 
 #### **Quote**
-Memorable lines from NPCs or players.
-
+Highlighted memorable lines with author portraits.
 ```markdown
 Type: quote
 Date: Dec 20, 2024
 Author: Captain Rhogar
 
-The sea remembers everything. Every ship that sails her, every soul she claims.
+The sea remembers everything. Every soul she claims.
+```
+
+#### **Text Entry**
+Standard notes or player journal entries.
+```markdown
+Type: text
+Date: Dec 20, 2024
+Title: Mira's Journal
+
+Detailed notes about the day...
 ```
 
 ### Session File Format
@@ -122,21 +150,28 @@ Each session is stored in `sessions/session-X.md`:
 ```markdown
 Type: recap
 Date: Dec 20, 2024
-Title: Session Title
+Title: The Port of Saltmere
 
-Session recap content...
+Our adventure began in the bustling port city...
 ---
-Type: conversation
+Type: travel
+From: New Haven
+To: The Whisper Reef
 Date: Dec 20, 2024
 
-Alice: Hello!
-Bob: Hi there!
+We set sail at dawn...
+---
+Type: character
+Name: Theron
+Date: Dec 20, 2024
+
+A stalwart dwarf cleric...
 ---
 Type: quote
+Author: Captain Rhogar
 Date: Dec 20, 2024
-Author: NPC Name
 
-A memorable quote.
+"The sea remembers everything."
 ```
 
 Posts are separated by `---` (three dashes on their own line).
@@ -207,6 +242,7 @@ your-campaign/
 ├── script.js               # Application logic
 ├── DUNGRG__.TTF            # Custom font (optional)
 ├── README.md               # This file
+├── campaign.md             # Campaign details and meta-notes
 └── sessions/               # Session files
     ├── session-1.md        # Session 1 posts
     ├── session-2.md        # Session 2 posts
@@ -396,9 +432,10 @@ const themes = {
 Create separate repositories for each campaign:
 
 ```
-campaign-1/
-campaign-2/
-campaign-3/
+your-username/
+├── ringside-of-the-sea/
+├── frostmaiden-diary/
+└── ravenloft-chronicles/
 ```
 
 Or use branches:
@@ -430,7 +467,14 @@ This project is open source and available for personal and commercial use.
 
 ## 📊 Version History
 
-### v2.0.0 (Current)
+### v2.1.0 (Current)
+- ✨ Added **Character**, **Location**, and **Travel** post types
+- ✨ Implemented **Campaign Details** view with structured post support
+- ✨ Added **Session Subtitles** and **Material Icons** to sidebar
+- ✨ Improved markdown parsing for meta-less content
+- ✨ Added "History Edu" icons and centered navigation
+
+### v2.0.0
 - ✨ Split sessions into separate files
 - ✨ Added session sidebar navigation
 - ✨ Added masthead customization
