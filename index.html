@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A Material Design 3 blog powered by Markdown">
-    <title>Ringside of the Sea | Campaign Notes</title>
+    <meta name="description" content="Campaign session diary for Ringside of the Sea">
+    <title>Ringside of the Sea | Session Diary</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -18,20 +18,43 @@
 </head>
 <body>
 
-    <header class="top-app-bar">
-        <div class="headline">Ringside of the Sea</div>
-        <button id="settings-btn" class="icon-btn" aria-label="Settings" type="button">
+    <!-- Masthead with Background Image -->
+    <header class="masthead">
+        <div class="masthead-overlay"></div>
+        <h1 class="masthead-title">Ringside of the Sea</h1>
+        <button id="settings-btn" class="masthead-settings-btn" aria-label="Settings" type="button">
             <span class="material-symbols-outlined">settings</span>
         </button>
     </header>
 
-    <main id="blog-feed" class="feed-container" role="main" aria-label="Blog posts">
-        <!-- Posts will be dynamically loaded here -->
-    </main>
+    <div class="main-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>Sessions</h2>
+                <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle sidebar">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+            <nav class="session-list" id="session-list">
+                <!-- Sessions will be dynamically loaded here -->
+                <div class="loading-sessions">Loading sessions...</div>
+            </nav>
+            <button id="fab-add" class="fab" aria-label="Create new post" type="button">
+                <span class="material-symbols-outlined">add</span>
+            </button>
+        </aside>
 
-    <button id="fab-add" class="fab" aria-label="Create new post" type="button">
-        <span class="material-symbols-outlined">add</span>
-    </button>
+        <!-- Main Content Area -->
+        <main class="content-area" id="content-area" role="main">
+            <div class="session-content" id="session-content">
+                <div class="welcome-message">
+                    <h2>Welcome to Ringside of the Sea</h2>
+                    <p>Select a session from the sidebar to view its diary entries.</p>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- New Post Dialog -->
     <dialog id="post-dialog" class="dialog" aria-labelledby="dialog-title">
@@ -41,8 +64,8 @@
             <div class="input-group">
                 <label for="post-type">Post Type</label>
                 <select id="post-type" name="type" aria-label="Select post type">
-                    <option value="text">Text</option>
-                    <option value="image">Image</option>
+                    <option value="recap">Session Recap</option>
+                    <option value="text">Text Entry</option>
                     <option value="quote">Quote</option>
                     <option value="conversation">Conversation</option>
                 </select>
@@ -64,6 +87,29 @@
         <form id="settings-form">
             <h3 id="settings-title">Settings</h3>
             
+            <!-- Masthead Settings -->
+            <div class="settings-section">
+                <h4 class="settings-section-title">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">image</span>
+                    Masthead
+                </h4>
+                <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
+                    Customize the header image and title.
+                </p>
+
+                <div class="input-group">
+                    <label for="masthead-image">Background Image URL</label>
+                    <input type="url" id="masthead-image" name="mastheadImage" placeholder="https://example.com/image.jpg" autocomplete="off">
+                    <small>URL to your background image</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="masthead-title">Campaign Title</label>
+                    <input type="text" id="masthead-title" name="mastheadTitle" placeholder="Ringside of the Sea" autocomplete="off">
+                    <small>The title displayed on the masthead</small>
+                </div>
+            </div>
+
             <!-- GitHub Settings Section -->
             <div class="settings-section">
                 <h4 class="settings-section-title">
@@ -77,34 +123,26 @@
                 <div class="input-group">
                     <label for="github-owner">Repository Owner</label>
                     <input type="text" id="github-owner" name="owner" placeholder="yourusername" autocomplete="off">
-                    <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                        Your GitHub username or organization
-                    </small>
+                    <small>Your GitHub username or organization</small>
                 </div>
 
                 <div class="input-group">
                     <label for="github-repo">Repository Name</label>
                     <input type="text" id="github-repo" name="repo" placeholder="Ringside-of-the-Sea" autocomplete="off">
-                    <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                        The name of your repository
-                    </small>
+                    <small>The name of your repository</small>
                 </div>
 
                 <div class="input-group">
                     <label for="github-branch">Branch</label>
                     <input type="text" id="github-branch" name="branch" placeholder="main" value="main" autocomplete="off">
-                    <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                        Target branch (usually 'main' or 'gh-pages')
-                    </small>
+                    <small>Target branch (usually 'main' or 'gh-pages')</small>
                 </div>
 
                 <div class="input-group">
                     <label for="github-token">Personal Access Token</label>
                     <input type="password" id="github-token" name="token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
-                    <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                        Create at: GitHub → Settings → Developer settings → Personal access tokens<br>
-                        Required permission: <strong>repo</strong>
-                    </small>
+                    <small>Create at: GitHub → Settings → Developer settings → Personal access tokens<br>
+                    Required permission: <strong>repo</strong></small>
                 </div>
 
                 <div style="background: rgba(186, 26, 26, 0.1); padding: 12px; border-radius: 8px; margin-top: 12px;">
@@ -131,9 +169,7 @@
                             <input type="color" id="theme-primary-picker" class="color-picker">
                             <input type="text" id="theme-primary" name="primary" placeholder="#6750A4" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
                         </div>
-                        <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                            Main brand color (buttons, links)
-                        </small>
+                        <small>Main brand color</small>
                     </div>
 
                     <div class="input-group">
@@ -142,9 +178,7 @@
                             <input type="color" id="theme-secondary-picker" class="color-picker">
                             <input type="text" id="theme-secondary" name="secondary" placeholder="#625B71" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
                         </div>
-                        <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                            Accent color (chat bubbles)
-                        </small>
+                        <small>Accent color</small>
                     </div>
                 </div>
 
@@ -155,9 +189,7 @@
                             <input type="color" id="theme-tertiary-picker" class="color-picker">
                             <input type="text" id="theme-tertiary" name="tertiary" placeholder="#7D5260" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
                         </div>
-                        <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                            Quote highlights
-                        </small>
+                        <small>Quote highlights</small>
                     </div>
 
                     <div class="input-group">
@@ -166,9 +198,7 @@
                             <input type="color" id="theme-surface-picker" class="color-picker">
                             <input type="text" id="theme-surface" name="surface" placeholder="#FEF7FF" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
                         </div>
-                        <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                            Background color
-                        </small>
+                        <small>Background color</small>
                     </div>
                 </div>
 
@@ -178,9 +208,7 @@
                         <input type="color" id="theme-surface-container-picker" class="color-picker">
                         <input type="text" id="theme-surface-container" name="surfaceContainer" placeholder="#F3EDF7" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
                     </div>
-                    <small style="color: var(--md-sys-color-on-surface-variant); font-size: 11px; margin-top: 4px;">
-                        Card background color
-                    </small>
+                    <small>Card background color</small>
                 </div>
 
                 <button type="button" id="btn-reset-theme" class="btn-text" style="margin-top: 8px;">
@@ -205,12 +233,10 @@
             const textInput = document.getElementById(`theme-${colorName}`);
             
             if (picker && textInput) {
-                // Update text input when color picker changes
                 picker.addEventListener('input', (e) => {
                     textInput.value = e.target.value;
                 });
                 
-                // Update color picker when text input changes
                 textInput.addEventListener('input', (e) => {
                     const value = e.target.value;
                     if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
@@ -218,7 +244,6 @@
                     }
                 });
                 
-                // Initialize picker with text input value
                 textInput.addEventListener('change', (e) => {
                     const value = e.target.value;
                     if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
