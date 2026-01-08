@@ -217,7 +217,7 @@ body {
 }
 
 .session-item-number {
-    font-size: 20px;
+    font-size: 36px;
     font-weight: 700;
     color: var(--md-sys-color-primary);
     font-family: var(--font-sidebar);
@@ -229,7 +229,7 @@ body {
 }
 
 .session-item-date {
-    font-size: 13px;
+    font-size: 20px;
     color: var(--md-sys-color-on-surface-variant);
     text-transform: uppercase;
     letter-spacing: 0.8px;
