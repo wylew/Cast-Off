@@ -21,10 +21,10 @@
     font-style: normal;
 }
 :root {
-    /* Dark Mode Theme - Blues/Greys/Blacks */
-    --md-sys-color-primary: #A8C7FA;
-    --md-sys-color-on-primary: #0A2540;
-    --md-sys-color-primary-container: #0D47A1;
+    /* Dark Mode Theme - Blues/Greys/Blacks */#61320e
+    --md-sys-color-primary: #d0bcff;
+    --md-sys-color-on-primary: #61320E;
+    --md-sys-color-primary-container: #C7661C;
     --md-sys-color-on-primary-container: #D3E4FD;
     
     --md-sys-color-secondary: #BAC8DB;
