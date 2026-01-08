@@ -5,6 +5,18 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Pixel';
+    src: url('DUNGRG__.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Depths';
+    src: url('DUNGRG__.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 :root {
     /* Dark Mode Theme - Blues/Greys/Blacks */
