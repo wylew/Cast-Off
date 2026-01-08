@@ -5,18 +5,6 @@
     font-weight: normal;
     font-style: normal;
 }
-@font-face {
-    font-family: 'Pixel';
-    src: url('FantasyDraft.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Depths';
-    src: url('Dungeon_Depths.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
 
 :root {
     /* Dark Mode Theme - Blues/Greys/Blacks */
@@ -67,13 +55,13 @@
     --sidebar-width: 320px;
     
     /* Font Variables */
-    --font-primary: 'Pixel', serif;
-    --font-masthead: 'Depths', serif;
-    --font-sidebar: 'Pixel', serif;
-    --font-post-title: 'Pixel', serif;
-    --font-post-body: 'Pixel', serif;
-    --font-post-label: 'Pixel', serif;
-    --font-conversation: 'Pixel', serif;
+    --font-primary: 'Dungeon', serif;
+    --font-masthead: 'Dungeon', serif;
+    --font-sidebar: 'Dungeon', serif;
+    --font-post-title: 'Dungeon', serif;
+    --font-post-body: 'Dungeon', serif;
+    --font-post-label: 'Dungeon', serif;
+    --font-conversation: 'Dungeon', serif;
     --font-quote: 'Dungeon', serif;
 }
 
@@ -119,7 +107,7 @@ body {
     position: relative;
     z-index: 2;
     font-family: var(--font-masthead);
-    font-size: 32px;
+    font-size: 72px;
     color: var(--md-sys-color-on-primary-container);
     margin: 0;
     text-align: center;
@@ -229,7 +217,7 @@ body {
 }
 
 .session-item-number {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--md-sys-color-primary);
     font-family: var(--font-sidebar);
@@ -241,7 +229,7 @@ body {
 }
 
 .session-item-date {
-    font-size: 16px;
+    font-size: 13px;
     color: var(--md-sys-color-on-surface-variant);
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -255,7 +243,7 @@ body {
 }
 
 .session-item-count {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--md-sys-color-on-surface-variant);
     font-family: var(--font-sidebar);
     opacity: 0.75;
@@ -323,7 +311,7 @@ body {
 }
 
 .session-header-title {
-    font-size: 36px;
+    font-size: 48px;
     font-weight: 700;
     color: var(--md-sys-color-primary);
     margin: 0 0 12px 0;
@@ -537,7 +525,7 @@ body {
 }
 
 .quote-text {
-    font-size: 36px;
+    font-size: 28px;
     font-style: italic;
     margin: 16px 0;
     color: var(--md-sys-color-on-tertiary-container);
@@ -567,166 +555,37 @@ body {
     color: var(--md-sys-color-tertiary);
     margin-top: 20px;
     letter-spacing: 1.5px;
-    font-size: 22px;
+    font-size: 14px;
     font-family: var(--font-quote);
 }
 
-/* FAB - Material 3 Expressive */
-.fab {
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
     position: fixed;
-    bottom: 32px;
-    right: 32px;
-    width: 64px;
-    height: 64px;
+    top: 16px;
+    left: 16px;
+    z-index: 60;
+    width: 56px;
+    height: 56px;
     border-radius: var(--md-sys-shape-corner-large);
     background-color: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
     border: none;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3), 0px 8px 16px rgba(0, 0, 0, 0.15);
-    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 100;
 }
 
-.fab:hover {
-    transform: scale(1.1) translateY(-4px);
+.mobile-menu-btn:hover {
+    transform: scale(1.05);
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4), 0px 12px 24px rgba(0, 0, 0, 0.2);
 }
 
-.fab:active {
-    transform: scale(1.05);
-}
-
-/* Dialogs - Material 3 Expressive */
-dialog {
-    border: none;
-    border-radius: var(--md-sys-shape-corner-extra-large);
-    padding: 32px;
-    background-color: var(--md-sys-color-surface-container-high);
-    color: var(--md-sys-color-on-surface);
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4), 0px 16px 32px rgba(0, 0, 0, 0.2);
-    max-height: 90vh;
-    overflow-y: auto;
-    font-family: var(--font-primary);
-    border: 1px solid var(--md-sys-color-outline-variant);
-}
-
-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-}
-
-dialog h3 {
-    margin: 0 0 28px 0;
-    font-size: 28px;
-    font-weight: 600;
-    font-family: var(--font-primary);
-    color: var(--md-sys-color-primary);
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 24px;
-}
-
-label {
-    font-size: 13px;
-    color: var(--md-sys-color-primary);
-    margin-bottom: 8px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-family: var(--font-primary);
-}
-
-input, select, textarea {
-    background-color: var(--md-sys-color-surface-container);
-    border: 1px solid var(--md-sys-color-outline);
-    border-radius: var(--md-sys-shape-corner-medium);
-    padding: 14px 16px;
-    font-family: var(--font-primary);
-    color: var(--md-sys-color-on-surface);
-    width: 100%;
-    font-size: 15px;
-    transition: all 0.2s;
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--md-sys-color-primary);
-    border-width: 2px;
-    padding: 13px 15px;
-    background-color: var(--md-sys-color-surface-container-high);
-}
-
-textarea {
-    resize: vertical;
-    min-height: 120px;
-    line-height: 1.6;
-}
-
-small {
-    display: block;
-    color: var(--md-sys-color-on-surface-variant);
-    font-size: 12px;
-    margin-top: 6px;
-    font-family: var(--font-primary);
-    opacity: 0.9;
-}
-
-.dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 32px;
-}
-
-.btn-text {
-    background: none;
-    border: none;
-    color: var(--md-sys-color-primary);
-    font-weight: 600;
-    padding: 12px 24px;
-    cursor: pointer;
-    border-radius: var(--md-sys-shape-corner-large);
-    transition: background-color 0.2s;
-    font-family: var(--font-primary);
-    font-size: 15px;
-    letter-spacing: 0.5px;
-}
-
-.btn-text:hover {
-    background-color: rgba(168, 199, 250, 0.12);
-}
-
-.btn-filled {
-    background-color: var(--md-sys-color-primary-container);
-    color: var(--md-sys-color-on-primary-container);
-    border: none;
-    padding: 14px 32px;
-    border-radius: var(--md-sys-shape-corner-large);
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
-    font-family: var(--font-primary);
-    font-size: 15px;
-    letter-spacing: 0.5px;
-    transition: all 0.2s;
-}
-
-.btn-filled:hover {
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
-    transform: translateY(-1px);
-}
-
-.btn-filled:active {
-    transform: translateY(0);
+.mobile-menu-btn:active {
+    transform: scale(0.95);
 }
 
 /* Toast Notifications */
@@ -774,10 +633,14 @@ small {
         letter-spacing: 2px;
     }
 
+    .mobile-menu-btn {
+        display: flex;
+    }
+
     .sidebar {
         position: fixed;
         left: 0;
-        top: 280px;
+        top: 0;
         bottom: 0;
         z-index: 50;
         transform: translateX(-100%);
@@ -790,18 +653,7 @@ small {
     }
 
     .sidebar-toggle-btn {
-        display: block;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--md-sys-color-on-surface);
-        padding: 8px;
-        border-radius: var(--md-sys-shape-corner-medium);
-        transition: background-color 0.2s;
-    }
-
-    .sidebar-toggle-btn:hover {
-        background-color: rgba(168, 199, 250, 0.12);
+        display: none;
     }
 
     .content-area {
@@ -818,18 +670,6 @@ small {
 
     .text-title {
         font-size: 24px;
-    }
-
-    .fab {
-        bottom: 20px;
-        right: 20px;
-        width: 56px;
-        height: 56px;
-    }
-
-    dialog {
-        padding: 24px;
-        border-radius: var(--md-sys-shape-corner-large);
     }
 }
 
