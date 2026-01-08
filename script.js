@@ -4,6 +4,7 @@ const sidebarToggle = document.getElementById('sidebar-toggle');
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const sidebar = document.getElementById('sidebar');
 const campaignDetailsBtn = document.getElementById('campaign-details-btn');
+const homeBtn = document.getElementById('home-btn');
 
 let sessions = {};
 let currentSessionNumber = null;
@@ -176,6 +177,13 @@ function displaySession(sessionNum) {
         item.classList.toggle('active', item.dataset.session === sessionNum);
     });
 
+    if (homeBtn) {
+        homeBtn.classList.remove('active');
+    }
+    if (campaignDetailsBtn) {
+        campaignDetailsBtn.classList.remove('active');
+    }
+
     // Separate recap and other posts
     const recapPosts = session.posts.filter(p => p.type === 'recap');
     const otherPosts = session.posts.filter(p => p.type !== 'recap');
@@ -225,6 +233,10 @@ async function displayCampaignDetails() {
         campaignDetailsBtn.classList.add('active');
     }
 
+    if (homeBtn) {
+        homeBtn.classList.remove('active');
+    }
+
     try {
         const response = await fetch('campaign.md');
         if (!response.ok) throw new Error('Could not load campaign details');
@@ -262,6 +274,38 @@ async function displayCampaignDetails() {
     }
 }
 
+function displayWelcome() {
+    currentSessionNumber = null;
+
+    // Update active states
+    document.querySelectorAll('.session-item').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    if (campaignDetailsBtn) {
+        campaignDetailsBtn.classList.remove('active');
+    }
+
+    if (homeBtn) {
+        homeBtn.classList.add('active');
+    }
+
+    sessionContent.innerHTML = `
+        <div class="welcome-message">
+            <h2>Welcome to Cast Off!</h2>
+            <p>Select a session from the sidebar to view its diary entries.</p>
+        </div>
+    `;
+
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+    }
+
+    // Scroll to top
+    document.querySelector('.content-area').scrollTop = 0;
+}
+
 function createPostCardHtml(post, isRecap) {
     const bodyWithEmojis = convertEmojis(post.bodyRaw || '');
     const bodyHtml = marked.parse(bodyWithEmojis);
@@ -277,6 +321,25 @@ function createPostCardHtml(post, isRecap) {
                     ${post.type === 'recap' ? '<span class="post-type-label">Session Recap</span>' : ''}
                     <h2 class="text-title">${convertEmojis(escapeHtml(post.title || 'Untitled'))}</h2>
                     <div class="text-body">${bodyHtml}</div>
+                </div>`;
+            break;
+
+        case 'character':
+            extraClass += ' character-card';
+            const charName = post.name || 'Unknown Character';
+            const charPortraitUrl = getPortraitUrl(charName);
+            contentHtml = `
+                <div class="card-padding">
+                    <div class="character-intro-card">
+                        <div class="character-portrait-column">
+                            <img src="${charPortraitUrl}" alt="${escapeHtml(charName)}" class="character-portrait">
+                            <span class="char-intro-name">${convertEmojis(escapeHtml(charName))}</span>
+                        </div>
+                        <div class="character-description-column">
+                            <span class="post-type-label">Character</span>
+                            <div class="text-body">${bodyHtml}</div>
+                        </div>
+                    </div>
                 </div>`;
             break;
 
@@ -352,6 +415,11 @@ async function initDiary() {
     // Add listener for campaign details
     if (campaignDetailsBtn) {
         campaignDetailsBtn.addEventListener('click', displayCampaignDetails);
+    }
+
+    // Add listener for home button
+    if (homeBtn) {
+        homeBtn.addEventListener('click', displayWelcome);
     }
 }
 

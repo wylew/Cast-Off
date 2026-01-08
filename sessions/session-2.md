@@ -34,3 +34,18 @@ Date: Jan 03, 2026
 Author: Mulduck
 
 That bird wasn't alive so TECHNICALLY I didn't kill it.
+---
+Type: character
+Name: Clovis
+Date: Jan 03, 2026
+
+Clovis is a rough-around-the-edges sailor with a heart of gold and a past he'd rather stay in the briny deep. He's a skilled navigator and a crack shot with a crossbow.
+
+- **Background**: Sailor
+- **Known Associates**: The Golden Grin
+---
+Type: character
+Name: Kaelen
+Date: Jan 03, 2026
+
+Kaelen is a mysterious figure we encountered on the docks. He seems to know more about the Tide Callers than he's letting on. This entry tests the **fallback portrait** behavior.
