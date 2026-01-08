@@ -25,16 +25,7 @@ let githubConfig = {
     branch: localStorage.getItem('github_branch') || 'main'
 };
 
-let themeConfig = {
-    primary: localStorage.getItem('theme_primary') || '#6750A4',
-    secondary: localStorage.getItem('theme_secondary') || '#625B71',
-    tertiary: localStorage.getItem('theme_tertiary') || '#7D5260',
-    surface: localStorage.getItem('theme_surface') || '#FEF7FF',
-    surfaceContainer: localStorage.getItem('theme_surface_container') || '#F3EDF7'
-};
-
 let mastheadConfig = {
-    image: localStorage.getItem('masthead_image') || 'https://images.unsplash.com/photo-1519681393784-d120267933ba',
     title: localStorage.getItem('masthead_title') || 'Ringside of the Sea'
 };
 
@@ -72,74 +63,13 @@ function isGitHubConfigured() {
     return githubConfig.owner && githubConfig.repo && githubConfig.token;
 }
 
-function isValidHexColor(hex) {
-    return /^#[0-9A-Fa-f]{6}$/.test(hex);
-}
-
-function lightenColor(hex, percent) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    
-    const newR = Math.round(r + (255 - r) * (percent / 100));
-    const newG = Math.round(g + (255 - g) * (percent / 100));
-    const newB = Math.round(b + (255 - b) * (percent / 100));
-    
-    return '#' + [newR, newG, newB].map(x => {
-        const hex = x.toString(16);
-        return hex.length === 1 ? '0' + hex : hex;
-    }).join('');
-}
-
-function applyTheme() {
-    const root = document.documentElement;
-    root.style.setProperty('--md-sys-color-primary', themeConfig.primary);
-    root.style.setProperty('--md-sys-color-secondary', themeConfig.secondary);
-    root.style.setProperty('--md-sys-color-tertiary', themeConfig.tertiary);
-    root.style.setProperty('--md-sys-color-surface', themeConfig.surface);
-    root.style.setProperty('--md-sys-color-surface-container', themeConfig.surfaceContainer);
-    root.style.setProperty('--md-sys-color-primary-container', lightenColor(themeConfig.primary, 40));
-    root.style.setProperty('--md-sys-color-secondary-container', lightenColor(themeConfig.secondary, 40));
-    root.style.setProperty('--md-sys-color-tertiary-container', lightenColor(themeConfig.tertiary, 40));
-}
-
 function applyMasthead() {
-    const masthead = document.querySelector('.masthead');
     const mastheadTitle = document.querySelector('.masthead-title');
     
-    if (mastheadConfig.image) {
-        masthead.style.backgroundImage = `url('${mastheadConfig.image}')`;
-    }
     if (mastheadConfig.title) {
         mastheadTitle.textContent = mastheadConfig.title;
         document.title = `${mastheadConfig.title} | Session Diary`;
     }
-}
-
-function resetTheme() {
-    themeConfig = {
-        primary: '#6750A4',
-        secondary: '#625B71',
-        tertiary: '#7D5260',
-        surface: '#FEF7FF',
-        surfaceContainer: '#F3EDF7'
-    };
-    
-    localStorage.removeItem('theme_primary');
-    localStorage.removeItem('theme_secondary');
-    localStorage.removeItem('theme_tertiary');
-    localStorage.removeItem('theme_surface');
-    localStorage.removeItem('theme_surface_container');
-    
-    applyTheme();
-    
-    document.getElementById('theme-primary').value = themeConfig.primary;
-    document.getElementById('theme-secondary').value = themeConfig.secondary;
-    document.getElementById('theme-tertiary').value = themeConfig.tertiary;
-    document.getElementById('theme-surface').value = themeConfig.surface;
-    document.getElementById('theme-surface-container').value = themeConfig.surfaceContainer;
-    
-    showSuccess('Theme reset to default colors!');
 }
 
 // --- GITHUB API FUNCTIONS ---
@@ -462,7 +392,6 @@ function createPostCardHtml(post, isRecap) {
 // --- INITIALIZATION ---
 
 async function initDiary() {
-    applyTheme();
     applyMasthead();
     
     sessionList.innerHTML = '<div class="loading-sessions">Loading sessions...</div>';
@@ -498,13 +427,6 @@ if (settingsBtn) {
         document.getElementById('github-token').value = githubConfig.token;
         document.getElementById('github-branch').value = githubConfig.branch;
         
-        document.getElementById('theme-primary').value = themeConfig.primary;
-        document.getElementById('theme-secondary').value = themeConfig.secondary;
-        document.getElementById('theme-tertiary').value = themeConfig.tertiary;
-        document.getElementById('theme-surface').value = themeConfig.surface;
-        document.getElementById('theme-surface-container').value = themeConfig.surfaceContainer;
-        
-        document.getElementById('masthead-image').value = mastheadConfig.image;
         document.getElementById('masthead-title').value = mastheadConfig.title;
         
         settingsDialog.showModal();
@@ -514,14 +436,6 @@ if (settingsBtn) {
 if (cancelSettingsBtn) {
     cancelSettingsBtn.addEventListener('click', () => {
         settingsDialog.close();
-    });
-}
-
-const resetThemeBtn = document.getElementById('btn-reset-theme');
-if (resetThemeBtn) {
-    resetThemeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        resetTheme();
     });
 }
 
@@ -540,43 +454,14 @@ if (settingsForm) {
         localStorage.setItem('github_token', githubConfig.token);
         localStorage.setItem('github_branch', githubConfig.branch);
         
-        // Save theme config
-        const colors = ['primary', 'secondary', 'tertiary', 'surface', 'surface-container'];
-        let allValid = true;
-        
-        colors.forEach(colorName => {
-            const input = document.getElementById(`theme-${colorName}`).value.trim();
-            if (input && !isValidHexColor(input)) {
-                showError(`${colorName} color must be a valid hex code`);
-                allValid = false;
-            }
-        });
-        
-        if (!allValid) return;
-        
-        colors.forEach(colorName => {
-            const input = document.getElementById(`theme-${colorName}`).value.trim();
-            if (input) {
-                const configKey = colorName.replace('-', '');
-                themeConfig[configKey] = input;
-                localStorage.setItem(`theme_${colorName.replace('-', '_')}`, input);
-            }
-        });
-        
         // Save masthead config
-        const mastheadImage = document.getElementById('masthead-image').value.trim();
         const mastheadTitle = document.getElementById('masthead-title').value.trim();
         
-        if (mastheadImage) {
-            mastheadConfig.image = mastheadImage;
-            localStorage.setItem('masthead_image', mastheadImage);
-        }
         if (mastheadTitle) {
             mastheadConfig.title = mastheadTitle;
             localStorage.setItem('masthead_title', mastheadTitle);
         }
         
-        applyTheme();
         applyMasthead();
         
         settingsDialog.close();
