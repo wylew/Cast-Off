@@ -534,8 +534,8 @@ body {
 
 /* Quote Styles - Material 3 Expressive */
 .quote-card {
-    background: linear-gradient(135deg, var(--md-sys-color-tertiary-container) 0%, rgba(90, 69, 112, 0.6) 100%);
-    border: 1px solid rgba(208, 188, 255, 0.2);
+    background: linear-gradient(135deg, var(--md-sys-color-tertiary-container) 0%, rgba(171, 74, 0, 0.6) 100%);
+    border: 1px solid rgba(199, 102, 28, 0.2);
 }
 
 .quote-text {
