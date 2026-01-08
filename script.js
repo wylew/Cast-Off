@@ -1,12 +1,7 @@
 const sessionList = document.getElementById('session-list');
 const sessionContent = document.getElementById('session-content');
-const fabBtn = document.getElementById('fab-add');
-const dialog = document.getElementById('post-dialog');
-const postForm = document.getElementById('post-form');
-const postTypeSelect = document.getElementById('post-type');
-const fieldsContainer = document.getElementById('fields-container');
-const cancelBtn = document.getElementById('btn-cancel');
 const sidebarToggle = document.getElementById('sidebar-toggle');
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const sidebar = document.getElementById('sidebar');
 
 let sessions = {};
@@ -24,22 +19,6 @@ function formatDate(date = new Date()) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-}
-
-function showSuccess(message) {
-    const successMsg = document.createElement('div');
-    successMsg.className = 'success-toast';
-    successMsg.textContent = message;
-    document.body.appendChild(successMsg);
-    setTimeout(() => successMsg.remove(), 3000);
-}
-
-function showError(message) {
-    const errorMsg = document.createElement('div');
-    errorMsg.className = 'error-toast';
-    errorMsg.textContent = message;
-    document.body.appendChild(errorMsg);
-    setTimeout(() => errorMsg.remove(), 4000);
 }
 
 // --- PARSE POSTS ---
@@ -120,7 +99,7 @@ function renderSessionList() {
         .sort((a, b) => parseInt(b) - parseInt(a));
     
     if (sortedSessions.length === 0) {
-        sessionList.innerHTML = '<div class="loading-sessions">No sessions found. Create your first post!</div>';
+        sessionList.innerHTML = '<div class="loading-sessions">No sessions found.</div>';
         return;
     }
     
@@ -264,131 +243,22 @@ async function initDiary() {
         sessionContent.innerHTML = `
             <div class="welcome-message">
                 <h2>Welcome to Ringside of the Sea</h2>
-                <p>No sessions found. Click the + button to create your first session!</p>
+                <p>No sessions found.</p>
                 <p style="font-size: 14px; opacity: 0.8; margin-top: 24px;">
-                    Sessions are stored in separate markdown files in the <code>sessions/</code> folder.
+                    Create session files in the <code>sessions/</code> folder to get started.
                 </p>
             </div>
         `;
     }
 }
 
-// --- NEW POST FORM ---
-
-fabBtn.addEventListener('click', () => {
-    updateFormFields('recap');
-    dialog.showModal();
-});
-
-cancelBtn.addEventListener('click', () => {
-    dialog.close();
-    postForm.reset();
-});
-
-postTypeSelect.addEventListener('change', (e) => updateFormFields(e.target.value));
-
-function updateFormFields(type) {
-    let html = `<div class="input-group">
-                    <label>Session Number</label>
-                    <input type="number" name="session" placeholder="1" min="1" required>
-                    <small>Which session is this for?</small>
-                </div>`;
-    
-    if (type === 'recap' || type === 'text') {
-        html += `<div class="input-group">
-                    <label>Title</label>
-                    <input type="text" name="title" required>
-                </div>
-                <div class="input-group">
-                    <label>Content (Markdown supported)</label>
-                    <textarea name="content" rows="8" required></textarea>
-                </div>`;
-    } else if (type === 'quote') {
-        html += `<div class="input-group">
-                    <label>Quote Text</label>
-                    <textarea name="text" rows="4" required></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Author</label>
-                    <input type="text" name="author" required>
-                </div>`;
-    } else if (type === 'conversation') {
-        html += `<div class="input-group">
-                    <label>Conversation Script</label>
-                    <textarea name="rawConversation" rows="8" placeholder="Alice: Hello!
-Bob: Hi there!" required></textarea>
-                    <small>Format: Name: Message (one per line)</small>
-                </div>`;
-    }
-    
-    fieldsContainer.innerHTML = html;
-}
-
-postForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(postForm);
-    const type = formData.get('type');
-    const sessionNum = formData.get('session')?.trim();
-    const date = formatDate();
-    
-    if (!sessionNum) {
-        showError('Session number is required');
-        return;
-    }
-    
-    dialog.close();
-    postForm.reset();
-
-    try {
-        // Load existing session file
-        let existingContent = '';
-        try {
-            const response = await fetch(`sessions/session-${sessionNum}.md`);
-            if (response.ok) {
-                existingContent = await response.text();
-            }
-        } catch (error) {
-            // New session file
-            console.log(`Creating new session file for session ${sessionNum}`);
-        }
-        
-        // Create new post block
-        let newBlock = `Type: ${type}\nDate: ${date}\n`;
-
-        if (type === 'recap' || type === 'text') {
-            newBlock += `Title: ${formData.get('title')}\n\n${formData.get('content')}`;
-        } else if (type === 'quote') {
-            newBlock += `Author: ${formData.get('author')}\n\n${formData.get('text')}`;
-        } else if (type === 'conversation') {
-            newBlock += `\n${formData.get('rawConversation')}`;
-        }
-
-        // Append to existing content
-        const updatedContent = existingContent.trim() 
-            ? newBlock + "\n---\n" + existingContent 
-            : newBlock;
-
-        // Download the session file
-        const blob = new Blob([updatedContent], { type: 'text/markdown' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `session-${sessionNum}.md`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        
-        showSuccess(`Session ${sessionNum} file downloaded! Upload to sessions/ folder and refresh.`);
-        
-    } catch (error) {
-        console.error('Error creating post:', error);
-        showError(`Failed to create post: ${error.message}`);
-        dialog.showModal();
-    }
-});
-
 // --- MOBILE SIDEBAR TOGGLE ---
+
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
+}
 
 if (sidebarToggle) {
     sidebarToggle.addEventListener('click', () => {
@@ -396,23 +266,22 @@ if (sidebarToggle) {
     });
 }
 
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+        if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    }
+});
+
 // --- KEYBOARD SHORTCUTS ---
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-        if (dialog.open) {
-            dialog.close();
-            postForm.reset();
-        }
         if (sidebar.classList.contains('open')) {
             sidebar.classList.remove('open');
         }
-    }
-    
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        updateFormFields('recap');
-        dialog.showModal();
     }
 });
 
