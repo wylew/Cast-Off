@@ -7,7 +7,6 @@
     <title>Ringside of the Sea | Session Diary</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     
     <!-- Markdown Parser -->
@@ -90,24 +89,22 @@
             <!-- Masthead Settings -->
             <div class="settings-section">
                 <h4 class="settings-section-title">
-                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">image</span>
-                    Masthead
+                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">title</span>
+                    Campaign Title
                 </h4>
                 <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
-                    Customize the header image and title.
+                    Customize your campaign title (displayed on the masthead).
                 </p>
-
-                <div class="input-group">
-                    <label for="masthead-image">Background Image URL</label>
-                    <input type="url" id="masthead-image" name="mastheadImage" placeholder="https://example.com/image.jpg" autocomplete="off">
-                    <small>URL to your background image</small>
-                </div>
 
                 <div class="input-group">
                     <label for="masthead-title">Campaign Title</label>
                     <input type="text" id="masthead-title" name="mastheadTitle" placeholder="Ringside of the Sea" autocomplete="off">
                     <small>The title displayed on the masthead</small>
                 </div>
+                
+                <p style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-top: 16px; font-style: italic;">
+                    💡 To change the background image, replace <code>masthead.jpg</code> in your repository.
+                </p>
             </div>
 
             <!-- GitHub Settings Section -->
@@ -152,71 +149,6 @@
                 </div>
             </div>
 
-            <!-- Theme Settings Section -->
-            <div class="settings-section">
-                <h4 class="settings-section-title">
-                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">palette</span>
-                    Theme Colors
-                </h4>
-                <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 16px;">
-                    Customize the color scheme with hex color codes.
-                </p>
-
-                <div class="color-input-row">
-                    <div class="input-group">
-                        <label for="theme-primary">Primary Color</label>
-                        <div class="color-input-wrapper">
-                            <input type="color" id="theme-primary-picker" class="color-picker">
-                            <input type="text" id="theme-primary" name="primary" placeholder="#6750A4" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
-                        </div>
-                        <small>Main brand color</small>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="theme-secondary">Secondary Color</label>
-                        <div class="color-input-wrapper">
-                            <input type="color" id="theme-secondary-picker" class="color-picker">
-                            <input type="text" id="theme-secondary" name="secondary" placeholder="#625B71" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
-                        </div>
-                        <small>Accent color</small>
-                    </div>
-                </div>
-
-                <div class="color-input-row">
-                    <div class="input-group">
-                        <label for="theme-tertiary">Tertiary Color</label>
-                        <div class="color-input-wrapper">
-                            <input type="color" id="theme-tertiary-picker" class="color-picker">
-                            <input type="text" id="theme-tertiary" name="tertiary" placeholder="#7D5260" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
-                        </div>
-                        <small>Quote highlights</small>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="theme-surface">Surface Color</label>
-                        <div class="color-input-wrapper">
-                            <input type="color" id="theme-surface-picker" class="color-picker">
-                            <input type="text" id="theme-surface" name="surface" placeholder="#FEF7FF" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
-                        </div>
-                        <small>Background color</small>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="theme-surface-container">Surface Container</label>
-                    <div class="color-input-wrapper">
-                        <input type="color" id="theme-surface-container-picker" class="color-picker">
-                        <input type="text" id="theme-surface-container" name="surfaceContainer" placeholder="#F3EDF7" pattern="^#[0-9A-Fa-f]{6}$" autocomplete="off">
-                    </div>
-                    <small>Card background color</small>
-                </div>
-
-                <button type="button" id="btn-reset-theme" class="btn-text" style="margin-top: 8px;">
-                    <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 18px; margin-right: 4px;">refresh</span>
-                    Reset to Default Colors
-                </button>
-            </div>
-
             <div class="dialog-actions">
                 <button type="button" id="btn-cancel-settings" class="btn-text">Cancel</button>
                 <button type="submit" class="btn-filled">Save Settings</button>
@@ -226,32 +158,5 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
-    <script>
-        // Sync color pickers with text inputs
-        ['primary', 'secondary', 'tertiary', 'surface', 'surface-container'].forEach(colorName => {
-            const picker = document.getElementById(`theme-${colorName}-picker`);
-            const textInput = document.getElementById(`theme-${colorName}`);
-            
-            if (picker && textInput) {
-                picker.addEventListener('input', (e) => {
-                    textInput.value = e.target.value;
-                });
-                
-                textInput.addEventListener('input', (e) => {
-                    const value = e.target.value;
-                    if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
-                        picker.value = value;
-                    }
-                });
-                
-                textInput.addEventListener('change', (e) => {
-                    const value = e.target.value;
-                    if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
-                        picker.value = value;
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>
