@@ -34,10 +34,10 @@
     --md-sys-color-secondary-container: #3A4857;
     --md-sys-color-on-secondary-container: #D6E3F7;
 
-    --md-sys-color-tertiary: #D0BCFF;
+    --md-sys-color-tertiary: #ffe3bc;
     --md-sys-color-on-tertiary: #1F1635;
     --md-sys-color-tertiary-container: #455f70;
-    --md-sys-color-on-tertiary-container: #EADDFF;
+    --md-sys-color-on-tertiary-container: #ffe3bc;
 
     --md-sys-color-surface: #1f2e37;
     --md-sys-color-surface-dim: #0F1419;
@@ -552,7 +552,7 @@ body {
 
 /* Quote Styles - Material 3 Expressive */
 .quote-card {
-    background: linear-gradient(135deg, var(--md-sys-color-tertiary-container) 0%, rgba(171, 74, 0, 0.6) 100%);
+    background: linear-gradient(135deg, var(--md-sys-color-tertiary-container) 0%, rgba(16, 87, 86, 0.6) 100%);
     border: 1px solid rgba(199, 102, 28, 0.2);
 }
 
@@ -585,7 +585,7 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     color: var(--md-sys-color-tertiary);
-    margin-top: 28px;
+    margin-top: 36px;
     letter-spacing: 1.5px;
     font-size: 16px;
     font-family: var(--font-quote);
@@ -595,8 +595,8 @@ body {
 }
 
 .author-portrait {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--md-sys-color-tertiary);
