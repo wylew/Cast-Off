@@ -29,6 +29,11 @@ Session 2 took us to the high seas on The Wedding Downry to the isle of Traitor 
 
 We discovered the Tide Callers aren't just pirates—they're trying to awaken an ancient sea deity. And Kaelen might be the key to stopping them... or helping them.
 ---
+type: travel
+from: New Haven
+To: Traitor Joe's
+Date: Jan 03, 2026
+---
 Type: quote
 Date: Jan 03, 2026
 Author: Mulduck

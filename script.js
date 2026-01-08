@@ -311,6 +311,51 @@ function createPostCardHtml(post, isRecap) {
                 </div>`;
             break;
 
+        case 'location':
+            extraClass += ' location-card';
+            const locName = post.name || 'Unknown Location';
+            contentHtml = `
+                <div class="card-padding">
+                    <div class="location-intro-card">
+                        <div class="location-icon-column">
+                            <span class="material-symbols-outlined location-icon">map</span>
+                            <span class="location-intro-name">${convertEmojis(escapeHtml(locName))}</span>
+                        </div>
+                        <div class="location-description-column">
+                            <span class="post-type-label">Location</span>
+                            <div class="text-body">${bodyHtml}</div>
+                        </div>
+                    </div>
+                </div>`;
+            break;
+
+        case 'travel':
+            extraClass += ' travel-card';
+            contentHtml = `
+                <div class="card-padding">
+                    <span class="post-type-label">Travel</span>
+                    <div class="travel-visualization">
+                        <div class="travel-icon-point">
+                            <span class="material-symbols-outlined travel-point-icon">moved_location</span>
+                            <span class="travel-point-label">${escapeHtml(post.from || 'Origin')}</span>
+                        </div>
+                        
+                        <div class="travel-path-container">
+                            <svg class="travel-wave" viewBox="0 0 200 40" preserveAspectRatio="none">
+                                <path d="M0,20 Q25,5 50,20 T100,20 T150,20 T200,20" class="travel-wave-path" />
+                            </svg>
+                            <span class="material-symbols-outlined travel-ship-icon">sailing</span>
+                        </div>
+
+                        <div class="travel-icon-point">
+                            <span class="material-symbols-outlined travel-point-icon">anchor</span>
+                            <span class="travel-point-label">${escapeHtml(post.to || 'Destination')}</span>
+                        </div>
+                    </div>
+                    <div class="text-body">${bodyHtml}</div>
+                </div>`;
+            break;
+
         case 'conversation':
             const lines = post.bodyRaw.split('\n').filter(line => line.trim());
             const messagesHtml = lines.map((line, index) => {
