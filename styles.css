@@ -585,9 +585,9 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     color: var(--md-sys-color-tertiary);
-    margin-top: 36px;
+    margin-top: 28px;
     letter-spacing: 1.5px;
-    font-size: 16px;
+    font-size: 24px;
     font-family: var(--font-quote);
     display: flex;
     align-items: center;
