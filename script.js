@@ -3,6 +3,7 @@ const sessionContent = document.getElementById('session-content');
 const sidebarToggle = document.getElementById('sidebar-toggle');
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const sidebar = document.getElementById('sidebar');
+const campaignDetailsBtn = document.getElementById('campaign-details-btn');
 
 let sessions = {};
 let currentSessionNumber = null;
@@ -205,6 +206,60 @@ function displaySession(sessionNum) {
 
     // Scroll to top
     document.querySelector('.content-area').scrollTop = 0;
+
+    // Update campaign button active state
+    if (campaignDetailsBtn) {
+        campaignDetailsBtn.classList.remove('active');
+    }
+}
+
+async function displayCampaignDetails() {
+    currentSessionNumber = null;
+
+    // Update active states
+    document.querySelectorAll('.session-item').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    if (campaignDetailsBtn) {
+        campaignDetailsBtn.classList.add('active');
+    }
+
+    try {
+        const response = await fetch('campaign.md');
+        if (!response.ok) throw new Error('Could not load campaign details');
+
+        const content = await response.text();
+        const bodyWithEmojis = convertEmojis(content || '');
+        const bodyHtml = marked.parse(bodyWithEmojis);
+
+        sessionContent.innerHTML = `
+            <div class="session-header">
+                <h1 class="session-header-title">Campaign Details</h1>
+            </div>
+            <article class="post-card">
+                <div class="card-padding">
+                    <div class="text-body">${bodyHtml}</div>
+                </div>
+            </article>
+        `;
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+        }
+
+        // Scroll to top
+        document.querySelector('.content-area').scrollTop = 0;
+    } catch (error) {
+        console.error('Error loading campaign details:', error);
+        sessionContent.innerHTML = `
+            <div class="welcome-message">
+                <h2>Error</h2>
+                <p>Could not load Campaign Details. Please ensure <code>campaign.md</code> exists.</p>
+            </div>
+        `;
+    }
 }
 
 function createPostCardHtml(post, isRecap) {
@@ -284,22 +339,19 @@ async function initDiary() {
     await loadAllSessions();
     renderSessionList();
 
-    // Auto-select first session
+    // Auto-select first session or show welcome
     const sortedSessions = Object.keys(sessions)
         .sort((a, b) => parseInt(b) - parseInt(a));
 
     if (sortedSessions.length > 0) {
         displaySession(sortedSessions[0]);
     } else {
-        sessionContent.innerHTML = `
-            <div class="welcome-message">
-                <h2>Welcome to Ringside of the Sea</h2>
-                <p>No sessions found.</p>
-                <p style="font-size: 14px; opacity: 0.8; margin-top: 24px;">
-                    Create session files in the <code>sessions/</code> folder to get started.
-                </p>
-            </div>
-        `;
+        displaySession(null); // Will show welcome message if no sessions
+    }
+
+    // Add listener for campaign details
+    if (campaignDetailsBtn) {
+        campaignDetailsBtn.addEventListener('click', displayCampaignDetails);
     }
 }
 

@@ -85,13 +85,18 @@
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
 body {
     background-color: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
     font-family: var(--font-primary);
     margin: 0;
     padding: 0;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
@@ -180,6 +185,8 @@ body {
     display: flex;
     flex: 1;
     overflow: hidden;
+    height: calc(100vh - 380px);
+    /* Subtract masthead min-height */
 }
 
 /* Sidebar - Material 3 Expressive Navigation Rail */
@@ -218,6 +225,47 @@ body {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+.sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    background-color: var(--md-sys-color-surface-container-high);
+}
+
+.campaign-details-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border: none;
+    border-radius: var(--md-sys-shape-corner-medium);
+    cursor: pointer;
+    font-family: var(--font-sidebar);
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.campaign-details-btn:hover {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.campaign-details-btn .material-symbols-outlined {
+    font-size: 24px;
+}
+
+.campaign-details-btn.active {
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    outline: 2px solid var(--md-sys-color-outline);
 }
 
 .session-list::-webkit-scrollbar {
@@ -601,7 +649,7 @@ body {
 }
 
 .quote-text {
-    font-size: 32px;
+    font-size: 44px;
     font-style: italic;
     margin: 16px 0;
     color: var(--md-sys-color-on-tertiary-container);
