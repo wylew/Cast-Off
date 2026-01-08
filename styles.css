@@ -119,7 +119,7 @@ body {
     position: relative;
     z-index: 2;
     font-family: var(--font-masthead);
-    font-size: 72px;
+    font-size: 48px;
     color: var(--md-sys-color-on-primary-container);
     margin: 0;
     text-align: center;
@@ -229,7 +229,7 @@ body {
 }
 
 .session-item-number {
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--md-sys-color-primary);
     font-family: var(--font-sidebar);
@@ -241,7 +241,7 @@ body {
 }
 
 .session-item-date {
-    font-size: 20px;
+    font-size: 16px;
     color: var(--md-sys-color-on-surface-variant);
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -255,7 +255,7 @@ body {
 }
 
 .session-item-count {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--md-sys-color-on-surface-variant);
     font-family: var(--font-sidebar);
     opacity: 0.75;
@@ -323,7 +323,7 @@ body {
 }
 
 .session-header-title {
-    font-size: 48px;
+    font-size: 36px;
     font-weight: 700;
     color: var(--md-sys-color-primary);
     margin: 0 0 12px 0;
@@ -537,7 +537,7 @@ body {
 }
 
 .quote-text {
-    font-size: 28px;
+    font-size: 36px;
     font-style: italic;
     margin: 16px 0;
     color: var(--md-sys-color-on-tertiary-container);
@@ -567,7 +567,7 @@ body {
     color: var(--md-sys-color-tertiary);
     margin-top: 20px;
     letter-spacing: 1.5px;
-    font-size: 14px;
+    font-size: 18px;
     font-family: var(--font-quote);
 }
 
