@@ -32,7 +32,7 @@ We traveled to Traitor Joe's to learn of our bounties and the dangers that await
 
 ---
 type: location
-Name: The Wedding Dowry
+Name: The Wedding Dowry ⚓
 Date: Jan 03, 2026
 characters: Luigi, Clovis, Mulduck, Quulaihr
 
@@ -64,7 +64,7 @@ That bird wasn't alive so TECHNICALLY I didn't kill it.
 ---
 Type: text
 Title: Luigi's Slimey Awakening
-**Mulduck, Clovis and Quulaihr** make their way to the cargo deck to find a gigantic venus fly tray 🪴 has taken up residence in the corner with vines and flower growing all over the walls and ceiling. Quulaihr attacks it right away.
+**Mulduck, Clovis and Quulaihr** make their way to the cargo deck to find a gigantic venus fly trap 🪴 has taken up residence in the corner with vines and flower growing all over the walls and ceiling. Quulaihr attacks it right away.
 
 Clovis follows suit, and slices at the opening of the venus fly trap with his axe 🪓 causing a membrane and glowing mucus to be revealed. He proceeds to whip the membrane, and **Luigi** falls out.
 
@@ -89,21 +89,21 @@ Author: Quulaihr
 Johnny Law is a Chromatic Dragon
 ---
 type: travel
-from: New Haven
-To: Traitor Joe's
+from: New Haven 🏰
+To: Traitor Joe's 🏴‍☠️
 Date: Jan 03, 2026
 characters: Luigi, Clovis, Mulduck, Quulaihr
 We set sail for Traitor Joe's to learn of our bounties.
 ---
 type: location
-Name: Traitor Joe's
+Name: Traitor Joe's 🏴‍☠️
 Date: Jan 03, 2026
 characters: Luigi, Clovis, Mulduck, Quulaihr
 
 A small island safe harbor for pirates. Haggling is REQUIRED.
 ---
 Type: Text
-Title: Arrival at Traitor Joe's
+Title: Arrival at Traitor Joe's 🏴‍☠️
 On arrival at Traitor Joe's, Barry heads out to gamble under **guidance** from Quulaihr while the of the party pursues leads around the city.
 
 **Luigi** heads to **Who's Askin?** 🤫, the speakeasy hidden bar
@@ -112,34 +112,36 @@ On arrival at Traitor Joe's, Barry heads out to gamble under **guidance** from Q
 **Mulduck** goes fishing 🎣
 ---
 type: location
-Name: Who's Askin?
+Name: Who's Askin? 🤫
 Date: Jan 03, 2026
 characters: Luigi
-Luigi get himself a drink at the bar and see someone with a shoulder tattoo that matches the Sigel on Clovis's clothing. Luigi goes into the back of the bar and sits down with his hood up cloak in darkness. He notices people talking with the same tattoo and sees a vision of Clovis, having been framed for killing his prior captain by reading the minds of those speaking. The crew is called The golden Grin 🙂.
+Luigi get himself a drink at the bar and see someone with a shoulder tattoo that matches the Sigel on Clovis's clothing. Luigi goes into the back of the bar and sits down with his hood up cloaked in darkness. He notices people talking with the same tattoo and sees a vision of Clovis, having been framed for killing his prior captain by reading the minds of those speaking. The crew is called The golden Grin 🙂.
 ---
 type: location
-Name: Bait & Tackle
+Name: Bait & Tackle 🪝
 Date: Jan 03, 2026
 characters: Clovis, Quulaihr
 Clovis and Quulaihr arrive at **Bait & Tackle** 🪝. The person working is shaving while shaving and speaking to cool air. Clovis tries to steal while Quulaihr attempts to distract the worker by giving him a small, mechanical shaving robot as a gift. Quulaihr buys Clovis a **scimitar** ⚔️ and upon providing meaningful business and after haggling from 200g to 50g as the native custom demands, the shop keep tells us that we can seek more information regarding our bounties at **Who's Asking?** 🤫
 ---
 type: location
-Name: The Docks
+Name: The Docks 🛳️
 Date: Jan 03, 2026
 characters: Mulduck
 After a successful fishing excursion, Mulduck find himself faced with a dog begging for food and feeds it a salmon 🐟 he caught. The dog is a mastiff named **Duke** 🐶
 ---
 type: location
-Name: Who's Askin?
+Name: Who's Askin? 🤫
 Date: Jan 03, 2026
 characters: Luigi, Clovis, Mulduck, Quulaihr
 We regroup momentarily at Who's Askin? before breaking to finish shopping needs an investigation.
 ---
 type: location
-Name: Well Gotten Gains
+Name: Well Gotten Gains 🛡️
 Date: Jan 03, 2026
 characters: Mulduck, Quulaihr
-Mulduck and Quulaihr go to the store **Well Gotten Gains** 🛡️ where the shop keep clearly nose Mulduck from somewhere and is hiding it. Cool air buys plate armor 🦾 before they leave.
+Mulduck and Quulaihr go to the store **Well Gotten Gains** 🛡️ where the shop keep clearly knows Mulduck from somewhere and is hiding it. Mulduck remains **invisible**. Quulaihr fails terribly to convince the shop keep Bianca that he's from temple **Path of Twilight** 🛕 prompting her to share information about Mulducks bounty out of pity. Mulduck is wanted by those of the Path of Twilight, a temple of Celestial mages and general space worshippers in Yyiros.
+
+Quulaihr buys plate armor 🦾 before they leave.
 ---
 Type: quote
 Date: Jan 03, 2026
@@ -148,19 +150,25 @@ Author: Quulaihr
 I've rolled 3, 3, 3, 1, 1. 😐
 ---
 type: location
-Name: Salt & Air
+Name: Salt & Air 🍹
 Date: Jan 03, 2026
 characters: Luigi, Clovis
 Luigi and Clovis go to the fancy bar, **Salt & Air** 🍹 to seek further information about Luigi's bounty, they speak to the bartender and he mentions that there are mages from a town called Tieem that has been an irritant as their highly arrogant. They are also mages from New Haven and largely they're fine with the locals.
 
 Luigi knows Tieem, as it houses the magic school he previously attended...
 
-Clovis, pretending to be drunk sparks of a conversation with some of the mages from Tieem, Gem and Crystal, asking if anyone knows about a man named Luigi. He learns that Luigi is infamous as he killed the headmaster of the mage school and fled, and now one of his prior classmates is in charge. Of the two mages I was chatting up, one of them gem gives me their number 😉
+Clovis, pretending to be drunk sparks up a conversation with some of the mages from Tieem, Gem and Crystal, asking if anyone knows about a man named Luigi. He learns that Luigi is infamous as he killed the headmaster of the mage school and fled, and now one of his prior classmates is in charge. Of the two mages I was chatting up, one of them, Gem, gives me their number 😉
 
-Luigi is wanted for killing **Denton Fellridge** 🧙‍♂️, and **Zim Grayson** 🧙‍♂️ is now headmaster.
+Luigi is wanted for killing **Denton Fellridge** 🧙‍♂️. **Zim Grayson** 🧙‍♂️ is now headmaster.
+---
+Type: quote
+Date: Jan 03, 2026
+Author: Gem and Crystal
+
+Zim Grayson is headmaster now and he SUUUUUUUCKS.
 ---
 type: location
-Name: The Wedding Dowry
+Name: The Wedding Dowry ⚓
 Date: Jan 03, 2026
-characters: Luigi, Clovis, Mulduck, Quulaihr, Barry
+characters: Luigi, Clovis, Mulduck, Quulaihr
 After pulling Barry away from playing cards and losing quite terribly, we head back to the ship. We share the details of our bounties as we've learned across town. Barry fills in the gaps on Clovis's bounty, noting that he's wanted a very rough praite town of Darktide 🏴‍☠️.
