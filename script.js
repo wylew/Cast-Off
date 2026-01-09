@@ -324,6 +324,19 @@ function createPostCardHtml(post, isRecap) {
                         </div>
                         <div class="location-description-column">
                             <div class="text-body">${bodyHtml}</div>
+                            ${post.characters ? `
+                                <div class="location-characters">
+                                    ${post.characters.split(',').map(name => {
+                const cleanName = name.trim();
+                return `
+                                            <div class="location-character-item" title="${escapeHtml(cleanName)}">
+                                                <img src="${getPortraitUrl(cleanName)}" alt="${escapeHtml(cleanName)}" class="location-character-portrait">
+                                                <span class="location-character-name">${convertEmojis(escapeHtml(cleanName))}</span>
+                                            </div>
+                                        `;
+            }).join('')}
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 </div>`;
