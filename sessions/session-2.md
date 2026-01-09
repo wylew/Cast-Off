@@ -141,6 +141,12 @@ Date: Jan 03, 2026
 characters: Mulduck, Quulaihr
 Mulduck and Quulaihr go to the store **Well Gotten Gains** 🛡️ where the shop keep clearly nose Mulduck from somewhere and is hiding it. Cool air buys plate armor 🦾 before they leave.
 ---
+Type: quote
+Date: Jan 03, 2026
+Author: Quulaihr
+
+I've rolled 3, 3, 3, 1, 1. 😐
+---
 type: location
 Name: Salt & Air
 Date: Jan 03, 2026
