@@ -17,6 +17,7 @@ Session 2 took us to the high seas on The Wedding Downry to the isle of Traitor 
 - **:smile: The Golden Grin**: The prior gang/crew that Clovis sailed with.
 - **:school: Tieem**: The mage school/city. Luigi is from here
 - **🏴‍☠️ Darktide**: A rough pirate town were we suspect The Golden Grin may have a presence.
+- **🛕 Path of Twilight** a temple of Celestial mages and general space worshippers in Yyiros. Mulduck is of here.
 
 ## :disguised_face: NPCs Introduced
 
