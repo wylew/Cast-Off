@@ -41,7 +41,9 @@ Type: text
 Title: Mulduck Awakens
 We find ourselves at a wedding where **Mulduck** is the officiant. Mulduck looks around only to find that the bride, groom, and those in attandance all have his face...and then all are hold his same orb.
 
-Mulduck awakens on the deck of the Dowry to find his orb has changed color, and now has some ability to control time.
+The deck hand, **Speedy Pete**, discovers Muldeck on the deck of **The Wedding Dowry** coming awake surrounded by runes scortched into the deck of the ship.
+
+Mulduck awakens to find his orb :crystal_ball: has changed color, and now has some ability to control time.
 ---
 type: travel
 from: New Haven
