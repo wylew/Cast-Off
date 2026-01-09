@@ -316,13 +316,13 @@ function createPostCardHtml(post, isRecap) {
             const locName = post.name || 'Unknown Location';
             contentHtml = `
                 <div class="card-padding">
+                    <span class="post-type-label">Location</span>
                     <div class="location-intro-card">
                         <div class="location-icon-column">
                             <span class="material-symbols-outlined location-icon">map</span>
                             <span class="location-intro-name">${convertEmojis(escapeHtml(locName))}</span>
                         </div>
                         <div class="location-description-column">
-                            <span class="post-type-label">Location</span>
                             <div class="text-body">${bodyHtml}</div>
                         </div>
                     </div>
