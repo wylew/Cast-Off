@@ -27,7 +27,7 @@ Session 2 took us to the high seas on The Wedding Downry to the isle of Traitor 
 
 ## :open_book: The Adventure
 
-We discovered the Tide Callers aren't just pirates—they're trying to awaken an ancient sea deity. And Kaelen might be the key to stopping them... or helping them.
+We traveled to Traitor Joe's to learn of our bounties and the dangers that await us as we endevour to clear our names...
 
 ---
 type: location
