@@ -91,8 +91,8 @@ Author: Quulaihr
 Johnny Law is a Chromatic Dragon
 ---
 type: travel
-from: New Haven 🏰
-To: Traitor Joe's 🏴‍☠️
+from: New Haven
+To: Traitor Joe's
 Date: Jan 03, 2026
 characters: Luigi, Clovis, Mulduck, Quulaihr
 We set sail for Traitor Joe's to learn of our bounties.
@@ -126,7 +126,7 @@ Name: Bait & Tackle
 emoji: 🪝
 Date: Jan 03, 2026
 characters: Clovis, Quulaihr
-Clovis and Quulaihr arrive at **Bait & Tackle** 🪝. The person working is shaving while shaving and speaking to cool air. Clovis tries to steal while Quulaihr attempts to distract the worker by giving him a small, mechanical shaving robot as a gift. Quulaihr buys Clovis a **scimitar** ⚔️ and upon providing meaningful business and after haggling from 200g to 50g as the native custom demands, the shop keep tells us that we can seek more information regarding our bounties at **Who's Asking?** 🤫
+Clovis and Quulaihr arrive at **Bait & Tackle** 🪝. The person working is shaving while speaking to Quulaihr. Clovis tries to steal while Quulaihr attempts to distract the worker by giving him a small, mechanical shaving robot as a gift. Quulaihr buys Clovis a **scimitar** ⚔️ and upon providing meaningful business and after haggling from 200g to 50g as the native custom demands, the shop keep tells us that we can seek more information regarding our bounties at **Who's Asking?** 🤫
 ---
 type: location
 Name: The Docks
