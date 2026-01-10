@@ -119,7 +119,7 @@ Name: Who's Askin?
 emoji: 🤫
 Date: Jan 03, 2026
 characters: Luigi
-Luigi get himself a drink at the bar and see someone with a shoulder tattoo that matches the Sigel on Clovis's clothing. Luigi goes into the back of the bar and sits down with his hood up cloaked in darkness. He notices people talking with the same tattoo and sees a vision of Clovis, having been framed for killing his prior captain by reading the minds of those speaking. The crew is called The golden Grin 🙂.
+Luigi gets himself a drink at the bar and sees someone with a shoulder tattoo that matches the sigel on Clovis's clothing. Luigi goes into the back of the bar and sits down with his hood up cloaked in darkness. He notices people with the same tattoo talking and sees a vision of Clovis, having been framed for killing his prior captain by reading the minds of those speaking. The crew is called **The Golden Grin** 🙂.
 ---
 type: location
 Name: Bait & Tackle
