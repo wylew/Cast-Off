@@ -1,8 +1,8 @@
-# Ringside of the Sea - Session Diary
+# Cast Off! - Session Diary for Table Top Campaign
 
 A beautiful, Material Design 3 session diary for tabletop RPG campaigns. Track your adventures with session recaps, conversations, quotes, and notes—all organized by session in separate markdown files.
 
-![Campaign Diary Screenshot](https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800)
+![Campaign Diary Screenshot](https://raw.githubusercontent.com/wylew/Cast-Off/refs/heads/main/masthead.jpgw=800)
 
 ## ✨ Features
 
