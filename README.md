@@ -2,7 +2,7 @@
 
 A beautiful, Material Design 3 session diary for tabletop RPG campaigns. Track your adventures with session recaps, conversations, quotes, and notes—all organized by session in separate markdown files.
 
-![Campaign Diary Screenshot](https://raw.githubusercontent.com/wylew/Cast-Off/refs/heads/main/masthead.jpgw=800)
+![Campaign Diary Screenshot](https://raw.githubusercontent.com/wylew/Cast-Off/refs/heads/main/masthead.jpg)
 
 ## ✨ Features
 
