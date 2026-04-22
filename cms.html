@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cast Off CMS</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --bg2: #171c21;
+    --bg3: #1b2025;
+    --bg4: #252a30;
+    --bg5: #30353b;
+    --surface: #34393e;
+    --border: #41484d;
+    --text: #e1e3e6;
+    --text2: #c1c7ce;
+    --text3: #8b9198;
+    --accent: #a8c7fa;
+    --accent2: #d0bcff;
+    --green: #a8d8a8;
+    --amber: #f9c74f;
+    --red: #ffb4ab;
+    --teal: #80cbc4;
+    --coral: #ffab91;
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* TOP BAR */
+  .topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 52px; display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+  .topbar-title { font-size: 15px; font-weight: 600; color: var(--accent); letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+  .topbar-title span { font-size: 18px; }
+  .topbar-session { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+  .topbar-session label { font-size: 13px; color: var(--text3); }
+  .topbar-session input { background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius); padding: 4px 8px; font-size: 13px; width: 60px; }
+  .btn { background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius); padding: 6px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+  .btn:hover { background: var(--bg5); border-color: var(--accent); }
+  .btn-accent { background: var(--accent); color: #0a2540; border-color: var(--accent); font-weight: 600; }
+  .btn-accent:hover { background: #c5d8f8; border-color: #c5d8f8; }
+  .btn-purple { background: var(--accent2); color: #1f1635; border-color: var(--accent2); font-weight: 600; }
+  .btn-purple:hover { background: #e0d0ff; }
+  .btn-danger { background: #3a1a1a; border-color: #6a2a2a; color: var(--red); font-weight: 600; }
+  .btn-danger:hover { background: #4a2020; border-color: var(--red); }
+
+  /* LAYOUT */
+  .layout { display: flex; flex: 1; overflow: hidden; }
+  
+  /* EDITOR PANEL */
+  .editor-panel { width: 420px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .panel-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .panel-header h2 { font-size: 13px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; }
+  
+  /* ENTRY LIST */
+  .entry-list { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .entry-list::-webkit-scrollbar { width: 4px; }
+  .entry-list::-webkit-scrollbar-track { background: transparent; }
+  .entry-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .entry-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; cursor: pointer; transition: border-color 0.15s, background 0.15s; display: flex; align-items: center; gap: 10px; user-select: none; }
+  .entry-card:hover { border-color: var(--accent); background: var(--bg4); }
+  .entry-card.active { border-color: var(--accent); background: var(--bg4); }
+  .entry-card.dragging { opacity: 0.4; }
+  .entry-card.drag-over { border-color: var(--accent2); border-style: dashed; }
+
+  .entry-type-badge { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-recap { background: #1a3a5c; color: var(--accent); }
+  .badge-text { background: #1f2a1f; color: var(--green); }
+  .badge-quote { background: #2a1f3a; color: var(--accent2); }
+  .badge-conversation { background: #2a251a; color: var(--amber); }
+  .badge-location { background: #1a2a2a; color: var(--teal); }
+  .badge-travel { background: #2a1f1a; color: var(--coral); }
+  .badge-character { background: #2a1a1a; color: var(--red); }
+
+  .entry-info { flex: 1; min-width: 0; }
+  .entry-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .entry-sub { font-size: 11px; color: var(--text3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .entry-drag-handle { color: var(--text3); font-size: 14px; cursor: grab; flex-shrink: 0; padding: 0 2px; }
+  .entry-drag-handle:active { cursor: grabbing; }
+  .entry-delete { color: var(--text3); font-size: 13px; flex-shrink: 0; padding: 2px 4px; border-radius: 4px; cursor: pointer; transition: color 0.15s; display: none; }
+  .entry-card:hover .entry-delete { display: block; }
+  .entry-delete:hover { color: var(--red); }
+
+  .add-entry-bar { padding: 10px 8px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; }
+
+  /* EDIT FORM */
+  .edit-form { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .edit-form::-webkit-scrollbar { width: 4px; }
+  .edit-form::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; }
+  .form-input, .form-select, .form-textarea { background: var(--bg3); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius); padding: 7px 10px; font-size: 13px; font-family: inherit; transition: border-color 0.15s; }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent); }
+  .form-select option { background: var(--bg3); }
+  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
+  .form-row { display: flex; gap: 8px; }
+  .form-row .form-group { flex: 1; }
+
+  .emoji-picker { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .emoji-search-row { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .emoji-search-input { flex: 1; background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 5px 8px; font-size: 12px; font-family: inherit; outline: none; }
+  .emoji-search-input:focus { border-color: var(--accent); }
+  .emoji-search-clear { background: none; border: none; color: var(--text3); font-size: 14px; cursor: pointer; padding: 0 2px; line-height: 1; }
+  .emoji-search-clear:hover { color: var(--text); }
+  .emoji-grid { display: flex; flex-wrap: wrap; gap: 2px; padding: 6px; max-height: 130px; overflow-y: auto; }
+  .emoji-grid::-webkit-scrollbar { width: 4px; }
+  .emoji-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .emoji-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 3px 5px; border-radius: 4px; transition: background 0.1s; line-height: 1; }
+  .emoji-btn:hover { background: var(--bg5); }
+  .emoji-none { font-size: 12px; color: var(--text3); padding: 12px; text-align: center; width: 100%; }
+
+  .no-entry { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text3); gap: 8px; font-size: 14px; }
+  .no-entry .hint { font-size: 12px; color: var(--border); }
+
+  /* PREVIEW PANEL */
+  .preview-panel { flex: 1; background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
+  .preview-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg2); padding: 0 16px; flex-shrink: 0; }
+  .preview-tab { padding: 12px 16px; font-size: 13px; cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
+  .preview-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .preview-content { flex: 1; overflow: hidden; }
+  .preview-pane { height: 100%; overflow-y: auto; padding: 24px; display: none; }
+  .preview-pane::-webkit-scrollbar { width: 6px; }
+  .preview-pane::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .preview-pane.active { display: block; }
+
+  /* RENDERED PREVIEW STYLES */
+  .rp-session-header { background: linear-gradient(135deg, #0a2540 0%, #1a3a6a 100%); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px; border: 1px solid #1d5090; }
+  .rp-session-num { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .rp-session-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .rp-session-date { font-size: 12px; color: var(--accent); opacity: 0.8; }
+  .rp-session-body { font-size: 14px; color: var(--text2); line-height: 1.7; margin-top: 12px; }
+  .rp-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px; }
+  .rp-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .rp-card-icon { font-size: 20px; }
+  .rp-card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .rp-card-subtitle { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .rp-card-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+  .rp-card-body h2 { font-size: 14px; font-weight: 600; color: var(--accent); margin: 10px 0 6px; }
+  .rp-card-body strong { color: var(--text); }
+  .rp-card-body ul { padding-left: 18px; }
+  .rp-card-body li { margin-bottom: 4px; }
+  .rp-quote { background: var(--bg3); border-left: 3px solid var(--accent2); border-radius: 0 var(--radius) var(--radius) 0; padding: 14px 16px; margin-bottom: 12px; }
+  .rp-quote-text { font-size: 15px; font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: 8px; }
+  .rp-quote-author { font-size: 12px; color: var(--accent2); font-weight: 600; }
+  .rp-travel { background: var(--bg3); border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .rp-travel-route { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .rp-travel-from, .rp-travel-to { font-weight: 600; color: var(--coral); }
+  .rp-travel-arrow { color: var(--text3); }
+  .rp-travel-body { font-size: 13px; color: var(--text2); margin-top: 8px; line-height: 1.6; }
+  .rp-conversation { background: var(--bg3); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 12px; }
+  .rp-convo-line { display: flex; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+  .rp-convo-speaker { font-weight: 700; color: var(--accent); flex-shrink: 0; min-width: 70px; }
+  .rp-convo-text { color: var(--text2); }
+  .rp-location { background: var(--bg3); border-left: 3px solid var(--teal); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 14px 16px; margin-bottom: 12px; }
+  .rp-location-name { font-size: 15px; font-weight: 600; color: var(--teal); margin-bottom: 4px; }
+  .rp-char { background: var(--bg3); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 12px; display: flex; gap: 14px; }
+  .rp-char-avatar { width: 42px; height: 42px; border-radius: 50%; background: #2a1a1a; border: 1px solid var(--red); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .rp-char-name { font-size: 15px; font-weight: 600; color: var(--red); }
+  .rp-char-body { font-size: 13px; color: var(--text2); margin-top: 6px; line-height: 1.6; }
+
+  /* RAW MARKDOWN */
+  .raw-md { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; font-size: 12px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+
+  /* PREVIEW HIGHLIGHT */
+  .rp-entry-wrap { transition: outline 0.15s, box-shadow 0.15s; border-radius: var(--radius-lg); }
+  .rp-entry-wrap.rp-highlighted { outline: 2px solid var(--accent); box-shadow: 0 0 0 4px rgba(168,199,250,0.12); }
+  .raw-block { transition: background 0.15s; border-radius: 4px; }
+  .raw-block.raw-highlighted { background: rgba(168,199,250,0.1); outline: 1px solid rgba(168,199,250,0.3); }
+
+  /* DRAG GHOST */
+  .drag-ghost { position: fixed; pointer-events: none; opacity: 0.8; z-index: 9999; background: var(--bg4); border: 1px solid var(--accent2); border-radius: var(--radius); padding: 8px 12px; font-size: 13px; color: var(--text); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; width: 480px; max-width: 95vw; display: flex; flex-direction: column; gap: 16px; }
+  .modal-title { font-size: 16px; font-weight: 600; color: var(--text); }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 8px; }
+
+  /* EMPTY STATE */
+  .empty-list { text-align: center; padding: 32px 16px; color: var(--text3); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title"><span>⚓</span> Cast Off CMS</div>
+  <div class="topbar-session">
+    <label>Session #</label>
+    <input type="number" id="sessionNum" value="1" min="1">
+  </div>
+  <button class="btn btn-danger" onclick="openNewSessionModal()">✦ New Session</button>
+  <button class="btn btn-accent" onclick="downloadMarkdown()">⬇ Download .md</button>
+</div>
+
+<div class="layout">
+  <!-- LEFT: Entry List + Edit Form -->
+  <div class="editor-panel">
+    <div class="panel-header">
+      <h2>Entries</h2>
+      <span id="entry-count" style="font-size:12px;color:var(--text3);margin-right:auto;margin-left:8px">0 entries</span>
+      <button class="btn" style="padding:4px 10px;font-size:12px;" onclick="openAddModal()">＋ Add</button>
+    </div>
+    <div class="entry-list" id="entryList"></div>
+
+    <div class="panel-header" style="border-top:1px solid var(--border)">
+      <h2 id="editFormTitle">Edit Entry</h2>
+    </div>
+    <div id="editArea" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+      <div class="no-entry">
+        <span style="font-size:32px">🗺️</span>
+        <span>Select or add an entry</span>
+        <span class="hint">Entries appear in the preview on the right</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Preview -->
+  <div class="preview-panel">
+    <div class="preview-tabs">
+      <div class="preview-tab active" onclick="switchTab('rendered')">Rendered Preview</div>
+      <div class="preview-tab" onclick="switchTab('raw')">Markdown</div>
+    </div>
+    <div class="preview-content">
+      <div class="preview-pane active" id="pane-rendered">
+        <div id="renderedPreview"></div>
+      </div>
+      <div class="preview-pane" id="pane-raw">
+        <div class="raw-md" id="rawPreview"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Entry Modal -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-title">Add New Entry</div>
+    <div class="form-group">
+      <label class="form-label">Entry Type</label>
+      <select class="form-select" id="newEntryType">
+        <option value="recap">📋 Recap — Session summary</option>
+        <option value="text">📝 Text — Narrative entry</option>
+        <option value="quote">💬 Quote — Memorable line</option>
+        <option value="conversation">🗣️ Conversation — Dialogue</option>
+        <option value="location">📍 Location — Place card</option>
+        <option value="travel">⛵ Travel — Journey</option>
+        <option value="character">🧙 Character — Person card</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeAddModal()">Cancel</button>
+      <button class="btn btn-accent" onclick="confirmAddEntry()">Add Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Session Confirm Modal -->
+<div class="modal-overlay" id="newSessionModal">
+  <div class="modal">
+    <div class="modal-title">⚠️ Start a New Session?</div>
+    <p style="font-size:14px;color:var(--text2);line-height:1.6;">This will clear all <strong id="nsEntryCount" style="color:var(--text)">0</strong> entries in the current session. Any unsaved work will be lost — make sure you've downloaded the <code style="background:var(--bg4);padding:2px 5px;border-radius:4px;font-size:12px">.md</code> file first if you need it.</p>
+    <div class="form-group">
+      <label class="form-label">New Session Number</label>
+      <input class="form-input" id="nsNewNum" type="number" min="1" value="2">
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeNewSessionModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmNewSession()">Clear &amp; Start Session</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let entries = [];
+let selectedId = null;
+let dragSrcIndex = null;
+let activeTab = 'rendered';
+
+// Full GitHub-supported emoji map: shortcode -> emoji char
+const GH_EMOJI = {"100":"💯","1234":"🔢","grinning":"😀","smiley":"😃","smile":"😄","grin":"😁","laughing":"😆","sweat_smile":"😅","rofl":"🤣","joy":"😂","slightly_smiling_face":"🙂","upside_down_face":"🙃","wink":"😉","blush":"😊","innocent":"😇","heart_eyes":"😍","kissing_heart":"😘","kissing":"😗","kissing_smiling_eyes":"😙","kissing_closed_eyes":"😚","yum":"😋","stuck_out_tongue":"😛","stuck_out_tongue_winking_eye":"😜","zany_face":"🤪","stuck_out_tongue_closed_eyes":"😝","money_mouth_face":"🤑","hugs":"🤗","hand_over_mouth":"🤭","shushing_face":"🤫","thinking":"🤔","zipper_mouth_face":"🤐","raised_eyebrow":"🤨","neutral_face":"😐","expressionless":"😑","no_mouth":"😶","smirk":"😏","unamused":"😒","roll_eyes":"🙄","grimacing":"😬","lying_face":"🤥","relieved":"😌","pensive":"😔","sleepy":"😪","drooling_face":"🤤","sleeping":"😴","mask":"😷","face_with_thermometer":"🤒","face_with_head_bandage":"🤕","nauseated_face":"🤢","sneezing_face":"🤧","hot_face":"🥵","cold_face":"🥶","woozy_face":"🥴","dizzy_face":"😵","exploding_head":"🤯","cowboy_hat_face":"🤠","partying_face":"🥳","sunglasses":"😎","nerd_face":"🤓","monocle_face":"🧐","confused":"😕","worried":"😟","slightly_frowning_face":"🙁","frowning_face":"☹️","open_mouth":"😮","hushed":"😯","astonished":"😲","flushed":"😳","pleading_face":"🥺","anguished":"😧","fearful":"😨","cold_sweat":"😰","disappointed_relieved":"😥","cry":"😢","sob":"😭","scream":"😱","confounded":"😖","persevere":"😣","disappointed":"😞","sweat":"😓","weary":"😩","tired_face":"😫","yawning_face":"🥱","triumph":"😤","rage":"😡","angry":"😠","skull":"💀","skull_and_crossbones":"☠️","imp":"👿","japanese_ogre":"👹","japanese_goblin":"👺","clown_face":"🤡","poop":"💩","ghost":"👻","alien":"👽","space_invader":"👾","robot":"🤖","wave":"👋","raised_back_of_hand":"🤚","raised_hand":"✋","vulcan_salute":"🖖","ok_hand":"👌","pinched_fingers":"🤌","pinching_hand":"🤏","v":"✌️","crossed_fingers":"🤞","love_you_gesture":"🤟","metal":"🤘","call_me_hand":"🤙","point_left":"👈","point_right":"👉","point_up_2":"👆","fu":"🖕","point_down":"👇","point_up":"☝️","thumbsup":"+1","thumbsdown":"-1","clap":"👏","raised_hands":"🙌","open_hands":"👐","pray":"🙏","handshake":"🤝","muscle":"💪","ear":"👂","nose":"👃","eyes":"👀","eye":"👁️","tongue":"👅","lips":"👄","brain":"🧠","anatomical_heart":"🫀","lungs":"🫁","tooth":"🦷","bone":"🦴","baby":"👶","child":"🧒","boy":"👦","girl":"👧","person":"🧑","man":"👨","woman":"👩","older_adult":"🧓","older_man":"👴","older_woman":"👵","person_frowning":"🙍","person_gesturing_no":"🙅","person_gesturing_ok":"🙆","person_tipping_hand":"💁","person_raising_hand":"🙋","deaf_person":"🧏","person_bowing":"🙇","face_palm":"🤦","person_shrugging":"🤷","mage":"🧙","fairy":"🧚","vampire":"🧛","merperson":"🧜","elf":"🧝","genie":"🧞","zombie":"🧟","person_walking":"🚶","person_running":"🏃","dancer":"💃","man_dancing":"🕺","people_holding_hands":"🧑‍🤝‍🧑","couple":"👫","two_men_holding_hands":"👬","two_women_holding_hands":"👭","couple_with_heart":"💑","family":"👪","speaking_head":"🗣️","bust_in_silhouette":"👤","busts_in_silhouette":"👥","footprints":"👣","monkey_face":"🐵","monkey":"🐒","gorilla":"🦍","dog":"🐶","dog2":"🐕","guide_dog":"🦮","poodle":"🐩","wolf":"🐺","fox_face":"🦊","raccoon":"🦝","cat":"🐱","cat2":"🐈","lion":"🦁","tiger":"🐯","tiger2":"🐅","leopard":"🐆","horse":"🐴","racehorse":"🐎","unicorn":"🦄","zebra":"🦓","deer":"🦌","bison":"🦬","cow":"🐮","ox":"🐂","water_buffalo":"🐃","cow2":"🐄","pig":"🐷","pig2":"🐖","boar":"🐗","pig_nose":"🐽","ram":"🐏","sheep":"🐑","goat":"🐐","dromedary_camel":"🐪","camel":"🐫","llama":"🦙","giraffe":"🦒","elephant":"🐘","mammoth":"🦣","rhinoceros":"🦏","hippopotamus":"🦛","mouse":"🐭","mouse2":"🐁","rat":"🐀","hamster":"🐹","rabbit":"🐰","rabbit2":"🐇","chipmunk":"🐿️","beaver":"🦫","hedgehog":"🦔","bat":"🦇","bear":"🐻","polar_bear":"🐻‍❄️","koala":"🐨","panda_face":"🐼","sloth":"🦥","otter":"🦦","skunk":"🦨","kangaroo":"🦘","badger":"🦡","feet":"🐾","turkey":"🦃","chicken":"🐔","rooster":"🐓","hatching_chick":"🐣","baby_chick":"🐤","hatched_chick":"🐥","bird":"🐦","penguin":"🐧","dove":"🕊️","eagle":"🦅","duck":"🦆","swan":"🦢","owl":"🦉","dodo":"🦤","feather":"🪶","flamingo":"🦩","peacock":"🦚","parrot":"🦜","frog":"🐸","crocodile":"🐊","turtle":"🐢","lizard":"🦎","snake":"🐍","dragon_face":"🐲","dragon":"🐉","sauropod":"🦕","t-rex":"🦖","whale":"🐳","whale2":"🐋","dolphin":"🐬","seal":"🦭","fish":"🐟","tropical_fish":"🐠","blowfish":"🐡","shark":"🦈","octopus":"🐙","shell":"🐚","snail":"🐌","butterfly":"🦋","bug":"🐛","ant":"🐜","honeybee":"🐝","beetle":"🪲","cricket":"🦗","cockroach":"🪳","spider":"🕷️","scorpion":"🦂","mosquito":"🦟","fly":"🪰","worm":"🪱","microbe":"🦠","bouquet":"💐","cherry_blossom":"🌸","white_flower":"💮","rosette":"🏵️","rose":"🌹","wilted_flower":"🥀","hibiscus":"🌺","sunflower":"🌻","blossom":"🌼","tulip":"🌷","seedling":"🌱","potted_plant":"🪴","evergreen_tree":"🌲","deciduous_tree":"🌳","palm_tree":"🌴","cactus":"🌵","ear_of_rice":"🌾","herb":"🌿","shamrock":"☘️","four_leaf_clover":"🍀","maple_leaf":"🍁","fallen_leaf":"🍂","leaves":"🍃","mushroom":"🍄","chestnut":"🌰","grapes":"🍇","melon":"🍈","watermelon":"🍉","tangerine":"🍊","lemon":"🍋","banana":"🍌","pineapple":"🍍","mango":"🥭","apple":"🍎","green_apple":"🍏","pear":"🍐","peach":"🍑","cherries":"🍒","strawberry":"🍓","blueberries":"🫐","kiwi_fruit":"🥝","tomato":"🍅","olive":"🫒","coconut":"🥥","avocado":"🥑","eggplant":"🍆","potato":"🥔","carrot":"🥕","corn":"🌽","hot_pepper":"🌶️","bell_pepper":"🫑","cucumber":"🥒","leafy_green":"🥬","broccoli":"🥦","garlic":"🧄","onion":"🧅","peanuts":"🥜","bread":"🍞","croissant":"🥐","baguette_bread":"🥖","flatbread":"🫓","pretzel":"🥨","bagel":"🥯","pancakes":"🥞","waffle":"🧇","cheese":"🧀","meat_on_bone":"🍖","poultry_leg":"🍗","cut_of_meat":"🥩","bacon":"🥓","hamburger":"🍔","fries":"🍟","pizza":"🍕","hotdog":"🌭","sandwich":"🥪","taco":"🌮","burrito":"🌯","tamale":"🫔","salad":"🥗","shallow_pan_of_food":"🥘","spaghetti":"🍝","ramen":"🍜","stew":"🍲","curry":"🍛","sushi":"🍣","bento":"🍱","dumpling":"🥟","fried_shrimp":"🍤","rice_ball":"🍙","rice":"🍚","rice_cracker":"🍘","fish_cake":"🍥","fortune_cookie":"🥠","moon_cake":"🥮","oden":"🍢","dango":"🍡","shaved_ice":"🍧","ice_cream":"🍨","icecream":"🍦","pie":"🥧","shortcake":"🍰","cake":"🎂","cupcake":"🧁","candy":"🍬","lollipop":"🍭","chocolate_bar":"🍫","popcorn":"🍿","doughnut":"🍩","cookie":"🍪","salt":"🧂","honey_pot":"🍯","coffee":"☕","tea":"🍵","bubble_tea":"🧋","sake":"🍶","champagne":"🍾","wine_glass":"🍷","cocktail":"🍸","tropical_drink":"🍹","beer":"🍺","beers":"🍻","clinking_glasses":"🥂","tumbler_glass":"🥃","cup_with_straw":"🥤","beverage_box":"🧃","mate":"🧉","ice_cube":"🧊","chopsticks":"🥢","plate_with_cutlery":"🍽️","fork_and_knife":"🍴","spoon":"🥄","knife":"🔪","jar":"🫙","amphora":"🏺","globe_with_meridians":"🌐","world_map":"🗺️","japan":"🗾","compass":"🧭","mountain_snow":"🏔️","mountain":"⛰️","volcano":"🌋","mount_fuji":"🗻","camping":"🏕️","beach_umbrella":"🏖️","desert":"🏜️","desert_island":"🏝️","national_park":"🏞️","stadium":"🏟️","classical_building":"🏛️","building_construction":"🏗️","homes":"🏘️","derelict_house":"🏚️","house":"🏠","house_with_garden":"🏡","office":"🏢","post_office":"🏣","european_post_office":"🏤","hospital":"🏥","bank":"🏦","hotel":"🏨","convenience_store":"🏪","school":"🏫","love_hotel":"🏩","wedding":"💒","european_castle":"🏯","japanese_castle":"🏰","statue_of_liberty":"🗽","church":"⛪","mosque":"🕌","hindu_temple":"🛕","synagogue":"🕍","shinto_shrine":"⛩️","kaaba":"🕋","fountain":"⛲","tent":"⛺","foggy":"🌁","night_with_stars":"🌃","sunrise_over_mountains":"🌄","sunrise":"🌅","city_sunrise":"🌇","city_sunset":"🌆","cityscape":"🏙️","night_with_stars2":"🌃","bridge_at_night":"🌉","milky_way":"🌌","stars":"🌠","sparkler":"🎇","fireworks":"🎆","rainbow":"🌈","sunrise2":"🌅","sunny":"☀️","cloud":"☁️","partly_sunny":"⛅","thunder_cloud_and_rain":"⛈️","tornado":"🌪️","fog":"🌫️","wind_face":"🌬️","cyclone":"🌀","snowflake":"❄️","snowman":"⛄","snowman2":"☃️","umbrella":"☂️","umbrella_with_rain_drops":"☔","zap":"⚡","droplet":"💧","ocean":"🌊","anchor":"⚓","ship":"🚢","boat":"⛵","canoe":"🛶","speedboat":"🚤","ferry":"⛴️","sailboat":"⛵","rocket":"🚀","flying_saucer":"🛸","seat":"💺","airplane":"✈️","small_airplane":"🛩️","flight_departure":"🛫","flight_arrival":"🛬","parachute":"🪂","helicopter":"🚁","suspension_railway":"🚟","mountain_cableway":"🚠","aerial_tramway":"🚡","satellite":"🛰️","car":"🚗","taxi":"🚕","bus":"🚌","trolleybus":"🚎","racing_car":"🏎️","police_car":"🚓","ambulance":"🚑","fire_engine":"🚒","minibus":"🚐","truck":"🚚","articulated_lorry":"🚛","tractor":"🚜","probing_cane":"🦯","bike":"🚲","motor_scooter":"🛵","motorcycle":"🏍️","monorail":"🚝","train2":"🚆","steam_locomotive":"🚂","railway_car":"🚃","bullettrain_side":"🚄","bullettrain_front":"🚅","light_rail":"🚈","train":"🚋","station":"🚉","metro":"🚇","tram":"🚊","busstop":"🚏","motorway":"🛣️","construction":"🚧","fuel_pump":"⛽","rotating_light":"🚨","vertical_traffic_light":"🚦","traffic_light":"🚥","stop_sign":"🛑","no_entry":"⛔","anchor2":"⚓","hourglass":"⌛","hourglass_flowing_sand":"⏳","watch":"⌚","alarm_clock":"⏰","stopwatch":"⏱️","timer_clock":"⏲️","mantelpiece_clock":"🕰️","calendar":"📅","date":"📅","card_index":"📇","spiral_notepad":"🗒️","spiral_calendar":"🗓️","wastebasket":"🗑️","file_cabinet":"🗄️","card_box":"🗃️","ballot_box_with_ballot":"🗳️","file_folder":"📁","open_file_folder":"📂","briefcase":"💼","clipboard":"📋","scroll":"📜","card_index2":"📇","books":"📚","book":"📖","ledger":"📒","notebook":"📓","notebook_with_decorative_cover":"📔","closed_book":"📕","green_book":"📗","blue_book":"📘","orange_book":"📙","link":"🔗","paperclip":"📎","paperclips":"🖇️","scissors":"✂️","triangular_ruler":"📐","straight_ruler":"📏","pushpin":"📌","round_pushpin":"📍","triangular_flag_on_post":"🚩","flags":"🎏","black_flag":"🏴","white_flag":"🏳️","rainbow_flag":"🏳️‍🌈","pirate_flag":"🏴‍☠️","hammer":"🔨","axe":"🪓","pick":"⛏️","hammer_and_pick":"⚒️","hammer_and_wrench":"🛠️","dagger":"🗡️","crossed_swords":"⚔️","gun":"🔫","boomerang":"🪃","bow_and_arrow":"🏹","shield":"🛡️","carpentry_saw":"🪚","wrench":"🔧","screwdriver":"🪛","nut_and_bolt":"🔩","gear":"⚙️","chains":"⛓️","hook":"🪝","toolbox":"🧰","magnet":"🧲","ladder":"🪜","alembic":"⚗️","test_tube":"🧪","petri_dish":"🧫","dna":"🧬","microscope":"🔬","telescope":"🔭","satellite2":"📡","syringe":"💉","drop_of_blood":"🩸","pill":"💊","adhesive_bandage":"🩹","stethoscope":"🩺","door":"🚪","elevator":"🛗","mirror":"🪞","window":"🪟","bed":"🛏️","couch_and_lamp":"🛋️","chair":"🪑","toilet":"🚽","plunger":"🪠","shower":"🚿","bathtub":"🛁","razor":"🪒","lotion_bottle":"🧴","safety_pin":"🪡","broom":"🧹","basket":"🧺","roll_of_paper":"🧻","bucket":"🪣","soap":"🧼","toothbrush":"🪥","sponge":"🧽","fire_extinguisher":"🧯","shopping_cart":"🛒","smoking":"🚬","coffin":"⚰️","urn":"⚱️","moyai":"🗿","atm":"🏧","put_litter_in_its_place":"🚮","potable_water":"🚰","wheelchair":"♿","mens":"🚹","womens":"🚺","restroom":"🚻","baby_symbol":"🚼","wc":"🚾","passport_control":"🛂","customs":"🛃","baggage_claim":"🛄","left_luggage":"🛅","warning":"⚠️","zap2":"⚡","white_check_mark":"✅","ballot_box_with_check":"☑️","heavy_check_mark":"✔️","x":"❌","negative_squared_cross_mark":"❎","heavy_plus_sign":"➕","heavy_minus_sign":"➖","heavy_division_sign":"➗","curly_loop":"➰","loop":"➿","question":"❓","grey_question":"❔","grey_exclamation":"❕","exclamation":"❗","red_circle":"🔴","orange_circle":"🟠","yellow_circle":"🟡","green_circle":"🟢","blue_circle":"🔵","purple_circle":"🟣","brown_circle":"🟤","black_circle":"⚫","white_circle":"⚪","red_square":"🟥","orange_square":"🟧","yellow_square":"🟨","green_square":"🟩","blue_square":"🟦","purple_square":"🟪","brown_square":"🟫","black_large_square":"⬛","white_large_square":"⬜","heart":"❤️","orange_heart":"🧡","yellow_heart":"💛","green_heart":"💚","blue_heart":"💙","purple_heart":"💜","black_heart":"🖤","brown_heart":"🤎","white_heart":"🤍","broken_heart":"💔","heavy_heart_exclamation":"❣️","two_hearts":"💕","revolving_hearts":"💞","heartbeat":"💓","heartpulse":"💗","sparkling_heart":"💖","cupid":"💘","heart_decoration":"💟","peace_symbol":"☮️","cross":"✝️","star_and_crescent":"☪️","star_of_david":"✡️","fleur_de_lis":"⚜️","beginner":"🔰","trident":"🔱","sos":"🆘","id":"🆔","cool":"🆒","new":"🆕","free":"🆓","up":"🆙","cl":"🆑","end":"🔚","back":"🔙","on":"🔛","top":"🔝","soon":"🔜","eight_spoked_asterisk":"✳️","eight_pointed_black_star":"✴️","sparkle":"❇️","copyright":"©️","registered":"®️","tm":"™️","zero":"0️⃣","one":"1️⃣","two":"2️⃣","three":"3️⃣","four":"4️⃣","five":"5️⃣","six":"6️⃣","seven":"7️⃣","eight":"8️⃣","nine":"9️⃣","keycap_ten":"🔟","arrow_forward":"▶️","pause_button":"⏸️","next_track_button":"⏭️","stop_button":"⏹️","record_button":"⏺️","previous_track_button":"⏮️","fast_forward":"⏩","rewind":"⏪","twisted_rightwards_arrows":"🔀","repeat":"🔁","repeat_one":"🔂","arrow_backward":"◀️","arrow_up_small":"🔼","arrow_down_small":"🔽","arrow_double_up":"⏫","arrow_double_down":"⏬","arrow_right":"➡️","arrow_left":"⬅️","arrow_up":"⬆️","arrow_down":"⬇️","arrow_upper_right":"↗️","arrow_lower_right":"↘️","arrow_lower_left":"↙️","arrow_upper_left":"↖️","arrow_up_down":"↕️","left_right_arrow":"↔️","arrows_counterclockwise":"🔄","arrow_right_hook":"↪️","leftwards_arrow_with_hook":"↩️","arrow_heading_up":"⤴️","arrow_heading_down":"⤵️","hash":"#️⃣","asterisk":"*️⃣","wavy_dash":"〰️","curly_loop2":"➰","heavy_dollar_sign":"💲","medical_symbol":"⚕️","recycle":"♻️","fleur_de_lis2":"⚜️","small_red_triangle":"🔺","small_red_triangle_down":"🔻","large_blue_diamond":"🔷","large_orange_diamond":"🔶","small_blue_diamond":"🔹","small_orange_diamond":"🔸","radio_button":"🔘","white_square_button":"🔳","black_square_button":"🔲","tada":"🎉","confetti_ball":"🎊","sparkles":"✨","star":"⭐","star2":"🌟","dizzy":"💫","boom":"💥","fire":"🔥","wave2":"🌊","trophy":"🏆","crown":"👑","gem":"💎","ring":"💍","moneybag":"💰","dollar":"💵","euro":"💶","pound":"💷","yen":"💴","chart":"💹","chart_with_upwards_trend":"📈","chart_with_downwards_trend":"📉","bar_chart":"📊","memo":"📝","pencil2":"✏️","pen":"🖊️","paintbrush":"🖌️","crayon":"🖍️","mag":"🔍","mag_right":"🔎","microscope2":"🔬","telescope2":"🔭","satellite_antenna":"📡","bulb":"💡","flashlight":"🔦","candle":"🕯️","money_with_wings":"💸","credit_card":"💳","e-mail":"📧","incoming_envelope":"📨","envelope_with_arrow":"📩","outbox_tray":"📤","inbox_tray":"📥","package":"📦","mailbox":"📫","mailbox_closed":"📪","mailbox_with_mail":"📬","mailbox_with_no_mail":"📭","postbox":"📮","ballot_box":"🗳️","phone":"📞","telephone_receiver":"📞","pager":"📟","fax":"📠","battery":"🔋","electric_plug":"🔌","computer":"💻","desktop_computer":"🖥️","printer":"🖨️","keyboard":"⌨️","computer_mouse":"🖱️","trackball":"🖲️","minidisc":"💽","floppy_disk":"💾","cd":"💿","dvd":"📀","abacus":"🧮","movie_camera":"🎥","film_strip":"🎞️","film_projector":"📽️","clapper":"🎬","tv":"📺","camera":"📷","camera_flash":"📸","video_camera":"📹","vhs":"📼","telephone":"☎️","loudspeaker":"📢","mega":"📣","postal_horn":"📯","bell":"🔔","no_bell":"🔕","musical_score":"🎼","musical_note":"🎵","notes":"🎶","microphone":"🎤","headphones":"🎧","radio":"📻","saxophone":"🎷","accordion":"🪗","guitar":"🎸","musical_keyboard":"🎹","trumpet":"🎺","violin":"🎻","banjo":"🪕","drum":"🥁","long_drum":"🪘","iphone":"📱","calling":"📲","phone2":"☎️","globe_with_meridians2":"🌐","atm2":"🏧","slot_machine":"🎰","ticket":"🎫","tickets":"🎟️","circus_tent":"🎪","performing_arts":"🎭","art":"🎨","slot_machine2":"🎰","game_die":"🎲","jigsaw":"🧩","teddy_bear":"🧸","spades":"♠️","hearts":"♥️","diamonds":"♦️","clubs":"♣️","chess_pawn":"♟️","joker":"🃏","mahjong":"🀄","flower_playing_cards":"🎴","video_game":"🎮","dart":"🎯","golf":"⛳","ice_skate":"⛸️","fishing_pole_and_fish":"🎣","diving_mask":"🤿","running_shirt_with_sash":"🎽","ski":"🎿","sled":"🛷","curling_stone":"🥌","trophy2":"🏆","medal_sports":"🏅","military_medal":"🎖️","1st_place_medal":"🥇","2nd_place_medal":"🥈","3rd_place_medal":"🥉","soccer":"⚽","baseball":"⚾","softball":"🥎","basketball":"🏀","volleyball":"🏐","football":"🏈","rugby_football":"🏉","flying_disc":"🥏","8ball":"🎱","ping_pong":"🏓","badminton":"🏸","goal_net":"🥅","ice_hockey":"🏒","field_hockey":"🏑","lacrosse":"🥍","cricket_game":"🏏","boomerang2":"🪃","bow_and_arrow2":"🏹","boxing_glove":"🥊","martial_arts_uniform":"🥋","skateboard":"🛹","sled2":"🛷","swimming":"🏊","horse_racing":"🏇","bicycle":"🚴","mountain_biking":"🚵","gymnast":"🤸","wrestling":"🤼","water_polo":"🤽","handball":"🤾","fencer":"🤺","weight_lifting":"🏋️","climbing":"🧗","person_in_lotus_position":"🧘","ski2":"⛷️","snowboarder":"🏂","surfer":"🏄","rowboat":"🚣","swimmer":"🏊","horseback_riding":"🏇","golfer":"🏌️","walking":"🚶","runner":"🏃","dancer2":"💃","handshake2":"🤝","speaking_head2":"🗣️"};
+
+// Default quick-access favorites
+const EMOJI_FAVORITES = ['⚓','🏴‍☠️','🗡️','🛡️','🔮','⚔️','🧙','🏰','🌊','🎲','💀','🔥','✨','🐉','🗺️','💎','🪄','🍺','🏹','🎯','🌿','🌙','⭐','🌟','🌺','🦀','🐺','😈','🤔','😵','🤫','😇','🥸','😐','🤮','💰','🗝️','📜','🕯️','⏳','🔔','🏮','💌','🧪','🪝'];
+
+const TYPE_DEFAULTS = {
+  recap: { type:'recap', date:'', title:'', content:'' },
+  text: { type:'text', title:'', content:'' },
+  quote: { type:'quote', date:'', author:'', content:'' },
+  conversation: { type:'conversation', date:'', content:'' },
+  location: { type:'location', name:'', emoji:'📍', date:'', characters:'', content:'' },
+  travel: { type:'travel', from:'', to:'', date:'', characters:'', content:'' },
+  character: { type:'character', name:'', emoji:'🧙', date:'', content:'' }
+};
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function uid() { return Math.random().toString(36).slice(2,9); }
+
+function getEntryLabel(e) {
+  if (e.type==='recap') return e.title || 'Session Recap';
+  if (e.type==='text') return e.title || 'Text Entry';
+  if (e.type==='quote') return e.author ? `"${e.author}"` : 'Quote';
+  if (e.type==='conversation') return 'Conversation';
+  if (e.type==='location') return e.name || 'Location';
+  if (e.type==='travel') return (e.from && e.to) ? `${e.from} → ${e.to}` : 'Travel';
+  if (e.type==='character') return e.name || 'Character';
+  return 'Entry';
+}
+
+function getEntrySubLabel(e) {
+  if (e.date) return e.date;
+  if (e.content) return e.content.slice(0,60).replace(/#+\s*/g,'') + '…';
+  return '';
+}
+
+const TYPE_BADGE = {
+  recap:'badge-recap', text:'badge-text', quote:'badge-quote',
+  conversation:'badge-conversation', location:'badge-location',
+  travel:'badge-travel', character:'badge-character'
+};
+
+// ─── RENDER ENTRY LIST ────────────────────────────────────────────────────────
+function renderList() {
+  const list = document.getElementById('entryList');
+  document.getElementById('entry-count').textContent = `${entries.length} entr${entries.length===1?'y':'ies'}`;
+
+  if (!entries.length) {
+    list.innerHTML = '<div class="empty-list">No entries yet.<br>Click ＋ Add Entry to begin.</div>';
+    return;
+  }
+
+  list.innerHTML = '';
+  entries.forEach((e, i) => {
+    const card = document.createElement('div');
+    card.className = 'entry-card' + (e.id===selectedId?' active':'');
+    card.dataset.id = e.id;
+    card.dataset.index = i;
+    card.draggable = true;
+
+    card.innerHTML = `
+      <span class="entry-drag-handle" title="Drag to reorder">⠿</span>
+      <span class="entry-type-badge ${TYPE_BADGE[e.type]||'badge-text'}">${e.type}</span>
+      <div class="entry-info">
+        <div class="entry-title">${escHtml(getEntryLabel(e))}</div>
+        <div class="entry-sub">${escHtml(getEntrySubLabel(e))}</div>
+      </div>
+      <span class="entry-delete" title="Delete" onclick="deleteEntry('${e.id}',event)">✕</span>
+    `;
+
+    card.addEventListener('click', () => selectEntry(e.id));
+    card.addEventListener('dragstart', onDragStart);
+    card.addEventListener('dragover', onDragOver);
+    card.addEventListener('drop', onDrop);
+    card.addEventListener('dragend', onDragEnd);
+    list.appendChild(card);
+  });
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── SELECT / EDIT ────────────────────────────────────────────────────────────
+function selectEntry(id) {
+  selectedId = id;
+  renderList();
+  renderEditForm();
+  renderPreview();
+  // scroll and highlight in both preview panes
+  requestAnimationFrame(() => {
+    scrollAndHighlight(id);
+  });
+}
+
+function renderEditForm() {
+  const ea = document.getElementById('editArea');
+  const entry = entries.find(e => e.id === selectedId);
+  if (!entry) {
+    ea.innerHTML = '<div class="no-entry"><span style="font-size:32px">🗺️</span><span>Select or add an entry</span><span class="hint">Entries appear in the preview on the right</span></div>';
+    document.getElementById('editFormTitle').textContent = 'Edit Entry';
+    return;
+  }
+
+  document.getElementById('editFormTitle').textContent = `Edit: ${entry.type.charAt(0).toUpperCase()+entry.type.slice(1)}`;
+
+  let fields = '';
+
+  if (entry.type === 'recap') {
+    fields = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Session title..." oninput="updateField('title',this.value)"></div>
+      <div class="form-group"><label class="form-label">Summary</label><textarea class="form-textarea" id="fe-content" style="min-height:80px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    `;
+  } else if (entry.type === 'text') {
+    fields = `
+      <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Entry title..." oninput="updateField('title',this.value)"></div>
+      <div class="form-group"><label class="form-label">Content (Markdown supported)</label><textarea class="form-textarea" id="fe-content" style="min-height:140px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    `;
+  } else if (entry.type === 'quote') {
+    fields = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Author</label><input class="form-input" id="fe-author" value="${escHtml(entry.author)}" placeholder="Character name..." oninput="updateField('author',this.value)"></div>
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Quote</label><textarea class="form-textarea" id="fe-content" style="min-height:80px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    `;
+  } else if (entry.type === 'conversation') {
+    fields = `
+      <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+      <div class="form-group"><label class="form-label">Dialogue (Speaker: Text, one per line)</label><textarea class="form-textarea" id="fe-content" style="min-height:160px" placeholder="DM: You see a figure...\nKaelen: Can I make out details?" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    `;
+  } else if (entry.type === 'location') {
+    fields = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Location name..." oninput="updateField('name',this.value)"></div>
+        <div class="form-group" style="max-width:80px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="📍" oninput="updateField('emoji',this.value)"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+        <div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="fe-content" style="min-height:120px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    `;
+  } else if (entry.type === 'travel') {
+    fields = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">From</label><input class="form-input" id="fe-from" value="${escHtml(entry.from)}" placeholder="New Haven" oninput="updateField('from',this.value)"></div>
+        <div class="form-group"><label class="form-label">To</label><input class="form-input" id="fe-to" value="${escHtml(entry.to)}" placeholder="Traitor Joe's" oninput="updateField('to',this.value)"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+        <div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Journey Notes</label><textarea class="form-textarea" id="fe-content" style="min-height:100px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    `;
+  } else if (entry.type === 'character') {
+    fields = `
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div>
+        <div class="form-group" style="max-width:80px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="🧙" oninput="updateField('emoji',this.value)"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="fe-content" style="min-height:120px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    `;
+  }
+
+  ea.innerHTML = `
+    <div class="edit-form" id="editForm">
+      <div class="form-group">
+        <label class="form-label">Entry Type</label>
+        <select class="form-select" onchange="changeType(this.value)">
+          ${['recap','text','quote','conversation','location','travel','character'].map(t =>
+            `<option value="${t}" ${t===entry.type?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`
+          ).join('')}
+        </select>
+      </div>
+      ${fields}
+      <div class="form-group">
+        <label class="form-label">Emoji Quick Insert</label>
+        <div id="activeTextarea" style="font-size:11px;color:var(--text3);margin-bottom:4px;">Click in a text field above, then tap an emoji</div>
+        <div class="emoji-picker">
+          <div class="emoji-search-row">
+            <input class="emoji-search-input" id="emojiSearch" type="text" placeholder="Search emoji… (e.g. sword, fire, skull)" oninput="filterEmoji(this.value)" autocomplete="off">
+            <button class="emoji-search-clear" onclick="clearEmojiSearch()" title="Clear">✕</button>
+          </div>
+          <div class="emoji-grid" id="emojiGrid"></div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // track last focused textarea/input (exclude emoji search)
+  ea.querySelectorAll('textarea, input[type=text], input:not([type])').forEach(el => {
+    if (el.id === 'emojiSearch') return;
+    el.addEventListener('focus', () => { window._lastFocusedField = el; });
+  });
+
+  // populate emoji grid with favorites initially
+  populateEmojiGrid(EMOJI_FAVORITES);
+}
+
+function updateField(field, value) {
+  const entry = entries.find(e => e.id === selectedId);
+  if (!entry) return;
+  entry[field] = value;
+  renderList();
+  renderPreview();
+}
+
+function changeType(newType) {
+  const entry = entries.find(e => e.id === selectedId);
+  if (!entry) return;
+  const defaults = {...TYPE_DEFAULTS[newType]};
+  // preserve shared fields
+  const shared = ['date','content','title','name'];
+  shared.forEach(k => { if (entry[k] !== undefined && defaults[k] !== undefined) defaults[k] = entry[k]; });
+  Object.assign(entry, defaults);
+  renderList();
+  renderEditForm();
+  renderPreview();
+}
+
+function insertEmoji(emoji) {
+  const field = window._lastFocusedField;
+  if (!field) return;
+  const start = field.selectionStart;
+  const end = field.selectionEnd;
+  const val = field.value;
+  field.value = val.slice(0,start) + emoji + val.slice(end);
+  field.selectionStart = field.selectionEnd = start + emoji.length;
+  field.dispatchEvent(new Event('input'));
+  field.focus();
+}
+
+function populateEmojiGrid(emojis) {
+  const grid = document.getElementById('emojiGrid');
+  if (!grid) return;
+  if (!emojis.length) {
+    grid.innerHTML = '<div class="emoji-none">No emoji found</div>';
+    return;
+  }
+  grid.innerHTML = emojis.map(em =>
+    `<button class="emoji-btn" onclick="insertEmoji('${em}')" title="${em}">${em}</button>`
+  ).join('');
+}
+
+function filterEmoji(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) { populateEmojiGrid(EMOJI_FAVORITES); return; }
+  const results = [];
+  const seen = new Set();
+  for (const [code, char] of Object.entries(GH_EMOJI)) {
+    if (code.includes(q) || (typeof char === 'string' && char === q)) {
+      if (!seen.has(char)) { seen.add(char); results.push(char); }
+    }
+    if (results.length >= 80) break;
+  }
+  populateEmojiGrid(results);
+}
+
+function clearEmojiSearch() {
+  const s = document.getElementById('emojiSearch');
+  if (s) { s.value = ''; }
+  populateEmojiGrid(EMOJI_FAVORITES);
+}
+
+// ─── ADD / DELETE ─────────────────────────────────────────────────────────────
+function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+function closeAddModal() { document.getElementById('addModal').classList.remove('open'); }
+function confirmAddEntry() {
+  const type = document.getElementById('newEntryType').value;
+  const entry = { id: uid(), ...JSON.parse(JSON.stringify(TYPE_DEFAULTS[type])) };
+  entries.push(entry);
+  closeAddModal();
+  selectEntry(entry.id);
+}
+
+function openNewSessionModal() {
+  const cur = parseInt(document.getElementById('sessionNum').value) || 1;
+  document.getElementById('nsNewNum').value = cur + 1;
+  document.getElementById('nsEntryCount').textContent = entries.length;
+  document.getElementById('newSessionModal').classList.add('open');
+}
+function closeNewSessionModal() { document.getElementById('newSessionModal').classList.remove('open'); }
+function confirmNewSession() {
+  const newNum = parseInt(document.getElementById('nsNewNum').value) || 1;
+  document.getElementById('sessionNum').value = newNum;
+  entries = [];
+  selectedId = null;
+  closeNewSessionModal();
+  renderList();
+  renderEditForm();
+  renderPreview();
+}
+
+function deleteEntry(id, e) {
+  e.stopPropagation();
+  entries = entries.filter(en => en.id !== id);
+  if (selectedId === id) { selectedId = entries.length ? entries[0].id : null; renderEditForm(); }
+  renderList();
+  renderPreview();
+}
+
+// ─── DRAG & DROP ──────────────────────────────────────────────────────────────
+function onDragStart(e) {
+  dragSrcIndex = parseInt(this.dataset.index);
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function onDragOver(e) {
+  e.preventDefault();
+  document.querySelectorAll('.entry-card').forEach(c => c.classList.remove('drag-over'));
+  this.classList.add('drag-over');
+}
+function onDrop(e) {
+  e.preventDefault();
+  const destIndex = parseInt(this.dataset.index);
+  if (dragSrcIndex === null || dragSrcIndex === destIndex) return;
+  const item = entries.splice(dragSrcIndex, 1)[0];
+  entries.splice(destIndex, 0, item);
+  renderList();
+  renderPreview();
+}
+function onDragEnd() {
+  document.querySelectorAll('.entry-card').forEach(c => { c.classList.remove('dragging','drag-over'); });
+  dragSrcIndex = null;
+}
+
+// ─── PREVIEW ─────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.preview-tab').forEach((t,i) => t.classList.toggle('active', ['rendered','raw'][i]===tab));
+  document.getElementById('pane-rendered').classList.toggle('active', tab==='rendered');
+  document.getElementById('pane-raw').classList.toggle('active', tab==='raw');
+  if (selectedId) requestAnimationFrame(() => scrollAndHighlight(selectedId));
+}
+
+function renderPreview() {
+  renderRendered();
+  renderRaw();
+}
+
+function renderMarkdown(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^\* (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br>')
+    .replace(/^(?!<[hup])(.+)/, '<p>$1</p>');
+}
+
+function renderRendered() {
+  const sessionNum = document.getElementById('sessionNum').value;
+  const out = document.getElementById('renderedPreview');
+  if (!entries.length) { out.innerHTML = '<div style="text-align:center;padding:48px;color:var(--text3)">No entries yet — add some above!</div>'; return; }
+
+  let html = '';
+  entries.forEach(e => {
+    let inner = '';
+    if (e.type === 'recap') {
+      inner = `<div class="rp-session-header">
+        <div class="rp-session-num">Session ${sessionNum}</div>
+        <div class="rp-session-title">${escHtml(e.title||'Session Recap')}</div>
+        ${e.date ? `<div class="rp-session-date">${escHtml(e.date)}</div>` : ''}
+        ${e.content ? `<div class="rp-session-body">${renderMarkdown(e.content)}</div>` : ''}
+      </div>`;
+    } else if (e.type === 'text') {
+      inner = `<div class="rp-card">
+        <div class="rp-card-header">
+          <span class="rp-card-icon">📝</span>
+          <div><div class="rp-card-title">${escHtml(e.title||'Note')}</div></div>
+        </div>
+        <div class="rp-card-body">${renderMarkdown(e.content)}</div>
+      </div>`;
+    } else if (e.type === 'quote') {
+      inner = `<div class="rp-quote">
+        <div class="rp-quote-text">${escHtml(e.content||'...')}</div>
+        ${e.author ? `<div class="rp-quote-author">— ${escHtml(e.author)}</div>` : ''}
+      </div>`;
+    } else if (e.type === 'conversation') {
+      const lines = (e.content||'').split('\n').filter(Boolean);
+      const linesHtml = lines.map(l => {
+        const m = l.match(/^([^:]+):\s*(.*)$/);
+        if (m) return `<div class="rp-convo-line"><span class="rp-convo-speaker">${escHtml(m[1])}:</span><span class="rp-convo-text">${escHtml(m[2])}</span></div>`;
+        return `<div class="rp-convo-line"><span class="rp-convo-text">${escHtml(l)}</span></div>`;
+      }).join('');
+      inner = `<div class="rp-conversation">
+        <div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px">🗣️ Conversation${e.date?' · '+escHtml(e.date):''}</div>
+        ${linesHtml}
+      </div>`;
+    } else if (e.type === 'location') {
+      inner = `<div class="rp-location">
+        <div class="rp-location-name">${e.emoji||'📍'} ${escHtml(e.name||'Location')}</div>
+        ${e.characters ? `<div style="font-size:11px;color:var(--text3);margin-bottom:8px">Characters: ${escHtml(e.characters)}</div>` : ''}
+        <div class="rp-card-body">${renderMarkdown(e.content)}</div>
+      </div>`;
+    } else if (e.type === 'travel') {
+      inner = `<div class="rp-travel">
+        <div style="flex:1">
+          <div class="rp-travel-route">
+            <span class="rp-travel-from">⛵ ${escHtml(e.from||'?')}</span>
+            <span class="rp-travel-arrow">→</span>
+            <span class="rp-travel-to">${escHtml(e.to||'?')}</span>
+          </div>
+          ${e.content ? `<div class="rp-travel-body">${renderMarkdown(e.content)}</div>` : ''}
+        </div>
+      </div>`;
+    } else if (e.type === 'character') {
+      inner = `<div class="rp-char">
+        <div class="rp-char-avatar">${e.emoji||'🧙'}</div>
+        <div>
+          <div class="rp-char-name">${escHtml(e.name||'Character')}</div>
+          ${e.date ? `<div style="font-size:11px;color:var(--text3)">${escHtml(e.date)}</div>` : ''}
+          <div class="rp-char-body">${renderMarkdown(e.content)}</div>
+        </div>
+      </div>`;
+    }
+    html += `<div class="rp-entry-wrap" data-entry-id="${e.id}" style="margin-bottom:12px">${inner}</div>`;
+  });
+  out.innerHTML = html;
+}
+
+function renderRaw() {
+  const container = document.getElementById('rawPreview');
+  if (!entries.length) { container.textContent = ''; return; }
+  container.innerHTML = '';
+  entries.forEach((e, i) => {
+    const block = buildEntryMarkdown(e);
+    const span = document.createElement('span');
+    span.className = 'raw-block';
+    span.dataset.entryId = e.id;
+    span.textContent = (i > 0 ? '\n\n---\n\n' : '') + block;
+    container.appendChild(span);
+  });
+}
+
+// ─── MARKDOWN GENERATION ──────────────────────────────────────────────────────
+function buildEntryMarkdown(e) {
+  if (e.type === 'recap')        return `Type: recap\nDate: ${e.date||''}\nTitle: ${e.title||''}\n\n${e.content||''}`;
+  if (e.type === 'text')         return `Type: text\nTitle: ${e.title||''}\n${e.content||''}`;
+  if (e.type === 'quote')        return `Type: quote\nDate: ${e.date||''}\nAuthor: ${e.author||''}\n\n${e.content||''}`;
+  if (e.type === 'conversation') return `Type: conversation\nDate: ${e.date||''}\n\n${e.content||''}`;
+  if (e.type === 'location')     return `type: location\nName: ${e.name||''}\nemoji: ${e.emoji||'📍'}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
+  if (e.type === 'travel')       return `type: travel\nfrom: ${e.from||''}\nTo: ${e.to||''}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
+  if (e.type === 'character')    return `Type: character\nName: ${e.name||''}\nemoji: ${e.emoji||'🧙'}\nDate: ${e.date||''}\n\n${e.content||''}`;
+  return '';
+}
+
+function buildMarkdown() {
+  return entries.map(e => buildEntryMarkdown(e)).join('\n\n---\n\n');
+}
+
+// ─── SCROLL + HIGHLIGHT ───────────────────────────────────────────────────────
+function scrollAndHighlight(id) {
+  if (!id) return;
+
+  // Rendered pane
+  const renderedPane = document.getElementById('pane-rendered');
+  document.querySelectorAll('.rp-entry-wrap').forEach(el => el.classList.remove('rp-highlighted'));
+  const renderedEl = renderedPane.querySelector(`[data-entry-id="${id}"]`);
+  if (renderedEl) {
+    renderedEl.classList.add('rp-highlighted');
+    renderedEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Raw pane
+  const rawPane = document.getElementById('pane-raw');
+  document.querySelectorAll('.raw-block').forEach(el => el.classList.remove('raw-highlighted'));
+  const rawEl = rawPane.querySelector(`[data-entry-id="${id}"]`);
+  if (rawEl) {
+    rawEl.classList.add('raw-highlighted');
+    rawEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ─── DOWNLOAD ─────────────────────────────────────────────────────────────────
+function downloadMarkdown() {
+  const sessionNum = document.getElementById('sessionNum').value;
+  const md = buildMarkdown();
+  const blob = new Blob([md], {type:'text/markdown'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `session-${sessionNum}.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─── INIT WITH SAMPLE DATA ────────────────────────────────────────────────────
+function init() {
+  entries = [
+    {
+      id: uid(), type:'recap', date:'Jan 03, 2026', title:'Setting Sail to learn of our Bounties',
+      content:`Session 2 took us to the high seas on The Wedding Dowry to the isle of Traitor Joe's where we learn the details of our bounties and the dangers that await us.\n\n## 🌟 Key Details\n\n* **⚓ The Wedding Dowry**: The ship we are aboard\n* **🏴‍☠️ Traitor Joe's**: An island safe harbor for pirates. Haggling is REQUIRED.\n* **🦀 The Rusty Crab**: A divey pirate bar.`
+    },
+    {
+      id: uid(), type:'text', title:"Mulduck Awakens",
+      content:`We find ourselves at a wedding where **Mulduck** is the officiant. All guests have his face — and hold his orb.\n\nThe deck hand, **Speedy Pete**, finds Mulduck surrounded by runes scorched into the deck of **The Wedding Dowry**.\n\n## Mulduck's orb 🔮 has changed color and now has some ability to control time.`
+    },
+    {
+      id: uid(), type:'quote', date:'Jan 03, 2026', author:'Mulduck',
+      content:`That bird wasn't alive so TECHNICALLY I didn't kill it.`
+    },
+    {
+      id: uid(), type:'travel', from:'New Haven', to:"Traitor Joe's", date:'Jan 03, 2026', characters:'Luigi, Clovis, Mulduck, Quulaihr',
+      content:`We set sail for Traitor Joe's to learn of our bounties.`
+    },
+    {
+      id: uid(), type:'location', name:"Who's Askin?", emoji:'🤫', date:'Jan 03, 2026', characters:'Luigi',
+      content:`Luigi gets a drink at the bar and spots someone with a shoulder tattoo matching the sigil on Clovis's clothing. He notices a crew called **The Golden Grin** 🙂 and reads their minds.`
+    },
+    {
+      id: uid(), type:'conversation', date:'Jan 03, 2026',
+      content:`Clovis: Do you know a fellow named Luigi?\nGem: Zim Grayson is headmaster now and he SUUUUUUUCKS.\nCrystal: Killed the last one and ran. Infamous.\nClovis: Fascinating. Who wants another drink?`
+    }
+  ];
+  renderList();
+  renderPreview();
+}
+
+init();
+</script>
+</body>
+</html>
