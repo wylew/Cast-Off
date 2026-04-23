@@ -46,10 +46,15 @@
   .btn-danger:hover { background: #4a2020; border-color: var(--red); }
 
   /* LAYOUT */
-  .layout { display: flex; flex: 1; overflow: hidden; }
+  .layout { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+  .layout-upper { display: flex; flex: 1; min-height: 40%; overflow: hidden; }
+  .layout-lower { display: flex; flex: 1; overflow: hidden; }
   
   /* EDITOR PANEL */
-  .editor-panel { width: 420px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  .editor-panel { width: 320px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+  
+  /* EDIT PANEL */
+  .edit-panel { flex: 1; display: flex; flex-direction: column; background: var(--bg2); overflow: hidden; }
   .panel-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .panel-header h2 { font-size: 13px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; }
   
@@ -116,7 +121,7 @@
   .no-entry .hint { font-size: 12px; color: var(--border); }
 
   /* PREVIEW PANEL */
-  .preview-panel { flex: 1; background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
+  .preview-panel { flex: 1; background: var(--bg); display: flex; flex-direction: column; overflow: hidden; border-top: 1px solid var(--border); }
   .preview-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg2); padding: 0 16px; flex-shrink: 0; }
   .preview-tab { padding: 12px 16px; font-size: 13px; cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
   .preview-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
@@ -180,6 +185,18 @@
   .modal-title { font-size: 16px; font-weight: 600; color: var(--text); }
   .modal-footer { display: flex; justify-content: flex-end; gap: 8px; }
 
+  /* CHEATSHEET SLIDEOUT */
+  .cheatsheet-overlay { position: fixed; top: 52px; right: -400px; width: 400px; bottom: 0; background: var(--bg2); border-left: 1px solid var(--border); z-index: 50; transition: right 0.3s ease; display: flex; flex-direction: column; box-shadow: -4px 0 15px rgba(0,0,0,0.5); }
+  .cheatsheet-overlay.open { right: 0; }
+  .cheatsheet-header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .cheatsheet-header h3 { font-size: 15px; color: var(--accent); margin: 0; }
+  .cheatsheet-close { background: none; border: none; color: var(--text3); font-size: 18px; cursor: pointer; padding: 4px; line-height: 1; }
+  .cheatsheet-close:hover { color: var(--text); }
+  .cheatsheet-content { padding: 16px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: var(--text2); }
+  .cheatsheet-content h4 { color: var(--text); margin: 16px 0 8px; font-size: 14px; font-weight: 600; }
+  .cheatsheet-content h4:first-child { margin-top: 0; }
+  .cheatsheet-content pre { background: var(--bg4); padding: 10px; border-radius: var(--radius); overflow-x: auto; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; color: var(--accent2); margin-bottom: 8px; border: 1px solid var(--border); }
+
   /* EMPTY STATE */
   .empty-list { text-align: center; padding: 32px 16px; color: var(--text3); font-size: 13px; }
 </style>
@@ -193,45 +210,96 @@
     <input type="number" id="sessionNum" value="1" min="1">
   </div>
   <button class="btn btn-danger" onclick="openNewSessionModal()">✦ New Session</button>
+  <button class="btn btn-accent" onclick="document.getElementById('importFile').click()">📂 Import .md</button>
+  <input type="file" id="importFile" accept=".md" style="display:none" onchange="handleImport(event)">
   <button class="btn btn-accent" onclick="downloadMarkdown()">⬇ Download .md</button>
 </div>
 
 <div class="layout">
-  <!-- LEFT: Entry List + Edit Form -->
-  <div class="editor-panel">
-    <div class="panel-header">
-      <h2>Entries</h2>
-      <span id="entry-count" style="font-size:12px;color:var(--text3);margin-right:auto;margin-left:8px">0 entries</span>
-      <button class="btn" style="padding:4px 10px;font-size:12px;" onclick="openAddModal()">＋ Add</button>
+  <!-- UPPER: Entry List + Edit Form -->
+  <div class="layout-upper">
+    <div class="editor-panel">
+      <div class="panel-header">
+        <h2>Entries</h2>
+        <span id="entry-count" style="font-size:12px;color:var(--text3);margin-right:auto;margin-left:8px">0 entries</span>
+        <button class="btn" style="padding:4px 10px;font-size:12px;" onclick="openAddModal()">＋ Add</button>
+      </div>
+      <div class="entry-list" id="entryList"></div>
     </div>
-    <div class="entry-list" id="entryList"></div>
 
-    <div class="panel-header" style="border-top:1px solid var(--border)">
-      <h2 id="editFormTitle">Edit Entry</h2>
-    </div>
-    <div id="editArea" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
-      <div class="no-entry">
-        <span style="font-size:32px">🗺️</span>
-        <span>Select or add an entry</span>
-        <span class="hint">Entries appear in the preview on the right</span>
+    <div class="edit-panel">
+      <div class="panel-header" style="border-bottom:1px solid var(--border)">
+        <h2 id="editFormTitle">Edit Entry</h2>
+        <button class="btn" style="padding:4px 10px;font-size:12px;margin-left:auto;" onclick="toggleCheatsheet()">💡 Markdown Cheatsheet</button>
+      </div>
+      <div id="editArea" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+        <div class="no-entry">
+          <span style="font-size:32px">🗺️</span>
+          <span>Select or add an entry</span>
+          <span class="hint">Entries appear in the preview below</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT: Preview -->
-  <div class="preview-panel">
-    <div class="preview-tabs">
-      <div class="preview-tab active" onclick="switchTab('rendered')">Rendered Preview</div>
-      <div class="preview-tab" onclick="switchTab('raw')">Markdown</div>
-    </div>
-    <div class="preview-content">
-      <div class="preview-pane active" id="pane-rendered">
-        <div id="renderedPreview"></div>
+  <!-- LOWER: Preview -->
+  <div class="layout-lower">
+    <div class="preview-panel">
+      <div class="preview-tabs">
+        <div class="preview-tab active" onclick="switchTab('rendered')">Rendered Preview</div>
+        <div class="preview-tab" onclick="switchTab('raw')">Markdown</div>
       </div>
-      <div class="preview-pane" id="pane-raw">
-        <div class="raw-md" id="rawPreview"></div>
+      <div class="preview-content">
+        <div class="preview-pane active" id="pane-rendered">
+          <div id="renderedPreview"></div>
+        </div>
+        <div class="preview-pane" id="pane-raw">
+          <div class="raw-md" id="rawPreview"></div>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Markdown Cheatsheet Slideout -->
+<div class="cheatsheet-overlay" id="cheatsheet">
+  <div class="cheatsheet-header">
+    <h3>Markdown Cheatsheet</h3>
+    <button class="cheatsheet-close" onclick="toggleCheatsheet()">✕</button>
+  </div>
+  <div class="cheatsheet-content">
+    <h4>Headers</h4>
+    <pre># H1 Header
+## H2 Header
+### H3 Header</pre>
+    
+    <h4>Emphasis</h4>
+    <pre>*Italic* or _Italic_
+**Bold** or __Bold__
+***Bold Italic***</pre>
+
+    <h4>Lists</h4>
+    <pre>- Item 1
+- Item 2
+  - Subitem
+
+1. First item
+2. Second item</pre>
+
+    <h4>Links &amp; Images</h4>
+    <pre>[Link Text](URL)
+![Image Alt](URL)</pre>
+
+    <h4>Blockquotes</h4>
+    <pre>&gt; This is a quote
+&gt; Multiple lines</pre>
+
+    <h4>Code</h4>
+    <pre>`Inline code`
+
+```
+Block code
+```</pre>
   </div>
 </div>
 
@@ -274,12 +342,25 @@
   </div>
 </div>
 
+<!-- Delete Entry Confirm Modal -->
+<div class="modal-overlay" id="deleteEntryModal">
+  <div class="modal">
+    <div class="modal-title">⚠️ Delete Entry?</div>
+    <p style="font-size:14px;color:var(--text2);line-height:1.6;">Are you sure you want to delete this entry? This action cannot be undone.</p>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDeleteEntry()">Delete</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ─── STATE ───────────────────────────────────────────────────────────────────
 let entries = [];
 let selectedId = null;
 let dragSrcIndex = null;
 let activeTab = 'rendered';
+let entryToDelete = null;
 
 // Full GitHub-supported emoji map: shortcode -> emoji char
 const GH_EMOJI = {"100":"💯","1234":"🔢","grinning":"😀","smiley":"😃","smile":"😄","grin":"😁","laughing":"😆","sweat_smile":"😅","rofl":"🤣","joy":"😂","slightly_smiling_face":"🙂","upside_down_face":"🙃","wink":"😉","blush":"😊","innocent":"😇","heart_eyes":"😍","kissing_heart":"😘","kissing":"😗","kissing_smiling_eyes":"😙","kissing_closed_eyes":"😚","yum":"😋","stuck_out_tongue":"😛","stuck_out_tongue_winking_eye":"😜","zany_face":"🤪","stuck_out_tongue_closed_eyes":"😝","money_mouth_face":"🤑","hugs":"🤗","hand_over_mouth":"🤭","shushing_face":"🤫","thinking":"🤔","zipper_mouth_face":"🤐","raised_eyebrow":"🤨","neutral_face":"😐","expressionless":"😑","no_mouth":"😶","smirk":"😏","unamused":"😒","roll_eyes":"🙄","grimacing":"😬","lying_face":"🤥","relieved":"😌","pensive":"😔","sleepy":"😪","drooling_face":"🤤","sleeping":"😴","mask":"😷","face_with_thermometer":"🤒","face_with_head_bandage":"🤕","nauseated_face":"🤢","sneezing_face":"🤧","hot_face":"🥵","cold_face":"🥶","woozy_face":"🥴","dizzy_face":"😵","exploding_head":"🤯","cowboy_hat_face":"🤠","partying_face":"🥳","sunglasses":"😎","nerd_face":"🤓","monocle_face":"🧐","confused":"😕","worried":"😟","slightly_frowning_face":"🙁","frowning_face":"☹️","open_mouth":"😮","hushed":"😯","astonished":"😲","flushed":"😳","pleading_face":"🥺","anguished":"😧","fearful":"😨","cold_sweat":"😰","disappointed_relieved":"😥","cry":"😢","sob":"😭","scream":"😱","confounded":"😖","persevere":"😣","disappointed":"😞","sweat":"😓","weary":"😩","tired_face":"😫","yawning_face":"🥱","triumph":"😤","rage":"😡","angry":"😠","skull":"💀","skull_and_crossbones":"☠️","imp":"👿","japanese_ogre":"👹","japanese_goblin":"👺","clown_face":"🤡","poop":"💩","ghost":"👻","alien":"👽","space_invader":"👾","robot":"🤖","wave":"👋","raised_back_of_hand":"🤚","raised_hand":"✋","vulcan_salute":"🖖","ok_hand":"👌","pinched_fingers":"🤌","pinching_hand":"🤏","v":"✌️","crossed_fingers":"🤞","love_you_gesture":"🤟","metal":"🤘","call_me_hand":"🤙","point_left":"👈","point_right":"👉","point_up_2":"👆","fu":"🖕","point_down":"👇","point_up":"☝️","thumbsup":"+1","thumbsdown":"-1","clap":"👏","raised_hands":"🙌","open_hands":"👐","pray":"🙏","handshake":"🤝","muscle":"💪","ear":"👂","nose":"👃","eyes":"👀","eye":"👁️","tongue":"👅","lips":"👄","brain":"🧠","anatomical_heart":"🫀","lungs":"🫁","tooth":"🦷","bone":"🦴","baby":"👶","child":"🧒","boy":"👦","girl":"👧","person":"🧑","man":"👨","woman":"👩","older_adult":"🧓","older_man":"👴","older_woman":"👵","person_frowning":"🙍","person_gesturing_no":"🙅","person_gesturing_ok":"🙆","person_tipping_hand":"💁","person_raising_hand":"🙋","deaf_person":"🧏","person_bowing":"🙇","face_palm":"🤦","person_shrugging":"🤷","mage":"🧙","fairy":"🧚","vampire":"🧛","merperson":"🧜","elf":"🧝","genie":"🧞","zombie":"🧟","person_walking":"🚶","person_running":"🏃","dancer":"💃","man_dancing":"🕺","people_holding_hands":"🧑‍🤝‍🧑","couple":"👫","two_men_holding_hands":"👬","two_women_holding_hands":"👭","couple_with_heart":"💑","family":"👪","speaking_head":"🗣️","bust_in_silhouette":"👤","busts_in_silhouette":"👥","footprints":"👣","monkey_face":"🐵","monkey":"🐒","gorilla":"🦍","dog":"🐶","dog2":"🐕","guide_dog":"🦮","poodle":"🐩","wolf":"🐺","fox_face":"🦊","raccoon":"🦝","cat":"🐱","cat2":"🐈","lion":"🦁","tiger":"🐯","tiger2":"🐅","leopard":"🐆","horse":"🐴","racehorse":"🐎","unicorn":"🦄","zebra":"🦓","deer":"🦌","bison":"🦬","cow":"🐮","ox":"🐂","water_buffalo":"🐃","cow2":"🐄","pig":"🐷","pig2":"🐖","boar":"🐗","pig_nose":"🐽","ram":"🐏","sheep":"🐑","goat":"🐐","dromedary_camel":"🐪","camel":"🐫","llama":"🦙","giraffe":"🦒","elephant":"🐘","mammoth":"🦣","rhinoceros":"🦏","hippopotamus":"🦛","mouse":"🐭","mouse2":"🐁","rat":"🐀","hamster":"🐹","rabbit":"🐰","rabbit2":"🐇","chipmunk":"🐿️","beaver":"🦫","hedgehog":"🦔","bat":"🦇","bear":"🐻","polar_bear":"🐻‍❄️","koala":"🐨","panda_face":"🐼","sloth":"🦥","otter":"🦦","skunk":"🦨","kangaroo":"🦘","badger":"🦡","feet":"🐾","turkey":"🦃","chicken":"🐔","rooster":"🐓","hatching_chick":"🐣","baby_chick":"🐤","hatched_chick":"🐥","bird":"🐦","penguin":"🐧","dove":"🕊️","eagle":"🦅","duck":"🦆","swan":"🦢","owl":"🦉","dodo":"🦤","feather":"🪶","flamingo":"🦩","peacock":"🦚","parrot":"🦜","frog":"🐸","crocodile":"🐊","turtle":"🐢","lizard":"🦎","snake":"🐍","dragon_face":"🐲","dragon":"🐉","sauropod":"🦕","t-rex":"🦖","whale":"🐳","whale2":"🐋","dolphin":"🐬","seal":"🦭","fish":"🐟","tropical_fish":"🐠","blowfish":"🐡","shark":"🦈","octopus":"🐙","shell":"🐚","snail":"🐌","butterfly":"🦋","bug":"🐛","ant":"🐜","honeybee":"🐝","beetle":"🪲","cricket":"🦗","cockroach":"🪳","spider":"🕷️","scorpion":"🦂","mosquito":"🦟","fly":"🪰","worm":"🪱","microbe":"🦠","bouquet":"💐","cherry_blossom":"🌸","white_flower":"💮","rosette":"🏵️","rose":"🌹","wilted_flower":"🥀","hibiscus":"🌺","sunflower":"🌻","blossom":"🌼","tulip":"🌷","seedling":"🌱","potted_plant":"🪴","evergreen_tree":"🌲","deciduous_tree":"🌳","palm_tree":"🌴","cactus":"🌵","ear_of_rice":"🌾","herb":"🌿","shamrock":"☘️","four_leaf_clover":"🍀","maple_leaf":"🍁","fallen_leaf":"🍂","leaves":"🍃","mushroom":"🍄","chestnut":"🌰","grapes":"🍇","melon":"🍈","watermelon":"🍉","tangerine":"🍊","lemon":"🍋","banana":"🍌","pineapple":"🍍","mango":"🥭","apple":"🍎","green_apple":"🍏","pear":"🍐","peach":"🍑","cherries":"🍒","strawberry":"🍓","blueberries":"🫐","kiwi_fruit":"🥝","tomato":"🍅","olive":"🫒","coconut":"🥥","avocado":"🥑","eggplant":"🍆","potato":"🥔","carrot":"🥕","corn":"🌽","hot_pepper":"🌶️","bell_pepper":"🫑","cucumber":"🥒","leafy_green":"🥬","broccoli":"🥦","garlic":"🧄","onion":"🧅","peanuts":"🥜","bread":"🍞","croissant":"🥐","baguette_bread":"🥖","flatbread":"🫓","pretzel":"🥨","bagel":"🥯","pancakes":"🥞","waffle":"🧇","cheese":"🧀","meat_on_bone":"🍖","poultry_leg":"🍗","cut_of_meat":"🥩","bacon":"🥓","hamburger":"🍔","fries":"🍟","pizza":"🍕","hotdog":"🌭","sandwich":"🥪","taco":"🌮","burrito":"🌯","tamale":"🫔","salad":"🥗","shallow_pan_of_food":"🥘","spaghetti":"🍝","ramen":"🍜","stew":"🍲","curry":"🍛","sushi":"🍣","bento":"🍱","dumpling":"🥟","fried_shrimp":"🍤","rice_ball":"🍙","rice":"🍚","rice_cracker":"🍘","fish_cake":"🍥","fortune_cookie":"🥠","moon_cake":"🥮","oden":"🍢","dango":"🍡","shaved_ice":"🍧","ice_cream":"🍨","icecream":"🍦","pie":"🥧","shortcake":"🍰","cake":"🎂","cupcake":"🧁","candy":"🍬","lollipop":"🍭","chocolate_bar":"🍫","popcorn":"🍿","doughnut":"🍩","cookie":"🍪","salt":"🧂","honey_pot":"🍯","coffee":"☕","tea":"🍵","bubble_tea":"🧋","sake":"🍶","champagne":"🍾","wine_glass":"🍷","cocktail":"🍸","tropical_drink":"🍹","beer":"🍺","beers":"🍻","clinking_glasses":"🥂","tumbler_glass":"🥃","cup_with_straw":"🥤","beverage_box":"🧃","mate":"🧉","ice_cube":"🧊","chopsticks":"🥢","plate_with_cutlery":"🍽️","fork_and_knife":"🍴","spoon":"🥄","knife":"🔪","jar":"🫙","amphora":"🏺","globe_with_meridians":"🌐","world_map":"🗺️","japan":"🗾","compass":"🧭","mountain_snow":"🏔️","mountain":"⛰️","volcano":"🌋","mount_fuji":"🗻","camping":"🏕️","beach_umbrella":"🏖️","desert":"🏜️","desert_island":"🏝️","national_park":"🏞️","stadium":"🏟️","classical_building":"🏛️","building_construction":"🏗️","homes":"🏘️","derelict_house":"🏚️","house":"🏠","house_with_garden":"🏡","office":"🏢","post_office":"🏣","european_post_office":"🏤","hospital":"🏥","bank":"🏦","hotel":"🏨","convenience_store":"🏪","school":"🏫","love_hotel":"🏩","wedding":"💒","european_castle":"🏯","japanese_castle":"🏰","statue_of_liberty":"🗽","church":"⛪","mosque":"🕌","hindu_temple":"🛕","synagogue":"🕍","shinto_shrine":"⛩️","kaaba":"🕋","fountain":"⛲","tent":"⛺","foggy":"🌁","night_with_stars":"🌃","sunrise_over_mountains":"🌄","sunrise":"🌅","city_sunrise":"🌇","city_sunset":"🌆","cityscape":"🏙️","night_with_stars2":"🌃","bridge_at_night":"🌉","milky_way":"🌌","stars":"🌠","sparkler":"🎇","fireworks":"🎆","rainbow":"🌈","sunrise2":"🌅","sunny":"☀️","cloud":"☁️","partly_sunny":"⛅","thunder_cloud_and_rain":"⛈️","tornado":"🌪️","fog":"🌫️","wind_face":"🌬️","cyclone":"🌀","snowflake":"❄️","snowman":"⛄","snowman2":"☃️","umbrella":"☂️","umbrella_with_rain_drops":"☔","zap":"⚡","droplet":"💧","ocean":"🌊","anchor":"⚓","ship":"🚢","boat":"⛵","canoe":"🛶","speedboat":"🚤","ferry":"⛴️","sailboat":"⛵","rocket":"🚀","flying_saucer":"🛸","seat":"💺","airplane":"✈️","small_airplane":"🛩️","flight_departure":"🛫","flight_arrival":"🛬","parachute":"🪂","helicopter":"🚁","suspension_railway":"🚟","mountain_cableway":"🚠","aerial_tramway":"🚡","satellite":"🛰️","car":"🚗","taxi":"🚕","bus":"🚌","trolleybus":"🚎","racing_car":"🏎️","police_car":"🚓","ambulance":"🚑","fire_engine":"🚒","minibus":"🚐","truck":"🚚","articulated_lorry":"🚛","tractor":"🚜","probing_cane":"🦯","bike":"🚲","motor_scooter":"🛵","motorcycle":"🏍️","monorail":"🚝","train2":"🚆","steam_locomotive":"🚂","railway_car":"🚃","bullettrain_side":"🚄","bullettrain_front":"🚅","light_rail":"🚈","train":"🚋","station":"🚉","metro":"🚇","tram":"🚊","busstop":"🚏","motorway":"🛣️","construction":"🚧","fuel_pump":"⛽","rotating_light":"🚨","vertical_traffic_light":"🚦","traffic_light":"🚥","stop_sign":"🛑","no_entry":"⛔","anchor2":"⚓","hourglass":"⌛","hourglass_flowing_sand":"⏳","watch":"⌚","alarm_clock":"⏰","stopwatch":"⏱️","timer_clock":"⏲️","mantelpiece_clock":"🕰️","calendar":"📅","date":"📅","card_index":"📇","spiral_notepad":"🗒️","spiral_calendar":"🗓️","wastebasket":"🗑️","file_cabinet":"🗄️","card_box":"🗃️","ballot_box_with_ballot":"🗳️","file_folder":"📁","open_file_folder":"📂","briefcase":"💼","clipboard":"📋","scroll":"📜","card_index2":"📇","books":"📚","book":"📖","ledger":"📒","notebook":"📓","notebook_with_decorative_cover":"📔","closed_book":"📕","green_book":"📗","blue_book":"📘","orange_book":"📙","link":"🔗","paperclip":"📎","paperclips":"🖇️","scissors":"✂️","triangular_ruler":"📐","straight_ruler":"📏","pushpin":"📌","round_pushpin":"📍","triangular_flag_on_post":"🚩","flags":"🎏","black_flag":"🏴","white_flag":"🏳️","rainbow_flag":"🏳️‍🌈","pirate_flag":"🏴‍☠️","hammer":"🔨","axe":"🪓","pick":"⛏️","hammer_and_pick":"⚒️","hammer_and_wrench":"🛠️","dagger":"🗡️","crossed_swords":"⚔️","gun":"🔫","boomerang":"🪃","bow_and_arrow":"🏹","shield":"🛡️","carpentry_saw":"🪚","wrench":"🔧","screwdriver":"🪛","nut_and_bolt":"🔩","gear":"⚙️","chains":"⛓️","hook":"🪝","toolbox":"🧰","magnet":"🧲","ladder":"🪜","alembic":"⚗️","test_tube":"🧪","petri_dish":"🧫","dna":"🧬","microscope":"🔬","telescope":"🔭","satellite2":"📡","syringe":"💉","drop_of_blood":"🩸","pill":"💊","adhesive_bandage":"🩹","stethoscope":"🩺","door":"🚪","elevator":"🛗","mirror":"🪞","window":"🪟","bed":"🛏️","couch_and_lamp":"🛋️","chair":"🪑","toilet":"🚽","plunger":"🪠","shower":"🚿","bathtub":"🛁","razor":"🪒","lotion_bottle":"🧴","safety_pin":"🪡","broom":"🧹","basket":"🧺","roll_of_paper":"🧻","bucket":"🪣","soap":"🧼","toothbrush":"🪥","sponge":"🧽","fire_extinguisher":"🧯","shopping_cart":"🛒","smoking":"🚬","coffin":"⚰️","urn":"⚱️","moyai":"🗿","atm":"🏧","put_litter_in_its_place":"🚮","potable_water":"🚰","wheelchair":"♿","mens":"🚹","womens":"🚺","restroom":"🚻","baby_symbol":"🚼","wc":"🚾","passport_control":"🛂","customs":"🛃","baggage_claim":"🛄","left_luggage":"🛅","warning":"⚠️","zap2":"⚡","white_check_mark":"✅","ballot_box_with_check":"☑️","heavy_check_mark":"✔️","x":"❌","negative_squared_cross_mark":"❎","heavy_plus_sign":"➕","heavy_minus_sign":"➖","heavy_division_sign":"➗","curly_loop":"➰","loop":"➿","question":"❓","grey_question":"❔","grey_exclamation":"❕","exclamation":"❗","red_circle":"🔴","orange_circle":"🟠","yellow_circle":"🟡","green_circle":"🟢","blue_circle":"🔵","purple_circle":"🟣","brown_circle":"🟤","black_circle":"⚫","white_circle":"⚪","red_square":"🟥","orange_square":"🟧","yellow_square":"🟨","green_square":"🟩","blue_square":"🟦","purple_square":"🟪","brown_square":"🟫","black_large_square":"⬛","white_large_square":"⬜","heart":"❤️","orange_heart":"🧡","yellow_heart":"💛","green_heart":"💚","blue_heart":"💙","purple_heart":"💜","black_heart":"🖤","brown_heart":"🤎","white_heart":"🤍","broken_heart":"💔","heavy_heart_exclamation":"❣️","two_hearts":"💕","revolving_hearts":"💞","heartbeat":"💓","heartpulse":"💗","sparkling_heart":"💖","cupid":"💘","heart_decoration":"💟","peace_symbol":"☮️","cross":"✝️","star_and_crescent":"☪️","star_of_david":"✡️","fleur_de_lis":"⚜️","beginner":"🔰","trident":"🔱","sos":"🆘","id":"🆔","cool":"🆒","new":"🆕","free":"🆓","up":"🆙","cl":"🆑","end":"🔚","back":"🔙","on":"🔛","top":"🔝","soon":"🔜","eight_spoked_asterisk":"✳️","eight_pointed_black_star":"✴️","sparkle":"❇️","copyright":"©️","registered":"®️","tm":"™️","zero":"0️⃣","one":"1️⃣","two":"2️⃣","three":"3️⃣","four":"4️⃣","five":"5️⃣","six":"6️⃣","seven":"7️⃣","eight":"8️⃣","nine":"9️⃣","keycap_ten":"🔟","arrow_forward":"▶️","pause_button":"⏸️","next_track_button":"⏭️","stop_button":"⏹️","record_button":"⏺️","previous_track_button":"⏮️","fast_forward":"⏩","rewind":"⏪","twisted_rightwards_arrows":"🔀","repeat":"🔁","repeat_one":"🔂","arrow_backward":"◀️","arrow_up_small":"🔼","arrow_down_small":"🔽","arrow_double_up":"⏫","arrow_double_down":"⏬","arrow_right":"➡️","arrow_left":"⬅️","arrow_up":"⬆️","arrow_down":"⬇️","arrow_upper_right":"↗️","arrow_lower_right":"↘️","arrow_lower_left":"↙️","arrow_upper_left":"↖️","arrow_up_down":"↕️","left_right_arrow":"↔️","arrows_counterclockwise":"🔄","arrow_right_hook":"↪️","leftwards_arrow_with_hook":"↩️","arrow_heading_up":"⤴️","arrow_heading_down":"⤵️","hash":"#️⃣","asterisk":"*️⃣","wavy_dash":"〰️","curly_loop2":"➰","heavy_dollar_sign":"💲","medical_symbol":"⚕️","recycle":"♻️","fleur_de_lis2":"⚜️","small_red_triangle":"🔺","small_red_triangle_down":"🔻","large_blue_diamond":"🔷","large_orange_diamond":"🔶","small_blue_diamond":"🔹","small_orange_diamond":"🔸","radio_button":"🔘","white_square_button":"🔳","black_square_button":"🔲","tada":"🎉","confetti_ball":"🎊","sparkles":"✨","star":"⭐","star2":"🌟","dizzy":"💫","boom":"💥","fire":"🔥","wave2":"🌊","trophy":"🏆","crown":"👑","gem":"💎","ring":"💍","moneybag":"💰","dollar":"💵","euro":"💶","pound":"💷","yen":"💴","chart":"💹","chart_with_upwards_trend":"📈","chart_with_downwards_trend":"📉","bar_chart":"📊","memo":"📝","pencil2":"✏️","pen":"🖊️","paintbrush":"🖌️","crayon":"🖍️","mag":"🔍","mag_right":"🔎","microscope2":"🔬","telescope2":"🔭","satellite_antenna":"📡","bulb":"💡","flashlight":"🔦","candle":"🕯️","money_with_wings":"💸","credit_card":"💳","e-mail":"📧","incoming_envelope":"📨","envelope_with_arrow":"📩","outbox_tray":"📤","inbox_tray":"📥","package":"📦","mailbox":"📫","mailbox_closed":"📪","mailbox_with_mail":"📬","mailbox_with_no_mail":"📭","postbox":"📮","ballot_box":"🗳️","phone":"📞","telephone_receiver":"📞","pager":"📟","fax":"📠","battery":"🔋","electric_plug":"🔌","computer":"💻","desktop_computer":"🖥️","printer":"🖨️","keyboard":"⌨️","computer_mouse":"🖱️","trackball":"🖲️","minidisc":"💽","floppy_disk":"💾","cd":"💿","dvd":"📀","abacus":"🧮","movie_camera":"🎥","film_strip":"🎞️","film_projector":"📽️","clapper":"🎬","tv":"📺","camera":"📷","camera_flash":"📸","video_camera":"📹","vhs":"📼","telephone":"☎️","loudspeaker":"📢","mega":"📣","postal_horn":"📯","bell":"🔔","no_bell":"🔕","musical_score":"🎼","musical_note":"🎵","notes":"🎶","microphone":"🎤","headphones":"🎧","radio":"📻","saxophone":"🎷","accordion":"🪗","guitar":"🎸","musical_keyboard":"🎹","trumpet":"🎺","violin":"🎻","banjo":"🪕","drum":"🥁","long_drum":"🪘","iphone":"📱","calling":"📲","phone2":"☎️","globe_with_meridians2":"🌐","atm2":"🏧","slot_machine":"🎰","ticket":"🎫","tickets":"🎟️","circus_tent":"🎪","performing_arts":"🎭","art":"🎨","slot_machine2":"🎰","game_die":"🎲","jigsaw":"🧩","teddy_bear":"🧸","spades":"♠️","hearts":"♥️","diamonds":"♦️","clubs":"♣️","chess_pawn":"♟️","joker":"🃏","mahjong":"🀄","flower_playing_cards":"🎴","video_game":"🎮","dart":"🎯","golf":"⛳","ice_skate":"⛸️","fishing_pole_and_fish":"🎣","diving_mask":"🤿","running_shirt_with_sash":"🎽","ski":"🎿","sled":"🛷","curling_stone":"🥌","trophy2":"🏆","medal_sports":"🏅","military_medal":"🎖️","1st_place_medal":"🥇","2nd_place_medal":"🥈","3rd_place_medal":"🥉","soccer":"⚽","baseball":"⚾","softball":"🥎","basketball":"🏀","volleyball":"🏐","football":"🏈","rugby_football":"🏉","flying_disc":"🥏","8ball":"🎱","ping_pong":"🏓","badminton":"🏸","goal_net":"🥅","ice_hockey":"🏒","field_hockey":"🏑","lacrosse":"🥍","cricket_game":"🏏","boomerang2":"🪃","bow_and_arrow2":"🏹","boxing_glove":"🥊","martial_arts_uniform":"🥋","skateboard":"🛹","sled2":"🛷","swimming":"🏊","horse_racing":"🏇","bicycle":"🚴","mountain_biking":"🚵","gymnast":"🤸","wrestling":"🤼","water_polo":"🤽","handball":"🤾","fencer":"🤺","weight_lifting":"🏋️","climbing":"🧗","person_in_lotus_position":"🧘","ski2":"⛷️","snowboarder":"🏂","surfer":"🏄","rowboat":"🚣","swimmer":"🏊","horseback_riding":"🏇","golfer":"🏌️","walking":"🚶","runner":"🏃","dancer2":"💃","handshake2":"🤝","speaking_head2":"🗣️"};
@@ -299,6 +380,10 @@ const TYPE_DEFAULTS = {
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function uid() { return Math.random().toString(36).slice(2,9); }
+
+function toggleCheatsheet() {
+  document.getElementById('cheatsheet').classList.toggle('open');
+}
 
 function getEntryLabel(e) {
   if (e.type==='recap') return e.title || 'Session Recap';
@@ -380,87 +465,95 @@ function renderEditForm() {
   const ea = document.getElementById('editArea');
   const entry = entries.find(e => e.id === selectedId);
   if (!entry) {
-    ea.innerHTML = '<div class="no-entry"><span style="font-size:32px">🗺️</span><span>Select or add an entry</span><span class="hint">Entries appear in the preview on the right</span></div>';
+    ea.innerHTML = '<div class="no-entry"><span style="font-size:32px">🗺️</span><span>Select or add an entry</span><span class="hint">Entries appear in the preview below</span></div>';
     document.getElementById('editFormTitle').textContent = 'Edit Entry';
     return;
   }
 
   document.getElementById('editFormTitle').textContent = `Edit: ${entry.type.charAt(0).toUpperCase()+entry.type.slice(1)}`;
 
-  let fields = '';
+  let firstRowFields = '';
+  let otherFields = '';
 
   if (entry.type === 'recap') {
-    fields = `
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
-      </div>
+    firstRowFields = `
       <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Session title..." oninput="updateField('title',this.value)"></div>
+      <div class="form-group" style="flex: 0 0 120px;"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    `;
+    otherFields = `
       <div class="form-group"><label class="form-label">Summary</label><textarea class="form-textarea" id="fe-content" style="min-height:80px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
     `;
   } else if (entry.type === 'text') {
-    fields = `
+    firstRowFields = `
       <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Entry title..." oninput="updateField('title',this.value)"></div>
+    `;
+    otherFields = `
       <div class="form-group"><label class="form-label">Content (Markdown supported)</label><textarea class="form-textarea" id="fe-content" style="min-height:140px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
     `;
   } else if (entry.type === 'quote') {
-    fields = `
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Author</label><input class="form-input" id="fe-author" value="${escHtml(entry.author)}" placeholder="Character name..." oninput="updateField('author',this.value)"></div>
-        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
-      </div>
+    firstRowFields = `
+      <div class="form-group"><label class="form-label">Author</label><input class="form-input" id="fe-author" value="${escHtml(entry.author)}" placeholder="Character name..." oninput="updateField('author',this.value)"></div>
+      <div class="form-group" style="flex: 0 0 120px;"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    `;
+    otherFields = `
       <div class="form-group"><label class="form-label">Quote</label><textarea class="form-textarea" id="fe-content" style="min-height:80px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
     `;
   } else if (entry.type === 'conversation') {
-    fields = `
-      <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
-      <div class="form-group"><label class="form-label">Dialogue (Speaker: Text, one per line)</label><textarea class="form-textarea" id="fe-content" style="min-height:160px" placeholder="DM: You see a figure...\nKaelen: Can I make out details?" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
+    firstRowFields = `
+      <div class="form-group" style="flex: 0 0 120px;"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    `;
+    otherFields = `
+      <div class="form-group"><label class="form-label">Dialogue (Speaker: Text, one per line)</label><textarea class="form-textarea" id="fe-content" style="min-height:160px" placeholder="DM: You see a figure...&#10;Kaelen: Can I make out details?" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
     `;
   } else if (entry.type === 'location') {
-    fields = `
+    firstRowFields = `
+      <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Location name..." oninput="updateField('name',this.value)"></div>
+      <div class="form-group" style="flex: 0 0 60px;"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="📍" oninput="updateField('emoji',this.value)"></div>
+    `;
+    otherFields = `
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Location name..." oninput="updateField('name',this.value)"></div>
-        <div class="form-group" style="max-width:80px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="📍" oninput="updateField('emoji',this.value)"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
         <div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div>
+        <div class="form-group" style="flex: 0 0 120px;"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
       </div>
       <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="fe-content" style="min-height:120px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
     `;
   } else if (entry.type === 'travel') {
-    fields = `
+    firstRowFields = `
+      <div class="form-group"><label class="form-label">From</label><input class="form-input" id="fe-from" value="${escHtml(entry.from)}" placeholder="New Haven" oninput="updateField('from',this.value)"></div>
+      <div class="form-group"><label class="form-label">To</label><input class="form-input" id="fe-to" value="${escHtml(entry.to)}" placeholder="Traitor Joe's" oninput="updateField('to',this.value)"></div>
+    `;
+    otherFields = `
       <div class="form-row">
-        <div class="form-group"><label class="form-label">From</label><input class="form-input" id="fe-from" value="${escHtml(entry.from)}" placeholder="New Haven" oninput="updateField('from',this.value)"></div>
-        <div class="form-group"><label class="form-label">To</label><input class="form-input" id="fe-to" value="${escHtml(entry.to)}" placeholder="Traitor Joe's" oninput="updateField('to',this.value)"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
         <div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div>
+        <div class="form-group" style="flex: 0 0 120px;"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
       </div>
       <div class="form-group"><label class="form-label">Journey Notes</label><textarea class="form-textarea" id="fe-content" style="min-height:100px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
     `;
   } else if (entry.type === 'character') {
-    fields = `
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div>
-        <div class="form-group" style="max-width:80px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="🧙" oninput="updateField('emoji',this.value)"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    firstRowFields = `
+      <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div>
+      <div class="form-group" style="flex: 0 0 60px;"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="🧙" oninput="updateField('emoji',this.value)"></div>
+      <div class="form-group" style="flex: 0 0 120px;"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    `;
+    otherFields = `
       <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="fe-content" style="min-height:120px" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>
     `;
   }
 
   ea.innerHTML = `
     <div class="edit-form" id="editForm">
-      <div class="form-group">
-        <label class="form-label">Entry Type</label>
-        <select class="form-select" onchange="changeType(this.value)">
-          ${['recap','text','quote','conversation','location','travel','character'].map(t =>
-            `<option value="${t}" ${t===entry.type?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`
-          ).join('')}
-        </select>
+      <div class="form-row">
+        <div class="form-group" style="flex: 0 0 160px;">
+          <label class="form-label">Entry Type</label>
+          <select class="form-select" onchange="changeType(this.value)">
+            ${['recap','text','quote','conversation','location','travel','character'].map(t =>
+              `<option value="${t}" ${t===entry.type?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`
+            ).join('')}
+          </select>
+        </div>
+        ${firstRowFields}
       </div>
-      ${fields}
+      ${otherFields}
       <div class="form-group">
         <label class="form-label">Emoji Quick Insert</label>
         <div id="activeTextarea" style="font-size:11px;color:var(--text3);margin-bottom:4px;">Click in a text field above, then tap an emoji</div>
@@ -581,10 +674,25 @@ function confirmNewSession() {
 
 function deleteEntry(id, e) {
   e.stopPropagation();
-  entries = entries.filter(en => en.id !== id);
-  if (selectedId === id) { selectedId = entries.length ? entries[0].id : null; renderEditForm(); }
+  entryToDelete = id;
+  document.getElementById('deleteEntryModal').classList.add('open');
+}
+
+function closeDeleteModal() {
+  entryToDelete = null;
+  document.getElementById('deleteEntryModal').classList.remove('open');
+}
+
+function confirmDeleteEntry() {
+  if (!entryToDelete) return;
+  entries = entries.filter(en => en.id !== entryToDelete);
+  if (selectedId === entryToDelete) { 
+    selectedId = entries.length ? entries[0].id : null; 
+    renderEditForm(); 
+  }
   renderList();
   renderPreview();
+  closeDeleteModal();
 }
 
 // ─── DRAG & DROP ──────────────────────────────────────────────────────────────
@@ -764,7 +872,7 @@ function scrollAndHighlight(id) {
   }
 }
 
-// ─── DOWNLOAD ─────────────────────────────────────────────────────────────────
+// ─── DOWNLOAD & IMPORT ─────────────────────────────────────────────────────────
 function downloadMarkdown() {
   const sessionNum = document.getElementById('sessionNum').value;
   const md = buildMarkdown();
@@ -775,6 +883,92 @@ function downloadMarkdown() {
   a.download = `session-${sessionNum}.md`;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+const KNOWN_KEYS = {
+  recap: ['date', 'title'],
+  text: ['title'],
+  quote: ['date', 'author'],
+  conversation: ['date'],
+  location: ['name', 'emoji', 'date', 'characters'],
+  travel: ['from', 'to', 'date', 'characters'],
+  character: ['name', 'emoji', 'date']
+};
+
+function handleImport(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const match = file.name.match(/session-(\d+)\.md/);
+  if (match) {
+    document.getElementById('sessionNum').value = match[1];
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    parseMarkdownToEntries(e.target.result);
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function parseMarkdownToEntries(md) {
+  const blocks = md.split(/\n\n---\n\n/);
+  const newEntries = [];
+  
+  blocks.forEach(block => {
+    if (!block.trim()) return;
+    
+    const lines = block.split('\n');
+    let typeLine = lines[0];
+    let typeMatch = typeLine.match(/^type:\s*(.+)$/i);
+    if (!typeMatch) return;
+    
+    let type = typeMatch[1].trim().toLowerCase();
+    let entry = { id: uid(), type: type };
+    let contentLines = [];
+    let parsingMetadata = true;
+    const validKeys = KNOWN_KEYS[type] || [];
+    
+    for (let i = 1; i < lines.length; i++) {
+      let line = lines[i];
+      if (parsingMetadata) {
+        if (line.trim() === '') {
+          parsingMetadata = false;
+          continue;
+        }
+        let metaMatch = line.match(/^([a-z]+):\s*(.*)$/i);
+        if (metaMatch && validKeys.includes(metaMatch[1].trim().toLowerCase())) {
+          let key = metaMatch[1].trim().toLowerCase();
+          entry[key] = metaMatch[2].trim();
+        } else {
+          parsingMetadata = false;
+          contentLines.push(line);
+        }
+      } else {
+        contentLines.push(line);
+      }
+    }
+    
+    entry.content = contentLines.join('\n').trim();
+    
+    const defaults = TYPE_DEFAULTS[type] || {};
+    for (let k in defaults) {
+      if (entry[k] === undefined) entry[k] = '';
+    }
+    
+    newEntries.push(entry);
+  });
+  
+  if (newEntries.length) {
+    entries = newEntries;
+    selectedId = entries.length ? entries[0].id : null;
+    renderList();
+    renderEditForm();
+    renderPreview();
+  } else {
+    alert("Could not find any valid entries in this file.");
+  }
 }
 
 // ─── INIT WITH SAMPLE DATA ────────────────────────────────────────────────────
