@@ -85,7 +85,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .empty-list { text-align: center; padding: 24px 12px; color: var(--text3); font-size: 12px; }
 
 /* RICH TEXT TOOLBAR */
-.rte-toolbar { display: flex; flex-wrap: wrap; gap: 2px; padding: 5px 8px; background: var(--bg4); border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; border-bottom: none; }
+.rte-toolbar { display: flex; flex-wrap: wrap; gap: 2px; padding: 5px 8px; background: var(--bg4); border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; border-bottom: none; position: relative; }
 .rte-btn { background: none; border: 1px solid transparent; color: var(--text2); border-radius: 4px; padding: 3px 7px; font-size: 12px; cursor: pointer; transition: background 0.1s, color 0.1s, border-color 0.1s; font-family: inherit; line-height: 1.4; white-space: nowrap; }
 .rte-btn:hover { background: var(--bg5); color: var(--text); border-color: var(--border); }
 .rte-btn.active { background: var(--bg3); color: var(--accent); border-color: var(--accent); }
@@ -93,6 +93,21 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .rte-btn i { font-style: italic; }
 .rte-divider { width: 1px; background: var(--border); margin: 2px 3px; align-self: stretch; }
 .rte-textarea { border-radius: 0 0 var(--radius) var(--radius) !important; border-top: none !important; }
+
+/* EMOJI DROPDOWN inside toolbar */
+.rte-emoji-wrap { position: relative; margin-left: auto; }
+.rte-emoji-dropdown { display: none; position: absolute; top: calc(100% + 6px); right: 0; z-index: 50; width: 280px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 8px 24px rgba(0,0,0,0.5); overflow: hidden; }
+.rte-emoji-dropdown.open { display: block; }
+.rte-emoji-dropdown .emoji-search-row { padding: 7px 8px; border-bottom: 1px solid var(--border); display: flex; gap: 6px; }
+.rte-emoji-dropdown .emoji-search-input { flex: 1; background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 5px 8px; font-size: 12px; font-family: inherit; outline: none; }
+.rte-emoji-dropdown .emoji-search-input:focus { border-color: var(--accent); }
+.rte-emoji-dropdown .emoji-search-clear { background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; padding: 0 3px; }
+.rte-emoji-dropdown .emoji-search-clear:hover { color: var(--text); }
+.rte-emoji-dropdown .emoji-grid { display: flex; flex-wrap: wrap; gap: 1px; padding: 6px; max-height: 160px; overflow-y: auto; }
+.rte-emoji-dropdown .emoji-grid::-webkit-scrollbar { width: 3px; }
+.rte-emoji-dropdown .emoji-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.rte-emoji-dropdown .emoji-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 3px 4px; border-radius: 4px; transition: background 0.1s; line-height: 1; }
+.rte-emoji-dropdown .emoji-btn:hover { background: var(--bg5); }
 
 /* EDIT FORM */
 .edit-form { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
@@ -107,19 +122,23 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .form-row { display: flex; gap: 8px; }
 .form-row .form-group { flex: 1; }
 
-/* EMOJI PICKER */
-.emoji-picker { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.emoji-search-row { display: flex; align-items: center; gap: 6px; padding: 5px 7px; border-bottom: 1px solid var(--border); }
-.emoji-search-input { flex: 1; background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 4px 7px; font-size: 12px; font-family: inherit; outline: none; }
-.emoji-search-input:focus { border-color: var(--accent); }
-.emoji-search-clear { background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; padding: 0 2px; line-height: 1; }
-.emoji-search-clear:hover { color: var(--text); }
-.emoji-grid { display: flex; flex-wrap: wrap; gap: 1px; padding: 5px; max-height: 110px; overflow-y: auto; }
-.emoji-grid::-webkit-scrollbar { width: 3px; }
-.emoji-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.emoji-btn { background: none; border: none; font-size: 15px; cursor: pointer; padding: 3px 4px; border-radius: 4px; transition: background 0.1s; line-height: 1; }
-.emoji-btn:hover { background: var(--bg5); }
-.emoji-none { font-size: 12px; color: var(--text3); padding: 10px; text-align: center; width: 100%; }
+/* EMOJI FIELD PICKER (for location/character emoji field) */
+.emoji-field-wrap { position: relative; }
+.emoji-field-btn { display: flex; align-items: center; gap: 6px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 5px 9px; cursor: pointer; font-size: 20px; line-height: 1; min-width: 54px; justify-content: center; transition: border-color 0.15s; }
+.emoji-field-btn:hover { border-color: var(--accent); }
+.emoji-field-btn .emoji-field-caret { font-size: 9px; color: var(--text3); margin-left: 2px; }
+.emoji-field-dropdown { display: none; position: absolute; top: calc(100% + 4px); left: 0; z-index: 60; width: 260px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 8px 24px rgba(0,0,0,0.5); overflow: hidden; }
+.emoji-field-dropdown.open { display: block; }
+.emoji-field-dropdown .emoji-search-row { padding: 7px 8px; border-bottom: 1px solid var(--border); display: flex; gap: 6px; }
+.emoji-field-dropdown .emoji-search-input { flex: 1; background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 5px 8px; font-size: 12px; font-family: inherit; outline: none; }
+.emoji-field-dropdown .emoji-search-input:focus { border-color: var(--accent); }
+.emoji-field-dropdown .emoji-search-clear { background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; padding: 0 3px; }
+.emoji-field-dropdown .emoji-search-clear:hover { color: var(--text); }
+.emoji-field-dropdown .emoji-grid { display: flex; flex-wrap: wrap; gap: 1px; padding: 6px; max-height: 150px; overflow-y: auto; }
+.emoji-field-dropdown .emoji-grid::-webkit-scrollbar { width: 3px; }
+.emoji-field-dropdown .emoji-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.emoji-field-dropdown .emoji-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 3px 4px; border-radius: 4px; transition: background 0.1s; line-height: 1; }
+.emoji-field-dropdown .emoji-btn:hover { background: var(--bg5); }
 
 .no-entry { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text3); gap: 8px; font-size: 14px; }
 .no-entry .hint { font-size: 12px; color: var(--border); }
@@ -736,7 +755,8 @@ function selectEntry(id) {
 
 // ─── RICH TEXT TOOLBAR ────────────────────────────────────────────────────────
 function buildRteToolbar(fieldId) {
-  return `<div class="rte-toolbar">
+  const eid = `emojiDrop_${fieldId}`;
+  return `<div class="rte-toolbar" id="toolbar_${fieldId}">
     <button class="rte-btn" title="Bold (Ctrl+B)" onclick="rteWrap('${fieldId}','**','**')"><b>B</b></button>
     <button class="rte-btn" title="Italic (Ctrl+I)" onclick="rteWrap('${fieldId}','*','*')"><i>I</i></button>
     <button class="rte-btn" title="Strikethrough" onclick="rteWrap('${fieldId}','~~','~~')"><s>S</s></button>
@@ -750,6 +770,17 @@ function buildRteToolbar(fieldId) {
     <button class="rte-btn" title="Blockquote" onclick="rtePrefix('${fieldId}','> ')">❝ Quote</button>
     <div class="rte-divider"></div>
     <button class="rte-btn" title="Horizontal rule" onclick="rteInsertLine('${fieldId}','---')">— Rule</button>
+    <div class="rte-divider"></div>
+    <div class="rte-emoji-wrap">
+      <button class="rte-btn" title="Insert emoji" onclick="toggleEmojiDropdown('${eid}','${fieldId}',event)">😊 Emoji</button>
+      <div class="rte-emoji-dropdown" id="${eid}">
+        <div class="emoji-search-row">
+          <input class="emoji-search-input" id="emojiSearch_${fieldId}" type="text" placeholder="Search… sword, fire, skull…" oninput="filterEmoji(this.value,'${fieldId}')" autocomplete="off">
+          <button class="emoji-search-clear" onclick="clearEmojiSearch('${fieldId}')">✕</button>
+        </div>
+        <div class="emoji-grid" id="emojiGrid_${fieldId}"></div>
+      </div>
+    </div>
   </div>`;
 }
 
@@ -849,30 +880,34 @@ function renderEditForm() {
     firstRow = `<div class="form-group" style="flex:0 0 130px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
     otherFields = `<div class="form-group"><label class="form-label">Dialogue (Speaker: Text, one per line)</label><textarea class="form-textarea" id="fe-content" style="min-height:130px" placeholder="DM: You see a figure...&#10;Kaelen: Can I make out details?" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>`;
   } else if (entry.type==='location') {
-    firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Location name..." oninput="updateField('name',this.value)"></div><div class="form-group" style="flex:0 0 58px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="📍" oninput="updateField('emoji',this.value)"></div>`;
-    otherFields = `<div class="form-row"><div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div></div>${richField('fe-content','Description',entry.content,100)}`;
+    firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Location name..." oninput="updateField('name',this.value)"></div>`;
+    otherFields = `<div class="form-row">
+      <div class="form-group" style="flex:0 0 auto"><label class="form-label">Emoji</label><div class="emoji-field-wrap"><button class="emoji-field-btn" id="fe-emoji-btn" onclick="toggleEmojiFieldDrop('fe-emoji-drop','location',event)" title="Pick emoji">${escHtml(entry.emoji||'📍')}<span class="emoji-field-caret">▾</span></button><div class="emoji-field-dropdown" id="fe-emoji-drop"><div class="emoji-search-row"><input class="emoji-search-input" id="emojiFieldSearch_location" type="text" placeholder="Search…" oninput="filterEmojiField(this.value,'location')" autocomplete="off"><button class="emoji-search-clear" onclick="clearEmojiFieldSearch('location')">✕</button></div><div class="emoji-grid" id="emojiFieldGrid_location"></div></div></div></div>
+      <div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div>
+      <div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    </div>${richField('fe-content','Description',entry.content,100)}`;
   } else if (entry.type==='travel') {
     firstRow = `<div class="form-group"><label class="form-label">From</label><input class="form-input" id="fe-from" value="${escHtml(entry.from)}" placeholder="New Haven" oninput="updateField('from',this.value)"></div><div class="form-group"><label class="form-label">To</label><input class="form-input" id="fe-to" value="${escHtml(entry.to)}" placeholder="Traitor Joe's" oninput="updateField('to',this.value)"></div>`;
     otherFields = `<div class="form-row"><div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div></div>${richField('fe-content','Journey Notes',entry.content,85)}`;
   } else if (entry.type==='character') {
-    firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div><div class="form-group" style="flex:0 0 58px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="🧙" oninput="updateField('emoji',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
-    otherFields = richField('fe-content','Description',entry.content,110);
+    firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div>`;
+    otherFields = `<div class="form-row">
+      <div class="form-group" style="flex:0 0 auto"><label class="form-label">Emoji</label><div class="emoji-field-wrap"><button class="emoji-field-btn" id="fe-emoji-btn" onclick="toggleEmojiFieldDrop('fe-emoji-drop','character',event)" title="Pick emoji">${escHtml(entry.emoji||'🧙')}<span class="emoji-field-caret">▾</span></button><div class="emoji-field-dropdown" id="fe-emoji-drop"><div class="emoji-search-row"><input class="emoji-search-input" id="emojiFieldSearch_character" type="text" placeholder="Search…" oninput="filterEmojiField(this.value,'character')" autocomplete="off"><button class="emoji-search-clear" onclick="clearEmojiFieldSearch('character')">✕</button></div><div class="emoji-grid" id="emojiFieldGrid_character"></div></div></div></div>
+      <div class="form-group" style="flex:0 0 140px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    </div>${richField('fe-content','Description',entry.content,110)}`;
   }
 
-  const emojiSection = `<div class="form-group"><label class="form-label">Emoji Quick Insert</label><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Click in a field above, then tap an emoji</div><div class="emoji-picker"><div class="emoji-search-row"><input class="emoji-search-input" id="emojiSearch" type="text" placeholder="Search emoji… sword, fire, skull…" oninput="filterEmoji(this.value)" autocomplete="off"><button class="emoji-search-clear" onclick="clearEmojiSearch()">✕</button></div><div class="emoji-grid" id="emojiGrid"></div></div></div>`;
+  const emojiSection = ''; // emoji now lives inside each RTE toolbar dropdown
 
-  ea.innerHTML = `<div class="edit-form" id="editForm"><div class="form-row"><div class="form-group" style="flex:0 0 150px"><label class="form-label">Entry Type</label><select class="form-select" onchange="changeType(this.value)">${['recap','text','quote','conversation','location','travel','character'].map(t=>`<option value="${t}" ${t===entry.type?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}</select></div>${firstRow}</div>${otherFields}${emojiSection}</div>`;
+  ea.innerHTML = `<div class="edit-form" id="editForm"><div class="form-row"><div class="form-group" style="flex:0 0 150px"><label class="form-label">Entry Type</label><select class="form-select" onchange="changeType(this.value)">${['recap','text','quote','conversation','location','travel','character'].map(t=>`<option value="${t}" ${t===entry.type?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}</select></div>${firstRow}</div>${otherFields}</div>`;
 
-  // Focus tracking — exclude emoji search
+  // Focus tracking
   ea.querySelectorAll('textarea, input[type=text], input:not([type])').forEach(el => {
-    if (el.id === 'emojiSearch') return;
     el.addEventListener('focus', () => { window._lastFocusedField = el; });
   });
 
   // Attach RTE keyboard shortcuts to content textarea
   if (document.getElementById('fe-content')) attachRteKeyboard('fe-content');
-
-  populateEmojiGrid(EMOJI_FAVORITES);
 }
 
 function updateField(field, value) {
@@ -893,33 +928,112 @@ function changeType(newType) {
 }
 
 // ─── EMOJI ────────────────────────────────────────────────────────────────────
-function insertEmoji(emoji) {
-  const field = window._lastFocusedField;
+function insertEmoji(emoji, fieldId) {
+  // Use explicit fieldId if provided (from toolbar dropdown), else fall back to last focused
+  const field = fieldId ? document.getElementById(fieldId) : window._lastFocusedField;
   if (!field) return;
   const start = field.selectionStart, end = field.selectionEnd, val = field.value;
   field.value = val.slice(0,start) + emoji + val.slice(end);
   field.selectionStart = field.selectionEnd = start + emoji.length;
-  field.dispatchEvent(new Event('input')); field.focus();
+  field.dispatchEvent(new Event('input'));
+  field.focus();
+  // Close dropdown after insert
+  document.querySelectorAll('.rte-emoji-dropdown.open').forEach(d => d.classList.remove('open'));
 }
-function populateEmojiGrid(emojis) {
-  const grid = document.getElementById('emojiGrid');
+
+function toggleEmojiDropdown(dropId, fieldId, event) {
+  event.stopPropagation();
+  const drop = document.getElementById(dropId);
+  if (!drop) return;
+  const wasOpen = drop.classList.contains('open');
+  // Close all open dropdowns first
+  document.querySelectorAll('.rte-emoji-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (!wasOpen) {
+    drop.classList.add('open');
+    // Populate grid if empty
+    const grid = document.getElementById(`emojiGrid_${fieldId}`);
+    if (grid && !grid.children.length) populateEmojiGrid(EMOJI_FAVORITES, fieldId);
+    // Focus search
+    const search = document.getElementById(`emojiSearch_${fieldId}`);
+    if (search) setTimeout(() => search.focus(), 50);
+  }
+}
+
+function populateEmojiGrid(emojis, fieldId) {
+  const grid = document.getElementById(fieldId ? `emojiGrid_${fieldId}` : 'emojiGrid');
   if (!grid) return;
-  if (!emojis.length) { grid.innerHTML = '<div class="emoji-none">No emoji found</div>'; return; }
-  grid.innerHTML = emojis.map(em=>`<button class="emoji-btn" onclick="insertEmoji('${em}')" title="${em}">${em}</button>`).join('');
+  if (!emojis.length) { grid.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:10px;text-align:center;width:100%">No emoji found</div>'; return; }
+  grid.innerHTML = emojis.map(em =>
+    `<button class="emoji-btn" onclick="insertEmoji('${em}','${fieldId||''}')" title="${em}">${em}</button>`
+  ).join('');
 }
-function filterEmoji(query) {
+
+function filterEmoji(query, fieldId) {
   const q = query.trim().toLowerCase();
-  if (!q) { populateEmojiGrid(EMOJI_FAVORITES); return; }
+  if (!q) { populateEmojiGrid(EMOJI_FAVORITES, fieldId); return; }
   const results = []; const seen = new Set();
   for (const [code, char] of Object.entries(GH_EMOJI)) {
     if (code.includes(q)) { if (!seen.has(char)) { seen.add(char); results.push(char); } }
     if (results.length >= 80) break;
   }
-  populateEmojiGrid(results);
+  populateEmojiGrid(results, fieldId);
 }
-function clearEmojiSearch() {
-  const s = document.getElementById('emojiSearch'); if (s) s.value = '';
-  populateEmojiGrid(EMOJI_FAVORITES);
+
+function clearEmojiSearch(fieldId) {
+  const s = document.getElementById(`emojiSearch_${fieldId}`);
+  if (s) s.value = '';
+  populateEmojiGrid(EMOJI_FAVORITES, fieldId);
+}
+
+// ─── EMOJI FIELD PICKER (location / character) ────────────────────────────────
+function toggleEmojiFieldDrop(dropId, scope, event) {
+  event.stopPropagation();
+  const drop = document.getElementById(dropId);
+  if (!drop) return;
+  const wasOpen = drop.classList.contains('open');
+  document.querySelectorAll('.emoji-field-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (!wasOpen) {
+    drop.classList.add('open');
+    const grid = document.getElementById(`emojiFieldGrid_${scope}`);
+    if (grid && !grid.children.length) populateEmojiFieldGrid(EMOJI_FAVORITES, scope);
+    setTimeout(() => { const s = document.getElementById(`emojiFieldSearch_${scope}`); if (s) s.focus(); }, 50);
+  }
+}
+
+function populateEmojiFieldGrid(emojis, scope) {
+  const grid = document.getElementById(`emojiFieldGrid_${scope}`);
+  if (!grid) return;
+  if (!emojis.length) { grid.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:10px;text-align:center;width:100%">No emoji found</div>'; return; }
+  grid.innerHTML = emojis.map(em =>
+    `<button class="emoji-btn" onclick="selectEmojiField('${em}')" title="${em}">${em}</button>`
+  ).join('');
+}
+
+function selectEmojiField(emoji) {
+  // Update the entry state
+  updateField('emoji', emoji);
+  // Update the button face
+  const btn = document.getElementById('fe-emoji-btn');
+  if (btn) btn.childNodes[0].textContent = emoji;
+  // Close dropdown
+  document.querySelectorAll('.emoji-field-dropdown.open').forEach(d => d.classList.remove('open'));
+}
+
+function filterEmojiField(query, scope) {
+  const q = query.trim().toLowerCase();
+  if (!q) { populateEmojiFieldGrid(EMOJI_FAVORITES, scope); return; }
+  const results = []; const seen = new Set();
+  for (const [code, char] of Object.entries(GH_EMOJI)) {
+    if (code.includes(q)) { if (!seen.has(char)) { seen.add(char); results.push(char); } }
+    if (results.length >= 80) break;
+  }
+  populateEmojiFieldGrid(results, scope);
+}
+
+function clearEmojiFieldSearch(scope) {
+  const s = document.getElementById(`emojiFieldSearch_${scope}`);
+  if (s) s.value = '';
+  populateEmojiFieldGrid(EMOJI_FAVORITES, scope);
 }
 
 // ─── ADD / DELETE ─────────────────────────────────────────────────────────────
@@ -1184,6 +1298,15 @@ function parseMarkdownToEntries(md) {
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 function init() {
+  // Close emoji dropdowns when clicking outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.rte-emoji-wrap')) {
+      document.querySelectorAll('.rte-emoji-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+    if (!e.target.closest('.emoji-field-wrap')) {
+      document.querySelectorAll('.emoji-field-dropdown.open').forEach(d => d.classList.remove('open'));
+    }
+  });
   // Auto-connect if settings exist
   if (isGhConfigured()) testConnection();
   else updateConnUI('disconnected','Not configured');
