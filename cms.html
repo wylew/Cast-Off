@@ -166,9 +166,7 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 
 /* text — green */
 .rp-card { background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 14px; margin-bottom: 10px; }
-.rp-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.rp-card-icon { font-size: 18px; }
-.rp-card-title { font-size: 14px; font-weight: 600; color: var(--green); }
+.rp-card-title { font-size: 14px; font-weight: 600; color: var(--green); margin-bottom: 6px; }
 .rp-card-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
 .rp-card-body h2 { font-size: 13px; font-weight: 600; color: var(--green); margin: 8px 0 4px; }
 .rp-card-body h3 { font-size: 12px; font-weight: 600; color: var(--text); margin: 6px 0 3px; }
@@ -212,6 +210,16 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 
 /* DIRTY INDICATOR */
 .dirty-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); margin-left: 4px; vertical-align: middle; }
+
+/* TYPE TAG in rendered preview — mirrors entry list badge colors */
+.rp-type-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.rp-type-tag.tag-recap        { background: #1a3a5c; color: var(--accent); }
+.rp-type-tag.tag-text         { background: #1f2a1f; color: var(--green); }
+.rp-type-tag.tag-quote        { background: #2a1f3a; color: var(--accent2); }
+.rp-type-tag.tag-conversation { background: #2a251a; color: var(--amber); }
+.rp-type-tag.tag-location     { background: #1a2a2a; color: var(--teal); }
+.rp-type-tag.tag-travel       { background: #2a1f1a; color: var(--coral); }
+.rp-type-tag.tag-character    { background: #2a1a1a; color: var(--red); }
 
 /* MODAL */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; display: none; align-items: center; justify-content: center; }
@@ -1094,6 +1102,10 @@ function renderMarkdown(text) {
     .replace(/^(?!<[hup]|<block|<code)(.+)/,'<p>$1</p>');
 }
 
+function typeTag(type) {
+  return `<span class="rp-type-tag tag-${type}">${type}</span>`;
+}
+
 function renderRendered() {
   const sn = document.getElementById('sessionNum').value;
   const out = document.getElementById('renderedPreview');
@@ -1102,21 +1114,21 @@ function renderRendered() {
   entries.forEach(e=>{
     let inner='';
     if (e.type==='recap') {
-      inner=`<div class="rp-session-header"><div class="rp-session-num">Session ${sn}</div><div class="rp-session-title">${escHtml(e.title||'Session Recap')}</div>${e.date?`<div class="rp-session-date">${escHtml(e.date)}</div>`:''} ${e.content?`<div class="rp-session-body">${renderMarkdown(e.content)}</div>`:''}</div>`;
+      inner=`<div class="rp-session-header">${typeTag('recap')}<div class="rp-session-num">Session ${sn}</div><div class="rp-session-title">${escHtml(e.title||'Session Recap')}</div>${e.date?`<div class="rp-session-date">${escHtml(e.date)}</div>`:''} ${e.content?`<div class="rp-session-body">${renderMarkdown(e.content)}</div>`:''}</div>`;
     } else if (e.type==='text') {
-      inner=`<div class="rp-card"><div class="rp-card-header"><span class="rp-card-icon">📝</span><div class="rp-card-title">${escHtml(e.title||'Note')}</div></div><div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
+      inner=`<div class="rp-card">${typeTag('text')}<div class="rp-card-header"><div class="rp-card-title">${escHtml(e.title||'Note')}</div></div><div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
     } else if (e.type==='quote') {
-      inner=`<div class="rp-quote"><div class="rp-quote-text">${escHtml(e.content||'...')}</div>${e.author?`<div class="rp-quote-author">— ${escHtml(e.author)}</div>`:''}</div>`;
+      inner=`<div class="rp-quote">${typeTag('quote')}<div class="rp-quote-text">${escHtml(e.content||'...')}</div>${e.author?`<div class="rp-quote-author">— ${escHtml(e.author)}</div>`:''}</div>`;
     } else if (e.type==='conversation') {
       const lines=(e.content||'').split('\n').filter(Boolean);
       const lh=lines.map(l=>{const m=l.match(/^([^:]+):\s*(.*)$/);return m?`<div class="rp-convo-line"><span class="rp-convo-speaker">${escHtml(m[1])}:</span><span class="rp-convo-text">${escHtml(m[2])}</span></div>`:`<div class="rp-convo-line"><span class="rp-convo-text">${escHtml(l)}</span></div>`;}).join('');
-      inner=`<div class="rp-conversation"><div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">🗣️ Conversation${e.date?' · '+escHtml(e.date):''}</div>${lh}</div>`;
+      inner=`<div class="rp-conversation">${typeTag('conversation')}${e.date?`<div style="font-size:11px;color:var(--text3);margin-bottom:8px">${escHtml(e.date)}</div>`:''}${lh}</div>`;
     } else if (e.type==='location') {
-      inner=`<div class="rp-location"><div class="rp-location-name">${e.emoji||'📍'} ${escHtml(e.name||'Location')}</div>${e.characters?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px">Characters: ${escHtml(e.characters)}</div>`:''}<div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
+      inner=`<div class="rp-location">${typeTag('location')}<div class="rp-location-name">${e.emoji||'📍'} ${escHtml(e.name||'Location')}</div>${e.characters?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px">Characters: ${escHtml(e.characters)}</div>`:''}<div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
     } else if (e.type==='travel') {
-      inner=`<div class="rp-travel"><div style="flex:1"><div class="rp-travel-route"><span class="rp-travel-from">⛵ ${escHtml(e.from||'?')}</span><span class="rp-travel-arrow"> → </span><span class="rp-travel-to">${escHtml(e.to||'?')}</span></div>${e.content?`<div class="rp-travel-body">${renderMarkdown(e.content)}</div>`:''}</div></div>`;
+      inner=`<div class="rp-travel">${typeTag('travel')}<div style="flex:1"><div class="rp-travel-route"><span class="rp-travel-from">⛵ ${escHtml(e.from||'?')}</span><span class="rp-travel-arrow"> → </span><span class="rp-travel-to">${escHtml(e.to||'?')}</span></div>${e.content?`<div class="rp-travel-body">${renderMarkdown(e.content)}</div>`:''}</div></div>`;
     } else if (e.type==='character') {
-      inner=`<div class="rp-char"><div class="rp-char-avatar">${e.emoji||'🧙'}</div><div><div class="rp-char-name">${escHtml(e.name||'Character')}</div>${e.date?`<div style="font-size:11px;color:var(--text3)">${escHtml(e.date)}</div>`:''}<div class="rp-char-body">${renderMarkdown(e.content)}</div></div></div>`;
+      inner=`<div class="rp-char">${typeTag('character')}<div style="display:flex;gap:12px;width:100%"><div class="rp-char-avatar">${e.emoji||'🧙'}</div><div><div class="rp-char-name">${escHtml(e.name||'Character')}</div>${e.date?`<div style="font-size:11px;color:var(--text3)">${escHtml(e.date)}</div>`:''}<div class="rp-char-body">${renderMarkdown(e.content)}</div></div></div></div>`;
     }
     html+=`<div class="rp-entry-wrap" data-entry-id="${e.id}" style="margin-bottom:10px">${inner}</div>`;
   });
