@@ -1053,45 +1053,133 @@ function downloadMarkdown() {
   URL.revokeObjectURL(url);
 }
 
-const KNOWN_KEYS={recap:['date','title'],text:['title'],quote:['date','author'],conversation:['date'],location:['name','emoji','date','characters'],travel:['from','to','date','characters'],character:['name','emoji','date']};
-
 function handleImport(event) {
-  const file=event.target.files[0]; if (!file) return;
-  const m=file.name.match(/session-(\d+)\.md/); if (m) document.getElementById('sessionNum').value=m[1];
-  const r=new FileReader();
-  r.onload=e=>{ parseMarkdownToEntries(e.target.result); event.target.value=''; };
+  const file = event.target.files[0]; if (!file) return;
+  const m = file.name.match(/session-(\d+)\.md/); if (m) document.getElementById('sessionNum').value = m[1];
+  const r = new FileReader();
+  r.onload = e => { parseMarkdownToEntries(e.target.result); event.target.value = ''; };
   r.readAsText(file);
 }
 
 function parseMarkdownToEntries(md) {
-  const blocks=md.split(/\n\n---\n\n/);
-  const newEntries=[];
-  blocks.forEach(block=>{
-    if (!block.trim()) return;
-    const lines=block.split('\n');
-    const tm=lines[0].match(/^type:\s*(.+)$/i); if (!tm) return;
-    const type=tm[1].trim().toLowerCase();
-    const entry={id:uid(),type};
-    let contentLines=[], parsingMeta=true;
-    const vk=KNOWN_KEYS[type]||[];
-    for (let i=1;i<lines.length;i++) {
-      const line=lines[i];
-      if (parsingMeta) {
-        if (line.trim()==='') { parsingMeta=false; continue; }
-        const mm=line.match(/^([a-z]+):\s*(.*)$/i);
-        if (mm&&vk.includes(mm[1].trim().toLowerCase())) { entry[mm[1].trim().toLowerCase()]=mm[2].trim(); }
-        else { parsingMeta=false; contentLines.push(line); }
-      } else { contentLines.push(line); }
+  // Normalize: strip leading ## from lines that have ## type: or ## Type:
+  // Also normalize \r\n -> \n
+  md = md.replace(/\r\n/g, '\n').replace(/^##\s+(type:)/gim, '$1');
+
+  // Split on any --- separator regardless of surrounding blank lines
+  const rawBlocks = md.split(/\n[ \t]*---[ \t]*\n/);
+
+  // Some blocks are run together on one line (inline format):
+  // "type: travel from: New Haven To: Traitor Joe's Date: Jan 03, 2026 characters: ... content"
+  // We need to further split those out. Strategy: for each block, if it contains
+  // a \n with a type: declaration mid-block, split there too.
+  const blocks = [];
+  rawBlocks.forEach(raw => {
+    // Check for embedded "type:" declarations after the first line
+    // (indicates multiple concatenated entries in one block)
+    const lines = raw.trim().split('\n');
+    let current = [];
+    lines.forEach(line => {
+      // A line starting with "type:" (case-insensitive) that isn't the very first
+      // line of current buffer means a new block is starting
+      if (/^type\s*:/i.test(line.trim()) && current.length > 0) {
+        blocks.push(current.join('\n'));
+        current = [line];
+      } else {
+        current.push(line);
+      }
+    });
+    if (current.length) blocks.push(current.join('\n'));
+  });
+
+  const newEntries = [];
+
+  blocks.forEach(block => {
+    block = block.trim();
+    if (!block) return;
+
+    // Find the type: line (first line matching, case-insensitive)
+    const typeMatch = block.match(/^type\s*:\s*(.+)$/im);
+    if (!typeMatch) return;
+    const type = typeMatch[1].trim().toLowerCase();
+    if (!TYPE_DEFAULTS[type]) return;
+
+    const entry = { id: uid(), type };
+
+    // Field extraction: handle both multi-line and inline (space-separated) formats
+    // Known field names per type
+    const fieldNames = {
+      recap:        ['date','title'],
+      text:         ['title'],
+      quote:        ['date','author'],
+      conversation: ['date'],
+      location:     ['name','emoji','date','characters'],
+      travel:       ['from','to','date','characters'],
+      character:    ['name','emoji','date']
+    };
+    const fields = fieldNames[type] || [];
+
+    // Build a regex that matches any known field key (case-insensitive)
+    // We'll extract them from the full block text
+    // Remove the type: line first
+    let remaining = block.replace(/^type\s*:\s*.+$/im, '').trim();
+
+    // Extract each known field greedily — match "Key: value" up to next known key or end
+    // Build alternation of all field names
+    const allFields = ['type','date','title','author','name','emoji','characters','from','to'];
+    const keyPattern = allFields.map(k => k.replace(/[.*+?^${}()|[\]\\]/g,'\\')).join('|');
+    const fieldRegex = new RegExp(`(?:^|\\n|\\s)(${keyPattern})\\s*:\\s*([^\\n]*)`, 'gi');
+
+    let match;
+    let extractedSpans = []; // track what we pulled so we can find content remainder
+
+    // Reset and collect all field matches
+    const blockForFields = remaining;
+    while ((match = fieldRegex.exec(blockForFields)) !== null) {
+      const key = match[1].toLowerCase();
+      const val = match[2].trim();
+      if (fields.includes(key) && val) {
+        entry[key] = val;
+        extractedSpans.push([match.index, match.index + match[0].length]);
+      }
     }
-    entry.content=contentLines.join('\n').trim();
-    const defaults=TYPE_DEFAULTS[type]||{};
-    for (let k in defaults) if (entry[k]===undefined) entry[k]='';
+
+    // Content is everything that's NOT a field header line and NOT the type line
+    // Remove field lines from remaining to get content
+    let contentLines = remaining.split('\n').filter(line => {
+      const trimmed = line.trim();
+      // Skip lines that are purely a known field assignment
+      if (/^(type|date|title|author|name|emoji|characters|from|to)\s*:/i.test(trimmed)) return false;
+      return true;
+    });
+
+    // Trim leading/trailing blank lines from content
+    while (contentLines.length && !contentLines[0].trim()) contentLines.shift();
+    while (contentLines.length && !contentLines[contentLines.length-1].trim()) contentLines.pop();
+
+    entry.content = contentLines.join('\n').trim();
+
+    // Fill in defaults for any missing fields
+    const defaults = TYPE_DEFAULTS[type] || {};
+    for (const k in defaults) {
+      if (entry[k] === undefined) entry[k] = '';
+    }
+
     newEntries.push(entry);
   });
+
   if (newEntries.length) {
-    entries=newEntries; selectedId=entries[0].id; currentFileSha=null;
-    setDirty(false); renderList(); renderEditForm(); renderPreview();
-  } else { showToast('No valid entries found in file','error'); }
+    entries = newEntries;
+    selectedId = entries[0].id;
+    currentFileSha = null;
+    setDirty(false);
+    renderList();
+    renderEditForm();
+    renderPreview();
+    showToast(`Loaded ${newEntries.length} entries ✓`, 'success');
+  } else {
+    showToast('No valid entries found in file', 'error');
+  }
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
