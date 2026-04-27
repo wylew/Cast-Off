@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -16,226 +15,225 @@
 body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
 /* TOP BAR */
-.topbar { background: var(–bg2); border-bottom: 1px solid var(–border); padding: 0 1rem; height: 52px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.topbar-title { font-size: 15px; font-weight: 600; color: var(–accent); letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.topbar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 1rem; height: 52px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.topbar-title { font-size: 15px; font-weight: 600; color: var(--accent); letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .topbar-title span { font-size: 18px; }
 .topbar-spacer { flex: 1; }
 
 /* Connection badge */
-.conn-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 10px; border-radius: 20px; cursor: pointer; border: 1px solid var(–border); background: var(–bg3); transition: border-color 0.15s; white-space: nowrap; }
-.conn-badge:hover { border-color: var(–accent); }
+.conn-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 10px; border-radius: 20px; cursor: pointer; border: 1px solid var(--border); background: var(--bg3); transition: border-color 0.15s; white-space: nowrap; }
+.conn-badge:hover { border-color: var(--accent); }
 .conn-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.conn-dot.connected { background: var(–green); box-shadow: 0 0 6px rgba(168,216,168,0.6); }
-.conn-dot.disconnected { background: var(–text3); }
-.conn-dot.loading { background: var(–amber); animation: pulse 1s infinite; }
+.conn-dot.connected { background: var(--green); box-shadow: 0 0 6px rgba(168,216,168,0.6); }
+.conn-dot.disconnected { background: var(--text3); }
+.conn-dot.loading { background: var(--amber); animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
 /* Session selector */
 .session-selector { display: flex; align-items: center; gap: 6px; }
-.session-selector label { font-size: 12px; color: var(–text3); white-space: nowrap; }
-.session-select { background: var(–bg4); border: 1px solid var(–border); color: var(–text); border-radius: var(–radius); padding: 4px 8px; font-size: 13px; min-width: 140px; cursor: pointer; }
-.session-select:focus { outline: none; border-color: var(–accent); }
-.session-select option { background: var(–bg3); }
+.session-selector label { font-size: 12px; color: var(--text3); white-space: nowrap; }
+.session-select { background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius); padding: 4px 8px; font-size: 13px; min-width: 140px; cursor: pointer; }
+.session-select:focus { outline: none; border-color: var(--accent); }
+.session-select option { background: var(--bg3); }
 
-.btn { background: var(–bg4); border: 1px solid var(–border); color: var(–text); border-radius: var(–radius); padding: 5px 12px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
-.btn:hover { background: var(–bg5); border-color: var(–accent); }
+.btn { background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius); padding: 5px 12px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.15s, border-color 0.15s; white-space: nowrap; }
+.btn:hover { background: var(--bg5); border-color: var(--accent); }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn:disabled:hover { background: var(–bg4); border-color: var(–border); }
-.btn-accent { background: var(–accent); color: #0a2540; border-color: var(–accent); font-weight: 600; }
+.btn:disabled:hover { background: var(--bg4); border-color: var(--border); }
+.btn-accent { background: var(--accent); color: #0a2540; border-color: var(--accent); font-weight: 600; }
 .btn-accent:hover { background: #c5d8f8; border-color: #c5d8f8; }
-.btn-publish { background: #1a3a1a; border-color: #2a6a2a; color: var(–green); font-weight: 600; }
-.btn-publish:hover { background: #204a20; border-color: var(–green); }
-.btn-danger { background: #3a1a1a; border-color: #6a2a2a; color: var(–red); font-weight: 600; }
-.btn-danger:hover { background: #4a2020; border-color: var(–red); }
+.btn-publish { background: #1a3a1a; border-color: #2a6a2a; color: var(--green); font-weight: 600; }
+.btn-publish:hover { background: #204a20; border-color: var(--green); }
+.btn-danger { background: #3a1a1a; border-color: #6a2a2a; color: var(--red); font-weight: 600; }
+.btn-danger:hover { background: #4a2020; border-color: var(--red); }
 
 /* LAYOUT */
 .layout { display: flex; flex-direction: row; flex: 1; overflow: hidden; }
 .main-content { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 
 /* EDITOR PANEL */
-.editor-panel { width: 300px; flex-shrink: 0; background: var(–bg2); border-right: 1px solid var(–border); display: flex; flex-direction: column; overflow: hidden; }
-.edit-panel { flex: 1; display: flex; flex-direction: column; background: var(–bg2); overflow: hidden; border-bottom: 1px solid var(–border); }
-.panel-header { padding: 10px 14px; border-bottom: 1px solid var(–border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 8px; }
-.panel-header h2 { font-size: 12px; font-weight: 600; color: var(–text3); text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
+.editor-panel { width: 300px; flex-shrink: 0; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+.edit-panel { flex: 1; display: flex; flex-direction: column; background: var(--bg2); overflow: hidden; border-bottom: 1px solid var(--border); }
+.panel-header { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 8px; }
+.panel-header h2 { font-size: 12px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
 
 /* ENTRY LIST */
 .entry-list { flex: 1; overflow-y: auto; padding: 6px; display: flex; flex-direction: column; gap: 3px; }
 .entry-list::-webkit-scrollbar { width: 3px; }
-.entry-list::-webkit-scrollbar-thumb { background: var(–border); border-radius: 2px; }
-.entry-card { background: var(–bg3); border: 1px solid var(–border); border-radius: var(–radius); padding: 8px 10px; cursor: pointer; transition: border-color 0.15s, background 0.15s; display: flex; align-items: center; gap: 8px; user-select: none; }
-.entry-card:hover { border-color: var(–accent); background: var(–bg4); }
-.entry-card.active { border-color: var(–accent); background: var(–bg4); }
+.entry-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.entry-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 10px; cursor: pointer; transition: border-color 0.15s, background 0.15s; display: flex; align-items: center; gap: 8px; user-select: none; }
+.entry-card:hover { border-color: var(--accent); background: var(--bg4); }
+.entry-card.active { border-color: var(--accent); background: var(--bg4); }
 .entry-card.dragging { opacity: 0.4; }
-.entry-card.drag-over { border-color: var(–accent2); border-style: dashed; }
+.entry-card.drag-over { border-color: var(--accent2); border-style: dashed; }
 .entry-type-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.4px; }
-.badge-recap { background: #1a3a5c; color: var(–accent); }
-.badge-text { background: #1f2a1f; color: var(–green); }
-.badge-quote { background: #2a1f3a; color: var(–accent2); }
-.badge-conversation { background: #2a251a; color: var(–amber); }
-.badge-location { background: #1a2a2a; color: var(–teal); }
-.badge-travel { background: #2a1f1a; color: var(–coral); }
-.badge-character { background: #2a1a1a; color: var(–red); }
+.badge-recap { background: #1a3a5c; color: var(--accent); }
+.badge-text { background: #1f2a1f; color: var(--green); }
+.badge-quote { background: #2a1f3a; color: var(--accent2); }
+.badge-conversation { background: #2a251a; color: var(--amber); }
+.badge-location { background: #1a2a2a; color: var(--teal); }
+.badge-travel { background: #2a1f1a; color: var(--coral); }
+.badge-character { background: #2a1a1a; color: var(--red); }
 .entry-info { flex: 1; min-width: 0; }
-.entry-title { font-size: 12px; font-weight: 500; color: var(–text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.entry-sub { font-size: 11px; color: var(–text3); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.entry-drag-handle { color: var(–text3); font-size: 13px; cursor: grab; flex-shrink: 0; }
+.entry-title { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.entry-sub { font-size: 11px; color: var(--text3); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.entry-drag-handle { color: var(--text3); font-size: 13px; cursor: grab; flex-shrink: 0; }
 .entry-drag-handle:active { cursor: grabbing; }
-.entry-delete { color: var(–text3); font-size: 12px; flex-shrink: 0; padding: 2px 4px; border-radius: 4px; cursor: pointer; transition: color 0.15s; display: none; }
+.entry-delete { color: var(--text3); font-size: 12px; flex-shrink: 0; padding: 2px 4px; border-radius: 4px; cursor: pointer; transition: color 0.15s; display: none; }
 .entry-card:hover .entry-delete { display: block; }
-.entry-delete:hover { color: var(–red); }
-.empty-list { text-align: center; padding: 24px 12px; color: var(–text3); font-size: 12px; }
+.entry-delete:hover { color: var(--red); }
+.empty-list { text-align: center; padding: 24px 12px; color: var(--text3); font-size: 12px; }
 
 /* RICH TEXT TOOLBAR */
-.rte-toolbar { display: flex; flex-wrap: wrap; gap: 2px; padding: 5px 8px; background: var(–bg4); border: 1px solid var(–border); border-radius: var(–radius) var(–radius) 0 0; border-bottom: none; }
-.rte-btn { background: none; border: 1px solid transparent; color: var(–text2); border-radius: 4px; padding: 3px 7px; font-size: 12px; cursor: pointer; transition: background 0.1s, color 0.1s, border-color 0.1s; font-family: inherit; line-height: 1.4; white-space: nowrap; }
-.rte-btn:hover { background: var(–bg5); color: var(–text); border-color: var(–border); }
-.rte-btn.active { background: var(–bg3); color: var(–accent); border-color: var(–accent); }
+.rte-toolbar { display: flex; flex-wrap: wrap; gap: 2px; padding: 5px 8px; background: var(--bg4); border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; border-bottom: none; }
+.rte-btn { background: none; border: 1px solid transparent; color: var(--text2); border-radius: 4px; padding: 3px 7px; font-size: 12px; cursor: pointer; transition: background 0.1s, color 0.1s, border-color 0.1s; font-family: inherit; line-height: 1.4; white-space: nowrap; }
+.rte-btn:hover { background: var(--bg5); color: var(--text); border-color: var(--border); }
+.rte-btn.active { background: var(--bg3); color: var(--accent); border-color: var(--accent); }
 .rte-btn b { font-weight: 700; }
 .rte-btn i { font-style: italic; }
-.rte-divider { width: 1px; background: var(–border); margin: 2px 3px; align-self: stretch; }
-.rte-textarea { border-radius: 0 0 var(–radius) var(–radius) !important; border-top: none !important; }
+.rte-divider { width: 1px; background: var(--border); margin: 2px 3px; align-self: stretch; }
+.rte-textarea { border-radius: 0 0 var(--radius) var(--radius) !important; border-top: none !important; }
 
 /* EDIT FORM */
 .edit-form { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 .edit-form::-webkit-scrollbar { width: 3px; }
-.edit-form::-webkit-scrollbar-thumb { background: var(–border); border-radius: 2px; }
+.edit-form::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 .form-group { display: flex; flex-direction: column; gap: 3px; }
-.form-label { font-size: 10px; font-weight: 600; color: var(–text3); text-transform: uppercase; letter-spacing: 0.6px; }
-.form-input, .form-select, .form-textarea { background: var(–bg3); border: 1px solid var(–border); color: var(–text); border-radius: var(–radius); padding: 6px 9px; font-size: 13px; font-family: inherit; transition: border-color 0.15s; }
-.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(–accent); }
-.form-select option { background: var(–bg3); }
+.form-label { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; }
+.form-input, .form-select, .form-textarea { background: var(--bg3); border: 1px solid var(--border); color: var(--text); border-radius: var(--radius); padding: 6px 9px; font-size: 13px; font-family: inherit; transition: border-color 0.15s; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent); }
+.form-select option { background: var(--bg3); }
 .form-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
 .form-row { display: flex; gap: 8px; }
 .form-row .form-group { flex: 1; }
 
 /* EMOJI PICKER */
-.emoji-picker { background: var(–bg3); border: 1px solid var(–border); border-radius: var(–radius); overflow: hidden; }
-.emoji-search-row { display: flex; align-items: center; gap: 6px; padding: 5px 7px; border-bottom: 1px solid var(–border); }
-.emoji-search-input { flex: 1; background: var(–bg4); border: 1px solid var(–border); color: var(–text); border-radius: 5px; padding: 4px 7px; font-size: 12px; font-family: inherit; outline: none; }
-.emoji-search-input:focus { border-color: var(–accent); }
-.emoji-search-clear { background: none; border: none; color: var(–text3); font-size: 13px; cursor: pointer; padding: 0 2px; line-height: 1; }
-.emoji-search-clear:hover { color: var(–text); }
+.emoji-picker { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.emoji-search-row { display: flex; align-items: center; gap: 6px; padding: 5px 7px; border-bottom: 1px solid var(--border); }
+.emoji-search-input { flex: 1; background: var(--bg4); border: 1px solid var(--border); color: var(--text); border-radius: 5px; padding: 4px 7px; font-size: 12px; font-family: inherit; outline: none; }
+.emoji-search-input:focus { border-color: var(--accent); }
+.emoji-search-clear { background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; padding: 0 2px; line-height: 1; }
+.emoji-search-clear:hover { color: var(--text); }
 .emoji-grid { display: flex; flex-wrap: wrap; gap: 1px; padding: 5px; max-height: 110px; overflow-y: auto; }
 .emoji-grid::-webkit-scrollbar { width: 3px; }
-.emoji-grid::-webkit-scrollbar-thumb { background: var(–border); border-radius: 2px; }
+.emoji-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 .emoji-btn { background: none; border: none; font-size: 15px; cursor: pointer; padding: 3px 4px; border-radius: 4px; transition: background 0.1s; line-height: 1; }
-.emoji-btn:hover { background: var(–bg5); }
-.emoji-none { font-size: 12px; color: var(–text3); padding: 10px; text-align: center; width: 100%; }
+.emoji-btn:hover { background: var(--bg5); }
+.emoji-none { font-size: 12px; color: var(--text3); padding: 10px; text-align: center; width: 100%; }
 
-.no-entry { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(–text3); gap: 8px; font-size: 14px; }
-.no-entry .hint { font-size: 12px; color: var(–border); }
+.no-entry { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text3); gap: 8px; font-size: 14px; }
+.no-entry .hint { font-size: 12px; color: var(--border); }
 
 /* PREVIEW PANEL */
-.preview-panel { flex: 1; background: var(–bg); display: flex; flex-direction: column; overflow: hidden; }
-.preview-tabs { display: flex; border-bottom: 1px solid var(–border); background: var(–bg2); padding: 0 16px; flex-shrink: 0; }
-.preview-tab { padding: 10px 14px; font-size: 13px; cursor: pointer; color: var(–text3); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
-.preview-tab.active { color: var(–accent); border-bottom-color: var(–accent); }
+.preview-panel { flex: 1; background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
+.preview-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg2); padding: 0 16px; flex-shrink: 0; }
+.preview-tab { padding: 10px 14px; font-size: 13px; cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
+.preview-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .preview-content { flex: 1; overflow: hidden; }
 .preview-pane { height: 100%; overflow-y: auto; padding: 20px; display: none; }
 .preview-pane::-webkit-scrollbar { width: 6px; }
-.preview-pane::-webkit-scrollbar-thumb { background: var(–border); border-radius: 3px; }
+.preview-pane::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .preview-pane.active { display: block; }
 
 /* RENDERED PREVIEW */
 /* shared left-stripe pattern */
-.rp-stripe { border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; background: var(–bg3); border-top: 1px solid var(–border); border-right: 1px solid var(–border); border-bottom: 1px solid var(–border); }
+.rp-stripe { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
-.rp-session-header { background: linear-gradient(135deg, #0a2540 0%, #1a3a6a 100%); border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 20px; margin-bottom: 16px; border-top: 1px solid #1d5090; border-right: 1px solid #1d5090; border-bottom: 1px solid #1d5090; border-left: 3px solid var(–accent); }
-.rp-session-num { font-size: 11px; font-weight: 600; color: var(–accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.rp-session-header { background: linear-gradient(135deg, #0a2540 0%, #1a3a6a 100%); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 20px; margin-bottom: 16px; border-top: 1px solid #1d5090; border-right: 1px solid #1d5090; border-bottom: 1px solid #1d5090; border-left: 3px solid var(--accent); }
+.rp-session-num { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
 .rp-session-title { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-.rp-session-date { font-size: 12px; color: var(–accent); opacity: 0.8; }
-.rp-session-body { font-size: 13px; color: var(–text2); line-height: 1.7; margin-top: 10px; }
+.rp-session-date { font-size: 12px; color: var(--accent); opacity: 0.8; }
+.rp-session-body { font-size: 13px; color: var(--text2); line-height: 1.7; margin-top: 10px; }
 
 /* text — green */
-.rp-card { background: var(–bg3); border-top: 1px solid var(–border); border-right: 1px solid var(–border); border-bottom: 1px solid var(–border); border-left: 3px solid var(–green); border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 14px; margin-bottom: 10px; }
+.rp-card { background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 14px; margin-bottom: 10px; }
 .rp-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .rp-card-icon { font-size: 18px; }
-.rp-card-title { font-size: 14px; font-weight: 600; color: var(–green); }
-.rp-card-body { font-size: 13px; color: var(–text2); line-height: 1.7; }
-.rp-card-body h2 { font-size: 13px; font-weight: 600; color: var(–green); margin: 8px 0 4px; }
-.rp-card-body h3 { font-size: 12px; font-weight: 600; color: var(–text); margin: 6px 0 3px; }
-.rp-card-body strong { color: var(–text); }
-.rp-card-body em { color: var(–text2); font-style: italic; }
+.rp-card-title { font-size: 14px; font-weight: 600; color: var(--green); }
+.rp-card-body { font-size: 13px; color: var(--text2); line-height: 1.7; }
+.rp-card-body h2 { font-size: 13px; font-weight: 600; color: var(--green); margin: 8px 0 4px; }
+.rp-card-body h3 { font-size: 12px; font-weight: 600; color: var(--text); margin: 6px 0 3px; }
+.rp-card-body strong { color: var(--text); }
+.rp-card-body em { color: var(--text2); font-style: italic; }
 .rp-card-body ul { padding-left: 16px; }
 .rp-card-body li { margin-bottom: 3px; }
 
 /* quote — purple/accent2 */
-.rp-quote { background: var(–bg3); border-top: 1px solid var(–border); border-right: 1px solid var(–border); border-bottom: 1px solid var(–border); border-left: 3px solid var(–accent2); border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
-.rp-quote-text { font-size: 14px; font-style: italic; color: var(–text); line-height: 1.6; margin-bottom: 6px; }
-.rp-quote-author { font-size: 12px; color: var(–accent2); font-weight: 600; }
+.rp-quote { background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-left: 3px solid var(--accent2); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
+.rp-quote-text { font-size: 14px; font-style: italic; color: var(--text); line-height: 1.6; margin-bottom: 6px; }
+.rp-quote-author { font-size: 12px; color: var(--accent2); font-weight: 600; }
 
 /* travel — coral */
-.rp-travel { background: var(–bg3); border-top: 1px solid var(–border); border-right: 1px solid var(–border); border-bottom: 1px solid var(–border); border-left: 3px solid var(–coral); border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
+.rp-travel { background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-left: 3px solid var(--coral); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
 .rp-travel-route { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.rp-travel-from, .rp-travel-to { font-weight: 600; color: var(–coral); }
-.rp-travel-arrow { color: var(–text3); }
-.rp-travel-body { font-size: 13px; color: var(–text2); margin-top: 6px; line-height: 1.6; }
+.rp-travel-from, .rp-travel-to { font-weight: 600; color: var(--coral); }
+.rp-travel-arrow { color: var(--text3); }
+.rp-travel-body { font-size: 13px; color: var(--text2); margin-top: 6px; line-height: 1.6; }
 
 /* conversation — amber */
-.rp-conversation { background: var(–bg3); border-top: 1px solid var(–border); border-right: 1px solid var(–border); border-bottom: 1px solid var(–border); border-left: 3px solid var(–amber); border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
+.rp-conversation { background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
 .rp-convo-line { display: flex; gap: 8px; margin-bottom: 6px; font-size: 13px; }
-.rp-convo-speaker { font-weight: 700; color: var(–amber); flex-shrink: 0; min-width: 70px; }
-.rp-convo-text { color: var(–text2); }
+.rp-convo-speaker { font-weight: 700; color: var(--amber); flex-shrink: 0; min-width: 70px; }
+.rp-convo-text { color: var(--text2); }
 
 /* location — teal */
-.rp-location { background: var(–bg3); border-top: 1px solid var(–border); border-right: 1px solid var(–border); border-bottom: 1px solid var(–border); border-left: 3px solid var(–teal); border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
-.rp-location-name { font-size: 14px; font-weight: 600; color: var(–teal); margin-bottom: 4px; }
+.rp-location { background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; }
+.rp-location-name { font-size: 14px; font-weight: 600; color: var(--teal); margin-bottom: 4px; }
 
 /* character — red */
-.rp-char { background: var(–bg3); border-top: 1px solid var(–border); border-right: 1px solid var(–border); border-bottom: 1px solid var(–border); border-left: 3px solid var(–red); border-radius: 0 var(–radius-lg) var(–radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; display: flex; gap: 12px; }
-.rp-char-avatar { width: 38px; height: 38px; border-radius: 50%; background: #2a1a1a; border: 1px solid var(–red); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.rp-char-name { font-size: 14px; font-weight: 600; color: var(–red); }
-.rp-char-body { font-size: 13px; color: var(–text2); margin-top: 4px; line-height: 1.6; }
-.raw-md { font-family: ‘Cascadia Code’,‘Fira Code’,‘Consolas’,monospace; font-size: 12px; color: var(–text2); line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
-.rp-entry-wrap { transition: outline 0.15s, box-shadow 0.15s; border-radius: 0 var(–radius-lg) var(–radius-lg) 0; }
-.rp-entry-wrap.rp-highlighted { outline: 2px solid var(–accent); box-shadow: 0 0 0 4px rgba(168,199,250,0.12); }
+.rp-char { background: var(--bg3); border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 0 var(--radius-lg) var(--radius-lg) 0; padding: 12px 14px; margin-bottom: 10px; display: flex; gap: 12px; }
+.rp-char-avatar { width: 38px; height: 38px; border-radius: 50%; background: #2a1a1a; border: 1px solid var(--red); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.rp-char-name { font-size: 14px; font-weight: 600; color: var(--red); }
+.rp-char-body { font-size: 13px; color: var(--text2); margin-top: 4px; line-height: 1.6; }
+.raw-md { font-family: 'Cascadia Code','Fira Code','Consolas',monospace; font-size: 12px; color: var(--text2); line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+.rp-entry-wrap { transition: outline 0.15s, box-shadow 0.15s; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+.rp-entry-wrap.rp-highlighted { outline: 2px solid var(--accent); box-shadow: 0 0 0 4px rgba(168,199,250,0.12); }
 .raw-block { transition: background 0.15s; border-radius: 4px; }
 .raw-block.raw-highlighted { background: rgba(168,199,250,0.1); outline: 1px solid rgba(168,199,250,0.3); }
 
 /* DIRTY INDICATOR */
-.dirty-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(–amber); margin-left: 4px; vertical-align: middle; }
+.dirty-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); margin-left: 4px; vertical-align: middle; }
 
 /* MODAL */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; display: none; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal { background: var(–bg2); border: 1px solid var(–border); border-radius: var(–radius-lg); padding: 22px; width: 480px; max-width: 95vw; display: flex; flex-direction: column; gap: 14px; }
-.modal-title { font-size: 15px; font-weight: 600; color: var(–text); }
+.modal { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; width: 480px; max-width: 95vw; display: flex; flex-direction: column; gap: 14px; }
+.modal-title { font-size: 15px; font-weight: 600; color: var(--text); }
 .modal-footer { display: flex; justify-content: flex-end; gap: 8px; }
 
 /* SETTINGS DRAWER */
-.settings-drawer { position: fixed; top: 52px; right: -420px; width: 420px; bottom: 0; background: var(–bg2); border-left: 1px solid var(–border); z-index: 80; transition: right 0.28s ease; display: flex; flex-direction: column; box-shadow: -6px 0 20px rgba(0,0,0,0.5); }
+.settings-drawer { position: fixed; top: 52px; right: -420px; width: 420px; bottom: 0; background: var(--bg2); border-left: 1px solid var(--border); z-index: 80; transition: right 0.28s ease; display: flex; flex-direction: column; box-shadow: -6px 0 20px rgba(0,0,0,0.5); }
 .settings-drawer.open { right: 0; }
-.drawer-header { padding: 14px 16px; border-bottom: 1px solid var(–border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-.drawer-header h3 { font-size: 14px; color: var(–text); font-weight: 600; }
-.drawer-close { background: none; border: none; color: var(–text3); font-size: 17px; cursor: pointer; padding: 4px; }
-.drawer-close:hover { color: var(–text); }
+.drawer-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.drawer-header h3 { font-size: 14px; color: var(--text); font-weight: 600; }
+.drawer-close { background: none; border: none; color: var(--text3); font-size: 17px; cursor: pointer; padding: 4px; }
+.drawer-close:hover { color: var(--text); }
 .drawer-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
 .drawer-section { display: flex; flex-direction: column; gap: 10px; }
-.drawer-section-title { font-size: 11px; font-weight: 600; color: var(–text3); text-transform: uppercase; letter-spacing: 0.8px; padding-bottom: 6px; border-bottom: 1px solid var(–border); }
-.conn-status-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(–text2); }
+.drawer-section-title { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+.conn-status-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); }
 .conn-status-row .conn-dot { width: 8px; height: 8px; }
-.hint-text { font-size: 12px; color: var(–text3); line-height: 1.5; }
-.hint-text a { color: var(–accent); }
+.hint-text { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.hint-text a { color: var(--accent); }
 
 /* CHEATSHEET */
-.cheatsheet-overlay { position: fixed; top: 52px; right: -400px; width: 380px; bottom: 0; background: var(–bg2); border-left: 1px solid var(–border); z-index: 50; transition: right 0.28s ease; display: flex; flex-direction: column; box-shadow: -4px 0 15px rgba(0,0,0,0.5); }
+.cheatsheet-overlay { position: fixed; top: 52px; right: -400px; width: 380px; bottom: 0; background: var(--bg2); border-left: 1px solid var(--border); z-index: 50; transition: right 0.28s ease; display: flex; flex-direction: column; box-shadow: -4px 0 15px rgba(0,0,0,0.5); }
 .cheatsheet-overlay.open { right: 0; }
-.cheatsheet-header { padding: 14px 16px; border-bottom: 1px solid var(–border); display: flex; justify-content: space-between; align-items: center; }
-.cheatsheet-header h3 { font-size: 14px; color: var(–accent); font-weight: 600; }
-.cheatsheet-close { background: none; border: none; color: var(–text3); font-size: 17px; cursor: pointer; }
-.cheatsheet-close:hover { color: var(–text); }
-.cheatsheet-content { padding: 14px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: var(–text2); }
-.cheatsheet-content h4 { color: var(–text); margin: 14px 0 6px; font-size: 13px; font-weight: 600; }
+.cheatsheet-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.cheatsheet-header h3 { font-size: 14px; color: var(--accent); font-weight: 600; }
+.cheatsheet-close { background: none; border: none; color: var(--text3); font-size: 17px; cursor: pointer; }
+.cheatsheet-close:hover { color: var(--text); }
+.cheatsheet-content { padding: 14px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: var(--text2); }
+.cheatsheet-content h4 { color: var(--text); margin: 14px 0 6px; font-size: 13px; font-weight: 600; }
 .cheatsheet-content h4:first-child { margin-top: 0; }
-.cheatsheet-content pre { background: var(–bg4); padding: 8px 10px; border-radius: var(–radius); font-family: ‘Cascadia Code’,‘Fira Code’,‘Consolas’,monospace; color: var(–accent2); margin-bottom: 6px; border: 1px solid var(–border); font-size: 12px; white-space: pre-wrap; }
+.cheatsheet-content pre { background: var(--bg4); padding: 8px 10px; border-radius: var(--radius); font-family: 'Cascadia Code','Fira Code','Consolas',monospace; color: var(--accent2); margin-bottom: 6px; border: 1px solid var(--border); font-size: 12px; white-space: pre-wrap; }
 
 /* TOAST */
-.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(–bg3); border: 1px solid var(–border); border-radius: var(–radius); padding: 8px 16px; font-size: 13px; color: var(–text); z-index: 200; transition: transform 0.25s ease, opacity 0.25s ease; opacity: 0; pointer-events: none; white-space: nowrap; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 16px; font-size: 13px; color: var(--text); z-index: 200; transition: transform 0.25s ease, opacity 0.25s ease; opacity: 0; pointer-events: none; white-space: nowrap; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-.toast.success { border-color: var(–green); color: var(–green); }
-.toast.error { border-color: var(–red); color: var(–red); }
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.error { border-color: var(--red); color: var(--red); }
 </style>
-
 </head>
 <body>
 
@@ -257,15 +255,14 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
     <span id="connLabel">Not configured</span>
   </div>
 
-<button class="btn" id="loadBtn" onclick="loadSessionFromGitHub()" disabled title="Load selected session from GitHub">↓ Load</button>
-<button class="btn btn-publish" id="publishBtn" onclick="publishToGitHub()" disabled title="Publish to GitHub">↑ Publish</button>
-<button class="btn btn-danger" onclick="openNewSessionModal()">✦ New Session</button>
-<button class="btn btn-accent" onclick="document.getElementById('importFile').click()">📂 Import</button>
-<input type="file" id="importFile" accept=".md" style="display:none" onchange="handleImport(event)">
-<button class="btn btn-accent" onclick="downloadMarkdown()">⬇ Download</button>
-<button class="btn" onclick="toggleCheatsheet()" title="Markdown reference">💡</button>
-<button class="btn" onclick="openSettings()" title="GitHub settings">⚙️</button>
-
+  <button class="btn" id="loadBtn" onclick="loadSessionFromGitHub()" disabled title="Load selected session from GitHub">↓ Load</button>
+  <button class="btn btn-publish" id="publishBtn" onclick="publishToGitHub()" disabled title="Publish to GitHub">↑ Publish</button>
+  <button class="btn btn-danger" onclick="openNewSessionModal()">✦ New Session</button>
+  <button class="btn btn-accent" onclick="document.getElementById('importFile').click()">📂 Import</button>
+  <input type="file" id="importFile" accept=".md" style="display:none" onchange="handleImport(event)">
+  <button class="btn btn-accent" onclick="downloadMarkdown()">⬇ Download</button>
+  <button class="btn" onclick="toggleCheatsheet()" title="Markdown reference">💡</button>
+  <button class="btn" onclick="openSettings()" title="GitHub settings">⚙️</button>
 </div>
 
 <div class="layout">
@@ -294,24 +291,20 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
       </div>
     </div>
 
-```
-<div class="preview-panel">
-  <div class="preview-tabs">
-    <div class="preview-tab active" onclick="switchTab('rendered')">Rendered Preview</div>
-    <div class="preview-tab" onclick="switchTab('raw')">Markdown</div>
-  </div>
-  <div class="preview-content">
-    <div class="preview-pane active" id="pane-rendered"><div id="renderedPreview"></div></div>
-    <div class="preview-pane" id="pane-raw"><div class="raw-md" id="rawPreview"></div></div>
-  </div>
-</div>
-```
-
+    <div class="preview-panel">
+      <div class="preview-tabs">
+        <div class="preview-tab active" onclick="switchTab('rendered')">Rendered Preview</div>
+        <div class="preview-tab" onclick="switchTab('raw')">Markdown</div>
+      </div>
+      <div class="preview-content">
+        <div class="preview-pane active" id="pane-rendered"><div id="renderedPreview"></div></div>
+        <div class="preview-pane" id="pane-raw"><div class="raw-md" id="rawPreview"></div></div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- SETTINGS DRAWER -->
-
 <div class="settings-drawer" id="settingsDrawer">
   <div class="drawer-header">
     <h3>⚙️ GitHub Settings</h3>
@@ -358,7 +351,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 </div>
 
 <!-- CHEATSHEET -->
-
 <div class="cheatsheet-overlay" id="cheatsheet">
   <div class="cheatsheet-header">
     <h3>Markdown Cheatsheet</h3>
@@ -382,7 +374,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 </div>
 
 <!-- ADD ENTRY MODAL -->
-
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <div class="modal-title">Add New Entry</div>
@@ -406,7 +397,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 </div>
 
 <!-- NEW SESSION MODAL -->
-
 <div class="modal-overlay" id="newSessionModal">
   <div class="modal">
     <div class="modal-title">⚠️ Start a New Session?</div>
@@ -423,7 +413,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 </div>
 
 <!-- DELETE ENTRY MODAL -->
-
 <div class="modal-overlay" id="deleteEntryModal">
   <div class="modal">
     <div class="modal-title">⚠️ Delete Entry?</div>
@@ -436,7 +425,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 </div>
 
 <!-- DIRTY NAVIGATE MODAL -->
-
 <div class="modal-overlay" id="dirtyModal">
   <div class="modal">
     <div class="modal-title">⚠️ Unpublished Changes</div>
@@ -449,7 +437,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 </div>
 
 <!-- TOAST -->
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -846,296 +833,292 @@ function renderEditForm() {
       <label class="form-label">${label}</label>
       ${buildRteToolbar(id)}
       <textarea class="form-textarea rte-textarea" id="${id}" style="min-height:${minH}px" oninput="updateField('content',this.value)">${escHtml(value)}</textarea>
+    </div>`;
 
-```
-</div>`;
-```
+  let firstRow = '', otherFields = '';
+  if (entry.type==='recap') {
+    firstRow = `<div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Session title..." oninput="updateField('title',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
+    otherFields = richField('fe-content','Summary',entry.content,75);
+  } else if (entry.type==='text') {
+    firstRow = `<div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Entry title..." oninput="updateField('title',this.value)"></div>`;
+    otherFields = richField('fe-content','Content (Markdown supported)',entry.content,130);
+  } else if (entry.type==='quote') {
+    firstRow = `<div class="form-group"><label class="form-label">Author</label><input class="form-input" id="fe-author" value="${escHtml(entry.author)}" placeholder="Character name..." oninput="updateField('author',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
+    otherFields = richField('fe-content','Quote',entry.content,70);
+  } else if (entry.type==='conversation') {
+    firstRow = `<div class="form-group" style="flex:0 0 130px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
+    otherFields = `<div class="form-group"><label class="form-label">Dialogue (Speaker: Text, one per line)</label><textarea class="form-textarea" id="fe-content" style="min-height:130px" placeholder="DM: You see a figure...&#10;Kaelen: Can I make out details?" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>`;
+  } else if (entry.type==='location') {
+    firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Location name..." oninput="updateField('name',this.value)"></div><div class="form-group" style="flex:0 0 58px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="📍" oninput="updateField('emoji',this.value)"></div>`;
+    otherFields = `<div class="form-row"><div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div></div>${richField('fe-content','Description',entry.content,100)}`;
+  } else if (entry.type==='travel') {
+    firstRow = `<div class="form-group"><label class="form-label">From</label><input class="form-input" id="fe-from" value="${escHtml(entry.from)}" placeholder="New Haven" oninput="updateField('from',this.value)"></div><div class="form-group"><label class="form-label">To</label><input class="form-input" id="fe-to" value="${escHtml(entry.to)}" placeholder="Traitor Joe's" oninput="updateField('to',this.value)"></div>`;
+    otherFields = `<div class="form-row"><div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div></div>${richField('fe-content','Journey Notes',entry.content,85)}`;
+  } else if (entry.type==='character') {
+    firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div><div class="form-group" style="flex:0 0 58px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="🧙" oninput="updateField('emoji',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
+    otherFields = richField('fe-content','Description',entry.content,110);
+  }
 
-let firstRow = ‘’, otherFields = ‘’;
-if (entry.type===‘recap’) {
-firstRow = `<div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Session title..." oninput="updateField('title',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
-otherFields = richField(‘fe-content’,‘Summary’,entry.content,75);
-} else if (entry.type===‘text’) {
-firstRow = `<div class="form-group"><label class="form-label">Title</label><input class="form-input" id="fe-title" value="${escHtml(entry.title)}" placeholder="Entry title..." oninput="updateField('title',this.value)"></div>`;
-otherFields = richField(‘fe-content’,‘Content (Markdown supported)’,entry.content,130);
-} else if (entry.type===‘quote’) {
-firstRow = `<div class="form-group"><label class="form-label">Author</label><input class="form-input" id="fe-author" value="${escHtml(entry.author)}" placeholder="Character name..." oninput="updateField('author',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
-otherFields = richField(‘fe-content’,‘Quote’,entry.content,70);
-} else if (entry.type===‘conversation’) {
-firstRow = `<div class="form-group" style="flex:0 0 130px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
-otherFields = `<div class="form-group"><label class="form-label">Dialogue (Speaker: Text, one per line)</label><textarea class="form-textarea" id="fe-content" style="min-height:130px" placeholder="DM: You see a figure...&#10;Kaelen: Can I make out details?" oninput="updateField('content',this.value)">${escHtml(entry.content)}</textarea></div>`;
-} else if (entry.type===‘location’) {
-firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Location name..." oninput="updateField('name',this.value)"></div><div class="form-group" style="flex:0 0 58px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="📍" oninput="updateField('emoji',this.value)"></div>`;
-otherFields = `<div class="form-row"><div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div></div>${richField('fe-content','Description',entry.content,100)}`;
-} else if (entry.type===‘travel’) {
-firstRow = `<div class="form-group"><label class="form-label">From</label><input class="form-input" id="fe-from" value="${escHtml(entry.from)}" placeholder="New Haven" oninput="updateField('from',this.value)"></div><div class="form-group"><label class="form-label">To</label><input class="form-input" id="fe-to" value="${escHtml(entry.to)}" placeholder="Traitor Joe's" oninput="updateField('to',this.value)"></div>`;
-otherFields = `<div class="form-row"><div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div></div>${richField('fe-content','Journey Notes',entry.content,85)}`;
-} else if (entry.type===‘character’) {
-firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div><div class="form-group" style="flex:0 0 58px"><label class="form-label">Emoji</label><input class="form-input" id="fe-emoji" value="${escHtml(entry.emoji)}" placeholder="🧙" oninput="updateField('emoji',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>`;
-otherFields = richField(‘fe-content’,‘Description’,entry.content,110);
-}
+  const emojiSection = `<div class="form-group"><label class="form-label">Emoji Quick Insert</label><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Click in a field above, then tap an emoji</div><div class="emoji-picker"><div class="emoji-search-row"><input class="emoji-search-input" id="emojiSearch" type="text" placeholder="Search emoji… sword, fire, skull…" oninput="filterEmoji(this.value)" autocomplete="off"><button class="emoji-search-clear" onclick="clearEmojiSearch()">✕</button></div><div class="emoji-grid" id="emojiGrid"></div></div></div>`;
 
-const emojiSection = `<div class="form-group"><label class="form-label">Emoji Quick Insert</label><div style="font-size:11px;color:var(--text3);margin-bottom:3px;">Click in a field above, then tap an emoji</div><div class="emoji-picker"><div class="emoji-search-row"><input class="emoji-search-input" id="emojiSearch" type="text" placeholder="Search emoji… sword, fire, skull…" oninput="filterEmoji(this.value)" autocomplete="off"><button class="emoji-search-clear" onclick="clearEmojiSearch()">✕</button></div><div class="emoji-grid" id="emojiGrid"></div></div></div>`;
+  ea.innerHTML = `<div class="edit-form" id="editForm"><div class="form-row"><div class="form-group" style="flex:0 0 150px"><label class="form-label">Entry Type</label><select class="form-select" onchange="changeType(this.value)">${['recap','text','quote','conversation','location','travel','character'].map(t=>`<option value="${t}" ${t===entry.type?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}</select></div>${firstRow}</div>${otherFields}${emojiSection}</div>`;
 
-ea.innerHTML = `<div class="edit-form" id="editForm"><div class="form-row"><div class="form-group" style="flex:0 0 150px"><label class="form-label">Entry Type</label><select class="form-select" onchange="changeType(this.value)">${['recap','text','quote','conversation','location','travel','character'].map(t=>`<option value=”${t}” ${t===entry.type?‘selected’:’’}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}</select></div>${firstRow}</div>${otherFields}${emojiSection}</div>`;
+  // Focus tracking — exclude emoji search
+  ea.querySelectorAll('textarea, input[type=text], input:not([type])').forEach(el => {
+    if (el.id === 'emojiSearch') return;
+    el.addEventListener('focus', () => { window._lastFocusedField = el; });
+  });
 
-// Focus tracking — exclude emoji search
-ea.querySelectorAll(‘textarea, input[type=text], input:not([type])’).forEach(el => {
-if (el.id === ‘emojiSearch’) return;
-el.addEventListener(‘focus’, () => { window._lastFocusedField = el; });
-});
+  // Attach RTE keyboard shortcuts to content textarea
+  if (document.getElementById('fe-content')) attachRteKeyboard('fe-content');
 
-// Attach RTE keyboard shortcuts to content textarea
-if (document.getElementById(‘fe-content’)) attachRteKeyboard(‘fe-content’);
-
-populateEmojiGrid(EMOJI_FAVORITES);
+  populateEmojiGrid(EMOJI_FAVORITES);
 }
 
 function updateField(field, value) {
-const entry = entries.find(e=>e.id===selectedId);
-if (!entry) return;
-entry[field] = value;
-setDirty(true);
-renderList(); renderPreview();
+  const entry = entries.find(e=>e.id===selectedId);
+  if (!entry) return;
+  entry[field] = value;
+  setDirty(true);
+  renderList(); renderPreview();
 }
 
 function changeType(newType) {
-const entry = entries.find(e=>e.id===selectedId);
-if (!entry) return;
-const defaults = {…TYPE_DEFAULTS[newType]};
-[‘date’,‘content’,‘title’,‘name’].forEach(k=>{ if(entry[k]!==undefined&&defaults[k]!==undefined) defaults[k]=entry[k]; });
-Object.assign(entry, defaults);
-setDirty(true); renderList(); renderEditForm(); renderPreview();
+  const entry = entries.find(e=>e.id===selectedId);
+  if (!entry) return;
+  const defaults = {...TYPE_DEFAULTS[newType]};
+  ['date','content','title','name'].forEach(k=>{ if(entry[k]!==undefined&&defaults[k]!==undefined) defaults[k]=entry[k]; });
+  Object.assign(entry, defaults);
+  setDirty(true); renderList(); renderEditForm(); renderPreview();
 }
 
 // ─── EMOJI ────────────────────────────────────────────────────────────────────
 function insertEmoji(emoji) {
-const field = window._lastFocusedField;
-if (!field) return;
-const start = field.selectionStart, end = field.selectionEnd, val = field.value;
-field.value = val.slice(0,start) + emoji + val.slice(end);
-field.selectionStart = field.selectionEnd = start + emoji.length;
-field.dispatchEvent(new Event(‘input’)); field.focus();
+  const field = window._lastFocusedField;
+  if (!field) return;
+  const start = field.selectionStart, end = field.selectionEnd, val = field.value;
+  field.value = val.slice(0,start) + emoji + val.slice(end);
+  field.selectionStart = field.selectionEnd = start + emoji.length;
+  field.dispatchEvent(new Event('input')); field.focus();
 }
 function populateEmojiGrid(emojis) {
-const grid = document.getElementById(‘emojiGrid’);
-if (!grid) return;
-if (!emojis.length) { grid.innerHTML = ‘<div class="emoji-none">No emoji found</div>’; return; }
-grid.innerHTML = emojis.map(em=>`<button class="emoji-btn" onclick="insertEmoji('${em}')" title="${em}">${em}</button>`).join(’’);
+  const grid = document.getElementById('emojiGrid');
+  if (!grid) return;
+  if (!emojis.length) { grid.innerHTML = '<div class="emoji-none">No emoji found</div>'; return; }
+  grid.innerHTML = emojis.map(em=>`<button class="emoji-btn" onclick="insertEmoji('${em}')" title="${em}">${em}</button>`).join('');
 }
 function filterEmoji(query) {
-const q = query.trim().toLowerCase();
-if (!q) { populateEmojiGrid(EMOJI_FAVORITES); return; }
-const results = []; const seen = new Set();
-for (const [code, char] of Object.entries(GH_EMOJI)) {
-if (code.includes(q)) { if (!seen.has(char)) { seen.add(char); results.push(char); } }
-if (results.length >= 80) break;
-}
-populateEmojiGrid(results);
+  const q = query.trim().toLowerCase();
+  if (!q) { populateEmojiGrid(EMOJI_FAVORITES); return; }
+  const results = []; const seen = new Set();
+  for (const [code, char] of Object.entries(GH_EMOJI)) {
+    if (code.includes(q)) { if (!seen.has(char)) { seen.add(char); results.push(char); } }
+    if (results.length >= 80) break;
+  }
+  populateEmojiGrid(results);
 }
 function clearEmojiSearch() {
-const s = document.getElementById(‘emojiSearch’); if (s) s.value = ‘’;
-populateEmojiGrid(EMOJI_FAVORITES);
+  const s = document.getElementById('emojiSearch'); if (s) s.value = '';
+  populateEmojiGrid(EMOJI_FAVORITES);
 }
 
 // ─── ADD / DELETE ─────────────────────────────────────────────────────────────
-function openAddModal() { document.getElementById(‘addModal’).classList.add(‘open’); }
-function closeAddModal() { document.getElementById(‘addModal’).classList.remove(‘open’); }
+function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+function closeAddModal() { document.getElementById('addModal').classList.remove('open'); }
 function confirmAddEntry() {
-const type = document.getElementById(‘newEntryType’).value;
-const entry = { id:uid(), …JSON.parse(JSON.stringify(TYPE_DEFAULTS[type])) };
-entries.push(entry); closeAddModal(); setDirty(true); selectEntry(entry.id);
+  const type = document.getElementById('newEntryType').value;
+  const entry = { id:uid(), ...JSON.parse(JSON.stringify(TYPE_DEFAULTS[type])) };
+  entries.push(entry); closeAddModal(); setDirty(true); selectEntry(entry.id);
 }
 function openNewSessionModal() {
-document.getElementById(‘nsNewNum’).value = (parseInt(document.getElementById(‘sessionNum’).value)||1)+1;
-document.getElementById(‘nsEntryCount’).textContent = entries.length;
-document.getElementById(‘newSessionModal’).classList.add(‘open’);
+  document.getElementById('nsNewNum').value = (parseInt(document.getElementById('sessionNum').value)||1)+1;
+  document.getElementById('nsEntryCount').textContent = entries.length;
+  document.getElementById('newSessionModal').classList.add('open');
 }
-function closeNewSessionModal() { document.getElementById(‘newSessionModal’).classList.remove(‘open’); }
+function closeNewSessionModal() { document.getElementById('newSessionModal').classList.remove('open'); }
 function confirmNewSession() {
-document.getElementById(‘sessionNum’).value = parseInt(document.getElementById(‘nsNewNum’).value)||1;
-entries=[]; selectedId=null; currentFileSha=null;
-setDirty(false); closeNewSessionModal(); renderList(); renderEditForm(); renderPreview();
+  document.getElementById('sessionNum').value = parseInt(document.getElementById('nsNewNum').value)||1;
+  entries=[]; selectedId=null; currentFileSha=null;
+  setDirty(false); closeNewSessionModal(); renderList(); renderEditForm(); renderPreview();
 }
-function deleteEntry(id,e) { e.stopPropagation(); entryToDelete=id; document.getElementById(‘deleteEntryModal’).classList.add(‘open’); }
-function closeDeleteModal() { entryToDelete=null; document.getElementById(‘deleteEntryModal’).classList.remove(‘open’); }
+function deleteEntry(id,e) { e.stopPropagation(); entryToDelete=id; document.getElementById('deleteEntryModal').classList.add('open'); }
+function closeDeleteModal() { entryToDelete=null; document.getElementById('deleteEntryModal').classList.remove('open'); }
 function confirmDeleteEntry() {
-if (!entryToDelete) return;
-entries = entries.filter(en=>en.id!==entryToDelete);
-if (selectedId===entryToDelete) { selectedId=entries.length?entries[0].id:null; renderEditForm(); }
-setDirty(true); renderList(); renderPreview(); closeDeleteModal();
+  if (!entryToDelete) return;
+  entries = entries.filter(en=>en.id!==entryToDelete);
+  if (selectedId===entryToDelete) { selectedId=entries.length?entries[0].id:null; renderEditForm(); }
+  setDirty(true); renderList(); renderPreview(); closeDeleteModal();
 }
 
 // ─── DRAG & DROP ──────────────────────────────────────────────────────────────
-function onDragStart(e) { dragSrcIndex=parseInt(this.dataset.index); this.classList.add(‘dragging’); e.dataTransfer.effectAllowed=‘move’; }
-function onDragOver(e) { e.preventDefault(); document.querySelectorAll(’.entry-card’).forEach(c=>c.classList.remove(‘drag-over’)); this.classList.add(‘drag-over’); }
+function onDragStart(e) { dragSrcIndex=parseInt(this.dataset.index); this.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+function onDragOver(e) { e.preventDefault(); document.querySelectorAll('.entry-card').forEach(c=>c.classList.remove('drag-over')); this.classList.add('drag-over'); }
 function onDrop(e) { e.preventDefault(); const dest=parseInt(this.dataset.index); if(dragSrcIndex===null||dragSrcIndex===dest)return; const item=entries.splice(dragSrcIndex,1)[0]; entries.splice(dest,0,item); setDirty(true); renderList(); renderPreview(); }
-function onDragEnd() { document.querySelectorAll(’.entry-card’).forEach(c=>c.classList.remove(‘dragging’,‘drag-over’)); dragSrcIndex=null; }
+function onDragEnd() { document.querySelectorAll('.entry-card').forEach(c=>c.classList.remove('dragging','drag-over')); dragSrcIndex=null; }
 
 // ─── PREVIEW ──────────────────────────────────────────────────────────────────
 function switchTab(tab) {
-activeTab=tab;
-document.querySelectorAll(’.preview-tab’).forEach((t,i)=>t.classList.toggle(‘active’,[‘rendered’,‘raw’][i]===tab));
-document.getElementById(‘pane-rendered’).classList.toggle(‘active’,tab===‘rendered’);
-document.getElementById(‘pane-raw’).classList.toggle(‘active’,tab===‘raw’);
-if (selectedId) requestAnimationFrame(()=>scrollAndHighlight(selectedId));
+  activeTab=tab;
+  document.querySelectorAll('.preview-tab').forEach((t,i)=>t.classList.toggle('active',['rendered','raw'][i]===tab));
+  document.getElementById('pane-rendered').classList.toggle('active',tab==='rendered');
+  document.getElementById('pane-raw').classList.toggle('active',tab==='raw');
+  if (selectedId) requestAnimationFrame(()=>scrollAndHighlight(selectedId));
 }
 function renderPreview() { renderRendered(); renderRaw(); }
 
 function renderMarkdown(text) {
-if (!text) return ‘’;
-return text
-.replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’)
-.replace(/^## (.+)$/gm,’<h2>$1</h2>’).replace(/^### (.+)$/gm,’<h3>$1</h3>’).replace(/^# (.+)$/gm,’<h2>$1</h2>’)
-.replace(/~(.+?)~/g,’<del>$1</del>’).replace(/**(.+?)**/g,’<strong>$1</strong>’).replace(/*(.+?)*/g,’<em>$1</em>’)
-.replace(/`(.+?)`/g,’<code style="background:var(--bg4);padding:1px 4px;border-radius:3px;font-size:11px">$1</code>’)
-.replace(/^> (.+)$/gm,’<blockquote style="border-left:2px solid var(--border);padding-left:8px;color:var(--text3);margin:4px 0">$1</blockquote>’)
-.replace(/^* (.+)$/gm,’<li>$1</li>’).replace(/^1. (.+)$/gm,’<li>$1</li>’)
-.replace(/(<li>.*</li>)/gs,’<ul style="padding-left:16px">$1</ul>’)
-.replace(/\n\n+/g,’</p><p>’).replace(/\n/g,’<br>’)
-.replace(/^(?!<[hup]|<block|<code)(.+)/,’<p>$1</p>’);
+  if (!text) return '';
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^# (.+)$/gm,'<h2>$1</h2>')
+    .replace(/~~(.+?)~~/g,'<del>$1</del>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/`(.+?)`/g,'<code style="background:var(--bg4);padding:1px 4px;border-radius:3px;font-size:11px">$1</code>')
+    .replace(/^> (.+)$/gm,'<blockquote style="border-left:2px solid var(--border);padding-left:8px;color:var(--text3);margin:4px 0">$1</blockquote>')
+    .replace(/^\* (.+)$/gm,'<li>$1</li>').replace(/^1\. (.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs,'<ul style="padding-left:16px">$1</ul>')
+    .replace(/\n\n+/g,'</p><p>').replace(/\n/g,'<br>')
+    .replace(/^(?!<[hup]|<block|<code)(.+)/,'<p>$1</p>');
 }
 
 function renderRendered() {
-const sn = document.getElementById(‘sessionNum’).value;
-const out = document.getElementById(‘renderedPreview’);
-if (!entries.length) { out.innerHTML=’<div style="text-align:center;padding:40px;color:var(--text3)">No entries yet — add some above!</div>’; return; }
-let html=’’;
-entries.forEach(e=>{
-let inner=’’;
-if (e.type===‘recap’) {
-inner=`<div class="rp-session-header"><div class="rp-session-num">Session ${sn}</div><div class="rp-session-title">${escHtml(e.title||'Session Recap')}</div>${e.date?`<div class="rp-session-date">${escHtml(e.date)}</div>`:''} ${e.content?`<div class="rp-session-body">${renderMarkdown(e.content)}</div>`:''}</div>`;
-} else if (e.type===‘text’) {
-inner=`<div class="rp-card"><div class="rp-card-header"><span class="rp-card-icon">📝</span><div class="rp-card-title">${escHtml(e.title||'Note')}</div></div><div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
-} else if (e.type===‘quote’) {
-inner=`<div class="rp-quote"><div class="rp-quote-text">${escHtml(e.content||'...')}</div>${e.author?`<div class="rp-quote-author">— ${escHtml(e.author)}</div>`:''}</div>`;
-} else if (e.type===‘conversation’) {
-const lines=(e.content||’’).split(’\n’).filter(Boolean);
-const lh=lines.map(l=>{const m=l.match(/^([^:]+):\s*(.*)$/);return m?`<div class="rp-convo-line"><span class="rp-convo-speaker">${escHtml(m[1])}:</span><span class="rp-convo-text">${escHtml(m[2])}</span></div>`:`<div class="rp-convo-line"><span class="rp-convo-text">${escHtml(l)}</span></div>`;}).join(’’);
-inner=`<div class="rp-conversation"><div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">🗣️ Conversation${e.date?' · '+escHtml(e.date):''}</div>${lh}</div>`;
-} else if (e.type===‘location’) {
-inner=`<div class="rp-location"><div class="rp-location-name">${e.emoji||'📍'} ${escHtml(e.name||'Location')}</div>${e.characters?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px">Characters: ${escHtml(e.characters)}</div>`:''}<div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
-} else if (e.type===‘travel’) {
-inner=`<div class="rp-travel"><div style="flex:1"><div class="rp-travel-route"><span class="rp-travel-from">⛵ ${escHtml(e.from||'?')}</span><span class="rp-travel-arrow"> → </span><span class="rp-travel-to">${escHtml(e.to||'?')}</span></div>${e.content?`<div class="rp-travel-body">${renderMarkdown(e.content)}</div>`:''}</div></div>`;
-} else if (e.type===‘character’) {
-inner=`<div class="rp-char"><div class="rp-char-avatar">${e.emoji||'🧙'}</div><div><div class="rp-char-name">${escHtml(e.name||'Character')}</div>${e.date?`<div style="font-size:11px;color:var(--text3)">${escHtml(e.date)}</div>`:''}<div class="rp-char-body">${renderMarkdown(e.content)}</div></div></div>`;
-}
-html+=`<div class="rp-entry-wrap" data-entry-id="${e.id}" style="margin-bottom:10px">${inner}</div>`;
-});
-out.innerHTML=html;
+  const sn = document.getElementById('sessionNum').value;
+  const out = document.getElementById('renderedPreview');
+  if (!entries.length) { out.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)">No entries yet — add some above!</div>'; return; }
+  let html='';
+  entries.forEach(e=>{
+    let inner='';
+    if (e.type==='recap') {
+      inner=`<div class="rp-session-header"><div class="rp-session-num">Session ${sn}</div><div class="rp-session-title">${escHtml(e.title||'Session Recap')}</div>${e.date?`<div class="rp-session-date">${escHtml(e.date)}</div>`:''} ${e.content?`<div class="rp-session-body">${renderMarkdown(e.content)}</div>`:''}</div>`;
+    } else if (e.type==='text') {
+      inner=`<div class="rp-card"><div class="rp-card-header"><span class="rp-card-icon">📝</span><div class="rp-card-title">${escHtml(e.title||'Note')}</div></div><div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
+    } else if (e.type==='quote') {
+      inner=`<div class="rp-quote"><div class="rp-quote-text">${escHtml(e.content||'...')}</div>${e.author?`<div class="rp-quote-author">— ${escHtml(e.author)}</div>`:''}</div>`;
+    } else if (e.type==='conversation') {
+      const lines=(e.content||'').split('\n').filter(Boolean);
+      const lh=lines.map(l=>{const m=l.match(/^([^:]+):\s*(.*)$/);return m?`<div class="rp-convo-line"><span class="rp-convo-speaker">${escHtml(m[1])}:</span><span class="rp-convo-text">${escHtml(m[2])}</span></div>`:`<div class="rp-convo-line"><span class="rp-convo-text">${escHtml(l)}</span></div>`;}).join('');
+      inner=`<div class="rp-conversation"><div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">🗣️ Conversation${e.date?' · '+escHtml(e.date):''}</div>${lh}</div>`;
+    } else if (e.type==='location') {
+      inner=`<div class="rp-location"><div class="rp-location-name">${e.emoji||'📍'} ${escHtml(e.name||'Location')}</div>${e.characters?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px">Characters: ${escHtml(e.characters)}</div>`:''}<div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
+    } else if (e.type==='travel') {
+      inner=`<div class="rp-travel"><div style="flex:1"><div class="rp-travel-route"><span class="rp-travel-from">⛵ ${escHtml(e.from||'?')}</span><span class="rp-travel-arrow"> → </span><span class="rp-travel-to">${escHtml(e.to||'?')}</span></div>${e.content?`<div class="rp-travel-body">${renderMarkdown(e.content)}</div>`:''}</div></div>`;
+    } else if (e.type==='character') {
+      inner=`<div class="rp-char"><div class="rp-char-avatar">${e.emoji||'🧙'}</div><div><div class="rp-char-name">${escHtml(e.name||'Character')}</div>${e.date?`<div style="font-size:11px;color:var(--text3)">${escHtml(e.date)}</div>`:''}<div class="rp-char-body">${renderMarkdown(e.content)}</div></div></div>`;
+    }
+    html+=`<div class="rp-entry-wrap" data-entry-id="${e.id}" style="margin-bottom:10px">${inner}</div>`;
+  });
+  out.innerHTML=html;
 }
 
 function renderRaw() {
-const c = document.getElementById(‘rawPreview’);
-if (!entries.length) { c.textContent=’’; return; }
-c.innerHTML=’’;
-entries.forEach((e,i)=>{
-const span=document.createElement(‘span’);
-span.className=‘raw-block’; span.dataset.entryId=e.id;
-span.textContent=(i>0?’\n\n—\n\n’:’’)+buildEntryMarkdown(e);
-c.appendChild(span);
-});
+  const c = document.getElementById('rawPreview');
+  if (!entries.length) { c.textContent=''; return; }
+  c.innerHTML='';
+  entries.forEach((e,i)=>{
+    const span=document.createElement('span');
+    span.className='raw-block'; span.dataset.entryId=e.id;
+    span.textContent=(i>0?'\n\n---\n\n':'')+buildEntryMarkdown(e);
+    c.appendChild(span);
+  });
 }
 
 function scrollAndHighlight(id) {
-if (!id) return;
-document.querySelectorAll(’.rp-entry-wrap’).forEach(el=>el.classList.remove(‘rp-highlighted’));
-const re = document.getElementById(‘pane-rendered’).querySelector(`[data-entry-id="${id}"]`);
-if (re) { re.classList.add(‘rp-highlighted’); re.scrollIntoView({behavior:‘smooth’,block:‘nearest’}); }
-document.querySelectorAll(’.raw-block’).forEach(el=>el.classList.remove(‘raw-highlighted’));
-const raw = document.getElementById(‘pane-raw’).querySelector(`[data-entry-id="${id}"]`);
-if (raw) { raw.classList.add(‘raw-highlighted’); raw.scrollIntoView({behavior:‘smooth’,block:‘nearest’}); }
+  if (!id) return;
+  document.querySelectorAll('.rp-entry-wrap').forEach(el=>el.classList.remove('rp-highlighted'));
+  const re = document.getElementById('pane-rendered').querySelector(`[data-entry-id="${id}"]`);
+  if (re) { re.classList.add('rp-highlighted'); re.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  document.querySelectorAll('.raw-block').forEach(el=>el.classList.remove('raw-highlighted'));
+  const raw = document.getElementById('pane-raw').querySelector(`[data-entry-id="${id}"]`);
+  if (raw) { raw.classList.add('raw-highlighted'); raw.scrollIntoView({behavior:'smooth',block:'nearest'}); }
 }
 
 // ─── MARKDOWN GENERATION ──────────────────────────────────────────────────────
 function buildEntryMarkdown(e) {
-if (e.type===‘recap’)        return `Type: recap\nDate: ${e.date||''}\nTitle: ${e.title||''}\n\n${e.content||''}`;
-if (e.type===‘text’)         return `Type: text\nTitle: ${e.title||''}\n${e.content||''}`;
-if (e.type===‘quote’)        return `Type: quote\nDate: ${e.date||''}\nAuthor: ${e.author||''}\n\n${e.content||''}`;
-if (e.type===‘conversation’) return `Type: conversation\nDate: ${e.date||''}\n\n${e.content||''}`;
-if (e.type===‘location’)     return `type: location\nName: ${e.name||''}\nemoji: ${e.emoji||'📍'}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
-if (e.type===‘travel’)       return `type: travel\nfrom: ${e.from||''}\nTo: ${e.to||''}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
-if (e.type===‘character’)    return `Type: character\nName: ${e.name||''}\nemoji: ${e.emoji||'🧙'}\nDate: ${e.date||''}\n\n${e.content||''}`;
-return ‘’;
+  if (e.type==='recap')        return `Type: recap\nDate: ${e.date||''}\nTitle: ${e.title||''}\n\n${e.content||''}`;
+  if (e.type==='text')         return `Type: text\nTitle: ${e.title||''}\n${e.content||''}`;
+  if (e.type==='quote')        return `Type: quote\nDate: ${e.date||''}\nAuthor: ${e.author||''}\n\n${e.content||''}`;
+  if (e.type==='conversation') return `Type: conversation\nDate: ${e.date||''}\n\n${e.content||''}`;
+  if (e.type==='location')     return `type: location\nName: ${e.name||''}\nemoji: ${e.emoji||'📍'}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
+  if (e.type==='travel')       return `type: travel\nfrom: ${e.from||''}\nTo: ${e.to||''}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
+  if (e.type==='character')    return `Type: character\nName: ${e.name||''}\nemoji: ${e.emoji||'🧙'}\nDate: ${e.date||''}\n\n${e.content||''}`;
+  return '';
 }
-function buildMarkdown() { return entries.map(e=>buildEntryMarkdown(e)).join(’\n\n—\n\n’); }
+function buildMarkdown() { return entries.map(e=>buildEntryMarkdown(e)).join('\n\n---\n\n'); }
 
 // ─── DOWNLOAD & IMPORT ────────────────────────────────────────────────────────
 function downloadMarkdown() {
-const n=document.getElementById(‘sessionNum’).value;
-const blob=new Blob([buildMarkdown()],{type:‘text/markdown’});
-const url=URL.createObjectURL(blob);
-const a=document.createElement(‘a’); a.href=url; a.download=`session-${n}.md`; a.click();
-URL.revokeObjectURL(url);
+  const n=document.getElementById('sessionNum').value;
+  const blob=new Blob([buildMarkdown()],{type:'text/markdown'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`session-${n}.md`; a.click();
+  URL.revokeObjectURL(url);
 }
 
-const KNOWN_KEYS={recap:[‘date’,‘title’],text:[‘title’],quote:[‘date’,‘author’],conversation:[‘date’],location:[‘name’,‘emoji’,‘date’,‘characters’],travel:[‘from’,‘to’,‘date’,‘characters’],character:[‘name’,‘emoji’,‘date’]};
+const KNOWN_KEYS={recap:['date','title'],text:['title'],quote:['date','author'],conversation:['date'],location:['name','emoji','date','characters'],travel:['from','to','date','characters'],character:['name','emoji','date']};
 
 function handleImport(event) {
-const file=event.target.files[0]; if (!file) return;
-const m=file.name.match(/session-(\d+).md/); if (m) document.getElementById(‘sessionNum’).value=m[1];
-const r=new FileReader();
-r.onload=e=>{ parseMarkdownToEntries(e.target.result); event.target.value=’’; };
-r.readAsText(file);
+  const file=event.target.files[0]; if (!file) return;
+  const m=file.name.match(/session-(\d+)\.md/); if (m) document.getElementById('sessionNum').value=m[1];
+  const r=new FileReader();
+  r.onload=e=>{ parseMarkdownToEntries(e.target.result); event.target.value=''; };
+  r.readAsText(file);
 }
 
 function parseMarkdownToEntries(md) {
-const blocks=md.split(/\n\n—\n\n/);
-const newEntries=[];
-blocks.forEach(block=>{
-if (!block.trim()) return;
-const lines=block.split(’\n’);
-const tm=lines[0].match(/^type:\s*(.+)$/i); if (!tm) return;
-const type=tm[1].trim().toLowerCase();
-const entry={id:uid(),type};
-let contentLines=[], parsingMeta=true;
-const vk=KNOWN_KEYS[type]||[];
-for (let i=1;i<lines.length;i++) {
-const line=lines[i];
-if (parsingMeta) {
-if (line.trim()===’’) { parsingMeta=false; continue; }
-const mm=line.match(/^([a-z]+):\s*(.*)$/i);
-if (mm&&vk.includes(mm[1].trim().toLowerCase())) { entry[mm[1].trim().toLowerCase()]=mm[2].trim(); }
-else { parsingMeta=false; contentLines.push(line); }
-} else { contentLines.push(line); }
-}
-entry.content=contentLines.join(’\n’).trim();
-const defaults=TYPE_DEFAULTS[type]||{};
-for (let k in defaults) if (entry[k]===undefined) entry[k]=’’;
-newEntries.push(entry);
-});
-if (newEntries.length) {
-entries=newEntries; selectedId=entries[0].id; currentFileSha=null;
-setDirty(false); renderList(); renderEditForm(); renderPreview();
-} else { showToast(‘No valid entries found in file’,‘error’); }
+  const blocks=md.split(/\n\n---\n\n/);
+  const newEntries=[];
+  blocks.forEach(block=>{
+    if (!block.trim()) return;
+    const lines=block.split('\n');
+    const tm=lines[0].match(/^type:\s*(.+)$/i); if (!tm) return;
+    const type=tm[1].trim().toLowerCase();
+    const entry={id:uid(),type};
+    let contentLines=[], parsingMeta=true;
+    const vk=KNOWN_KEYS[type]||[];
+    for (let i=1;i<lines.length;i++) {
+      const line=lines[i];
+      if (parsingMeta) {
+        if (line.trim()==='') { parsingMeta=false; continue; }
+        const mm=line.match(/^([a-z]+):\s*(.*)$/i);
+        if (mm&&vk.includes(mm[1].trim().toLowerCase())) { entry[mm[1].trim().toLowerCase()]=mm[2].trim(); }
+        else { parsingMeta=false; contentLines.push(line); }
+      } else { contentLines.push(line); }
+    }
+    entry.content=contentLines.join('\n').trim();
+    const defaults=TYPE_DEFAULTS[type]||{};
+    for (let k in defaults) if (entry[k]===undefined) entry[k]='';
+    newEntries.push(entry);
+  });
+  if (newEntries.length) {
+    entries=newEntries; selectedId=entries[0].id; currentFileSha=null;
+    setDirty(false); renderList(); renderEditForm(); renderPreview();
+  } else { showToast('No valid entries found in file','error'); }
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 function init() {
-// Auto-connect if settings exist
-if (isGhConfigured()) testConnection();
-else updateConnUI(‘disconnected’,‘Not configured’);
+  // Auto-connect if settings exist
+  if (isGhConfigured()) testConnection();
+  else updateConnUI('disconnected','Not configured');
 
-entries = [
-{ id:uid(), type:‘recap’, date:‘Jan 03, 2026’, title:‘Setting Sail to learn of our Bounties’,
-content:`Session 2 took us to the high seas on The Wedding Dowry to the isle of Traitor Joe's where we learn the details of our bounties.\n\n## 🌟 Key Details\n\n* **⚓ The Wedding Dowry**: The ship we are aboard\n* **🏴‍☠️ Traitor Joe's**: An island safe harbor for pirates. Haggling is REQUIRED.\n* **🦀 The Rusty Crab**: A divey pirate bar.` },
-{ id:uid(), type:‘text’, title:‘Mulduck Awakens’,
-content:`We find ourselves at a wedding where **Mulduck** is the officiant. All guests have his face — and hold his orb.\n\nThe deck hand, **Speedy Pete**, finds Mulduck on the deck of **The Wedding Dowry** surrounded by runes scorched into the wood.\n\n## Mulduck's orb 🔮 has changed color and now controls time.` },
-{ id:uid(), type:‘quote’, date:‘Jan 03, 2026’, author:‘Mulduck’,
-content:`That bird wasn't alive so TECHNICALLY I didn't kill it.` },
-{ id:uid(), type:‘travel’, from:‘New Haven’, to:“Traitor Joe’s”, date:‘Jan 03, 2026’, characters:‘Luigi, Clovis, Mulduck, Quulaihr’,
-content:`We set sail for Traitor Joe's to learn of our bounties.` },
-{ id:uid(), type:‘location’, name:“Who’s Askin?”, emoji:‘🤫’, date:‘Jan 03, 2026’, characters:‘Luigi’,
-content:`Luigi gets a drink and spots someone with a shoulder tattoo matching Clovis's sigil. He reads minds and learns of **The Golden Grin** 🙂.` },
-{ id:uid(), type:‘conversation’, date:‘Jan 03, 2026’,
-content:`Clovis: Do you know a fellow named Luigi?\nGem: Zim Grayson is headmaster now and he SUUUUUUUCKS.\nCrystal: Killed the last one and ran. Infamous.\nClovis: Fascinating. Who wants another drink?` }
-];
-renderList();
-renderPreview();
+  entries = [
+    { id:uid(), type:'recap', date:'Jan 03, 2026', title:'Setting Sail to learn of our Bounties',
+      content:`Session 2 took us to the high seas on The Wedding Dowry to the isle of Traitor Joe's where we learn the details of our bounties.\n\n## 🌟 Key Details\n\n* **⚓ The Wedding Dowry**: The ship we are aboard\n* **🏴‍☠️ Traitor Joe's**: An island safe harbor for pirates. Haggling is REQUIRED.\n* **🦀 The Rusty Crab**: A divey pirate bar.` },
+    { id:uid(), type:'text', title:'Mulduck Awakens',
+      content:`We find ourselves at a wedding where **Mulduck** is the officiant. All guests have his face — and hold his orb.\n\nThe deck hand, **Speedy Pete**, finds Mulduck on the deck of **The Wedding Dowry** surrounded by runes scorched into the wood.\n\n## Mulduck's orb 🔮 has changed color and now controls time.` },
+    { id:uid(), type:'quote', date:'Jan 03, 2026', author:'Mulduck',
+      content:`That bird wasn't alive so TECHNICALLY I didn't kill it.` },
+    { id:uid(), type:'travel', from:'New Haven', to:"Traitor Joe's", date:'Jan 03, 2026', characters:'Luigi, Clovis, Mulduck, Quulaihr',
+      content:`We set sail for Traitor Joe's to learn of our bounties.` },
+    { id:uid(), type:'location', name:"Who's Askin?", emoji:'🤫', date:'Jan 03, 2026', characters:'Luigi',
+      content:`Luigi gets a drink and spots someone with a shoulder tattoo matching Clovis's sigil. He reads minds and learns of **The Golden Grin** 🙂.` },
+    { id:uid(), type:'conversation', date:'Jan 03, 2026',
+      content:`Clovis: Do you know a fellow named Luigi?\nGem: Zim Grayson is headmaster now and he SUUUUUUUCKS.\nCrystal: Killed the last one and ran. Infamous.\nClovis: Fascinating. Who wants another drink?` }
+  ];
+  renderList();
+  renderPreview();
 }
 
 init();
 </script>
-
 </body>
 </html>
