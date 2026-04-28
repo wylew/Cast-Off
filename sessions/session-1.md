@@ -51,3 +51,13 @@ The Tide Caller agent stood with the artifact in hand—a crystalline orb that p
 "You shouldn't have come here," the agent said, their voice carrying an unnatural echo.
 
 And then the fighting began.
+
+---
+
+type: travel
+variant: land
+from: Seattle
+To: Seaside
+Date: Dec 20, 2024
+characters: Luigi, Clovis
+the long and winding road...
