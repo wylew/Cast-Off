@@ -199,7 +199,6 @@
       background: var(--text3);
     }
 
-    /* SETTINGS DRAWER */
     .drawer {
       position: fixed;
       top: 0;
@@ -208,7 +207,7 @@
       height: 100vh;
       background: var(--bg2);
       border-left: 1px solid var(--border);
-      z-index: 100;
+      z-index: 2000;
       transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
@@ -216,7 +215,7 @@
     }
 
     .drawer.open {
-      right: 0;
+      right: 0 !important;
     }
 
     .drawer-header {
@@ -1068,13 +1067,13 @@
     /* CHEATSHEET SLIDEOUT */
     .cheatsheet-overlay {
       position: fixed;
-      top: 52px;
+      top: 0;
       right: -400px;
       width: 400px;
       bottom: 0;
       background: var(--bg2);
       border-left: 1px solid var(--border);
-      z-index: 50;
+      z-index: 2000;
       transition: right 0.3s ease;
       display: flex;
       flex-direction: column;
@@ -1082,7 +1081,7 @@
     }
 
     .cheatsheet-overlay.open {
-      right: 0;
+      right: 0 !important;
     }
 
     .cheatsheet-header {
@@ -1154,6 +1153,96 @@
 </head>
 
 <body>
+  <!-- Settings Drawer -->
+  <div class="drawer" id="settingsDrawer">
+    <div class="drawer-header">
+      <h3>GitHub Settings</h3>
+      <button class="btn" onclick="closeSettings()" style="padding:4px; border:none; background:none;">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="drawer-section">
+        <div class="drawer-section-title">Connection Status</div>
+        <div class="conn-status-row">
+          <div class="conn-dot disconnected" id="drawerConnDot"></div>
+          <span id="drawerConnLabel">Not configured</span>
+        </div>
+        <button class="btn" onclick="testConnection()" style="align-self:flex-start;">Test Connection</button>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-section-title">Repository</div>
+        <div class="form-group">
+          <label class="form-label">Owner (GitHub username)</label>
+          <input class="form-input" id="ghOwner" placeholder="e.g. wylew" oninput="saveGhSettings()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Repository Name</label>
+          <input class="form-input" id="ghRepo" placeholder="e.g. Cast-Off" oninput="saveGhSettings()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Branch</label>
+          <input class="form-input" id="ghBranch" placeholder="main" oninput="saveGhSettings()">
+        </div>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-section-title">Authentication</div>
+        <div class="form-group">
+          <label class="form-label">Personal Access Token</label>
+          <input class="form-input" id="ghToken" type="password" placeholder="ghp_..." oninput="saveGhSettings()">
+        </div>
+        <p class="hint-text">Token needs <strong>repo</strong> scope. Stored in localStorage only.</p>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-section-title">Sessions</div>
+        <button class="btn" onclick="refreshSessionList()" style="align-self:flex-start;">↻ Refresh List</button>
+        <p class="hint-text" id="sessionListStatus">Connect to GitHub to see session files.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Markdown Cheatsheet Slideout -->
+  <div class="cheatsheet-overlay" id="cheatsheet">
+    <div class="cheatsheet-header">
+      <h3>Markdown Cheatsheet</h3>
+      <button class="cheatsheet-close" onclick="toggleCheatsheet()">✕</button>
+    </div>
+    <div class="cheatsheet-content">
+      <h4>Headers</h4>
+      <pre># H1 Header
+## H2 Header
+### H3 Header</pre>
+
+      <h4>Emphasis</h4>
+      <pre>*Italic* or _Italic_
+**Bold** or __Bold__
+***Bold Italic***</pre>
+
+      <h4>Lists</h4>
+      <pre>- Item 1
+- Item 2
+  - Subitem
+
+1. First item
+2. Second item</pre>
+
+      <h4>Links &amp; Images</h4>
+      <pre>[Link Text](URL)
+![Image Alt](URL)</pre>
+
+      <h4>Blockquotes</h4>
+      <pre>&gt; This is a quote
+&gt; Multiple lines</pre>
+
+      <h4>Code</h4>
+      <pre>`Inline code`
+
+```
+Block code
+```</pre>
+    </div>
+  </div>
 
   <div class="topbar">
     <div class="topbar-title">
@@ -1237,48 +1326,6 @@
     </div>
   </div>
 
-  <!-- Markdown Cheatsheet Slideout -->
-  <div class="cheatsheet-overlay" id="cheatsheet">
-    <div class="cheatsheet-header">
-      <h3>Markdown Cheatsheet</h3>
-      <button class="cheatsheet-close" onclick="toggleCheatsheet()">✕</button>
-    </div>
-    <div class="cheatsheet-content">
-      <h4>Headers</h4>
-      <pre># H1 Header
-## H2 Header
-### H3 Header</pre>
-
-      <h4>Emphasis</h4>
-      <pre>*Italic* or _Italic_
-**Bold** or __Bold__
-***Bold Italic***</pre>
-
-      <h4>Lists</h4>
-      <pre>- Item 1
-- Item 2
-  - Subitem
-
-1. First item
-2. Second item</pre>
-
-      <h4>Links &amp; Images</h4>
-      <pre>[Link Text](URL)
-![Image Alt](URL)</pre>
-
-      <h4>Blockquotes</h4>
-      <pre>&gt; This is a quote
-&gt; Multiple lines</pre>
-
-      <h4>Code</h4>
-      <pre>`Inline code`
-
-```
-Block code
-```</pre>
-    </div>
-  </div>
-
   <!-- Add Entry Modal -->
   <div class="modal-overlay" id="addModal">
     <div class="modal">
@@ -1331,55 +1378,6 @@ Block code
       <div class="modal-footer">
         <button class="btn" onclick="closeDeleteModal()">Cancel</button>
         <button class="btn btn-danger" onclick="confirmDeleteEntry()">Delete</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Settings Drawer -->
-  <div class="drawer" id="settingsDrawer">
-    <div class="drawer-header">
-      <h3>GitHub Settings</h3>
-      <button class="btn" onclick="closeSettings()" style="padding:4px; border:none; background:none;">✕</button>
-    </div>
-    <div class="drawer-body">
-      <div class="drawer-section">
-        <div class="drawer-section-title">Connection Status</div>
-        <div class="conn-status-row">
-          <div class="conn-dot disconnected" id="drawerConnDot"></div>
-          <span id="drawerConnLabel">Not configured</span>
-        </div>
-        <button class="btn" onclick="testConnection()" style="align-self:flex-start;">Test Connection</button>
-      </div>
-
-      <div class="drawer-section">
-        <div class="drawer-section-title">Repository</div>
-        <div class="form-group">
-          <label class="form-label">Owner (GitHub username)</label>
-          <input class="form-input" id="ghOwner" placeholder="e.g. wylew" oninput="saveGhSettings()">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Repository Name</label>
-          <input class="form-input" id="ghRepo" placeholder="e.g. Cast-Off" oninput="saveGhSettings()">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Branch</label>
-          <input class="form-input" id="ghBranch" placeholder="main" oninput="saveGhSettings()">
-        </div>
-      </div>
-
-      <div class="drawer-section">
-        <div class="drawer-section-title">Authentication</div>
-        <div class="form-group">
-          <label class="form-label">Personal Access Token</label>
-          <input class="form-input" id="ghToken" type="password" placeholder="ghp_..." oninput="saveGhSettings()">
-        </div>
-        <p class="hint-text">Token needs <strong>repo</strong> scope. Stored in localStorage only.</p>
-      </div>
-
-      <div class="drawer-section">
-        <div class="drawer-section-title">Sessions</div>
-        <button class="btn" onclick="refreshSessionList()" style="align-self:flex-start;">↻ Refresh List</button>
-        <p class="hint-text" id="sessionListStatus">Connect to GitHub to see session files.</p>
       </div>
     </div>
   </div>
@@ -1441,6 +1439,7 @@ Block code
     function uid() { return Math.random().toString(36).slice(2, 9); }
 
     function toggleCheatsheet() {
+      console.log('Toggling cheatsheet');
       document.getElementById('cheatsheet').classList.toggle('open');
     }
 
@@ -1647,7 +1646,11 @@ Block code
       }
     }
 
-    function openSettings() { loadGhSettings(); document.getElementById('settingsDrawer').classList.add('open'); }
+    function openSettings() { 
+      console.log('Opening settings');
+      loadGhSettings(); 
+      document.getElementById('settingsDrawer').classList.add('open'); 
+    }
     function closeSettings() { document.getElementById('settingsDrawer').classList.remove('open'); }
 
     function getEntryLabel(e) {
@@ -2108,7 +2111,7 @@ Block code
       if (e.type === 'quote') return `Type: quote\nDate: ${e.date || ''}\nAuthor: ${e.author || ''}\n\n${e.content || ''}`;
       if (e.type === 'conversation') return `Type: conversation\nDate: ${e.date || ''}\n\n${e.content || ''}`;
       if (e.type === 'location') return `type: location\nName: ${e.name || ''}\nemoji: ${e.emoji || '📍'}\nDate: ${e.date || ''}\ncharacters: ${e.characters || ''}\n${e.content || ''}`;
-      if (e.type === 'travel') return `type: travel\nfrom: ${e.from || ''}\nTo: ${e.to || ''}\nDate: ${e.date || ''}\ncharacters: ${e.characters || ''}\n${e.content || ''}`;
+      if (e.type === 'travel') return `type: travel\nvariant: ${e.variant || 'sea'}\nfrom: ${e.from || ''}\nto: ${e.to || ''}\ndate: ${e.date || ''}\ncharacters: ${e.characters || ''}\n\n${e.content || ''}`;
       if (e.type === 'character') return `Type: character\nName: ${e.name || ''}\nemoji: ${e.emoji || '🧙'}\nDate: ${e.date || ''}\n\n${e.content || ''}`;
       return '';
     }
