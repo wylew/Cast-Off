@@ -733,7 +733,7 @@ const TYPE_DEFAULTS = {
   quote:{type:'quote',date:'',author:'',content:''},
   conversation:{type:'conversation',date:'',content:''},
   location:{type:'location',name:'',emoji:'📍',date:'',characters:'',content:''},
-  travel:{type:'travel',from:'',to:'',date:'',characters:'',content:''},
+  travel:{type:'travel',from:'',to:'',date:'',characters:'',content:'',variant:'sea'},
   character:{type:'character',name:'',emoji:'🧙',date:'',content:''}
 };
 
@@ -896,7 +896,11 @@ function renderEditForm() {
     </div>${richField('fe-content','Description',entry.content,100)}`;
   } else if (entry.type==='travel') {
     firstRow = `<div class="form-group"><label class="form-label">From</label><input class="form-input" id="fe-from" value="${escHtml(entry.from)}" placeholder="New Haven" oninput="updateField('from',this.value)"></div><div class="form-group"><label class="form-label">To</label><input class="form-input" id="fe-to" value="${escHtml(entry.to)}" placeholder="Traitor Joe's" oninput="updateField('to',this.value)"></div>`;
-    otherFields = `<div class="form-row"><div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div><div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div></div>${richField('fe-content','Journey Notes',entry.content,85)}`;
+    otherFields = `<div class="form-row">
+      <div class="form-group" style="flex:0 0 100px"><label class="form-label">Variant</label><select class="form-select" onchange="updateField('variant',this.value)"><option value="sea" ${entry.variant==='sea'?'selected':''}>🌊 Sea</option><option value="land" ${entry.variant==='land'?'selected':''}>⛰️ Land</option></select></div>
+      <div class="form-group"><label class="form-label">Characters</label><input class="form-input" id="fe-characters" value="${escHtml(entry.characters)}" placeholder="Luigi, Clovis..." oninput="updateField('characters',this.value)"></div>
+      <div class="form-group" style="flex:0 0 120px"><label class="form-label">Date</label><input class="form-input" id="fe-date" value="${escHtml(entry.date)}" placeholder="Jan 03, 2026" oninput="updateField('date',this.value)"></div>
+    </div>${richField('fe-content','Journey Notes',entry.content,85)}`;
   } else if (entry.type==='character') {
     firstRow = `<div class="form-group"><label class="form-label">Name</label><input class="form-input" id="fe-name" value="${escHtml(entry.name)}" placeholder="Character name..." oninput="updateField('name',this.value)"></div>`;
     otherFields = `<div class="form-row">
@@ -1126,7 +1130,10 @@ function renderRendered() {
     } else if (e.type==='location') {
       inner=`<div class="rp-location">${typeTag('location')}<div class="rp-location-name">${e.emoji||'📍'} ${escHtml(e.name||'Location')}</div>${e.characters?`<div style="font-size:11px;color:var(--text3);margin-bottom:6px">Characters: ${escHtml(e.characters)}</div>`:''}<div class="rp-card-body">${renderMarkdown(e.content)}</div></div>`;
     } else if (e.type==='travel') {
-      inner=`<div class="rp-travel">${typeTag('travel')}<div style="flex:1"><div class="rp-travel-route"><span class="rp-travel-from">⛵ ${escHtml(e.from||'?')}</span><span class="rp-travel-arrow"> → </span><span class="rp-travel-to">${escHtml(e.to||'?')}</span></div>${e.content?`<div class="rp-travel-body">${renderMarkdown(e.content)}</div>`:''}</div></div>`;
+      const isLand = e.variant === 'land';
+      const travelColor = isLand ? '#c5a059' : 'var(--coral)';
+      const travelIcon = isLand ? '🥾' : '⛵';
+      inner=`<div class="rp-travel" style="border-left-color:${travelColor}">${typeTag('travel')}<div style="flex:1"><div class="rp-travel-route"><span class="rp-travel-from" style="color:${travelColor}">${travelIcon} ${escHtml(e.from||'?')}</span><span class="rp-travel-arrow"> → </span><span class="rp-travel-to" style="color:${travelColor}">${escHtml(e.to||'?')}</span></div>${e.content?`<div class="rp-travel-body">${renderMarkdown(e.content)}</div>`:''}</div></div>`;
     } else if (e.type==='character') {
       inner=`<div class="rp-char">${typeTag('character')}<div style="display:flex;gap:12px;width:100%"><div class="rp-char-avatar">${e.emoji||'🧙'}</div><div><div class="rp-char-name">${escHtml(e.name||'Character')}</div>${e.date?`<div style="font-size:11px;color:var(--text3)">${escHtml(e.date)}</div>`:''}<div class="rp-char-body">${renderMarkdown(e.content)}</div></div></div></div>`;
     }
@@ -1164,7 +1171,7 @@ function buildEntryMarkdown(e) {
   if (e.type==='quote')        return `Type: quote\nDate: ${e.date||''}\nAuthor: ${e.author||''}\n\n${e.content||''}`;
   if (e.type==='conversation') return `Type: conversation\nDate: ${e.date||''}\n\n${e.content||''}`;
   if (e.type==='location')     return `type: location\nName: ${e.name||''}\nemoji: ${e.emoji||'📍'}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
-  if (e.type==='travel')       return `type: travel\nfrom: ${e.from||''}\nTo: ${e.to||''}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
+  if (e.type==='travel')       return `type: travel\nvariant: ${e.variant||'sea'}\nfrom: ${e.from||''}\nTo: ${e.to||''}\nDate: ${e.date||''}\ncharacters: ${e.characters||''}\n${e.content||''}`;
   if (e.type==='character')    return `Type: character\nName: ${e.name||''}\nemoji: ${e.emoji||'🧙'}\nDate: ${e.date||''}\n\n${e.content||''}`;
   return '';
 }
@@ -1240,7 +1247,7 @@ function parseMarkdownToEntries(md) {
       quote:        ['date','author'],
       conversation: ['date'],
       location:     ['name','emoji','date','characters'],
-      travel:       ['from','to','date','characters'],
+      travel:       ['from','to','date','characters','variant'],
       character:    ['name','emoji','date']
     };
     const fields = fieldNames[type] || [];

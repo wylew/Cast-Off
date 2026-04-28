@@ -345,13 +345,19 @@ function createPostCardHtml(post, isRecap) {
             break;
 
         case 'travel':
-            extraClass += ' travel-card';
+            const isLand = post.variant === 'land';
+            const fromIcon = isLand ? 'hiking' : 'moved_location';
+            const centerIcon = isLand ? 'hiking' : 'sailing';
+            const toIcon = isLand ? 'mountain_flag' : 'anchor';
+            const travelClass = isLand ? 'variant-land' : '';
+
+            extraClass += ' travel-card ' + travelClass;
             contentHtml = `
                 <div class="card-padding">
                     <span class="post-type-label">Travel</span>
-                    <div class="travel-visualization">
+                    <div class="travel-visualization ${travelClass}">
                         <div class="travel-icon-point">
-                            <span class="material-symbols-outlined travel-point-icon">moved_location</span>
+                            <span class="material-symbols-outlined travel-point-icon">${fromIcon}</span>
                             <span class="travel-point-label">${escapeHtml(post.from || 'Origin')}</span>
                         </div>
                         
@@ -359,11 +365,11 @@ function createPostCardHtml(post, isRecap) {
                             <svg class="travel-wave" viewBox="0 0 200 40" preserveAspectRatio="none">
                                 <path d="M0,20 Q25,5 50,20 T100,20 T150,20 T200,20" class="travel-wave-path" />
                             </svg>
-                            <span class="material-symbols-outlined travel-ship-icon">sailing</span>
+                            <span class="material-symbols-outlined travel-ship-icon">${centerIcon}</span>
                         </div>
 
                         <div class="travel-icon-point">
-                            <span class="material-symbols-outlined travel-point-icon">anchor</span>
+                            <span class="material-symbols-outlined travel-point-icon">${toIcon}</span>
                             <span class="travel-point-label">${escapeHtml(post.to || 'Destination')}</span>
                         </div>
                     </div>

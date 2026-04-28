@@ -688,6 +688,11 @@ body {
     border-left: 6px solid #4db6ac;
 }
 
+.travel-card.variant-land {
+    background: linear-gradient(135deg, #3d2b1f 0%, rgba(30, 20, 15, 0.85) 100%);
+    border-left: 6px solid #c5a059;
+}
+
 .quote-text {
     font-size: 44px;
     font-style: italic;
@@ -886,6 +891,14 @@ body {
     opacity: 0.6;
 }
 
+.travel-visualization.variant-land .travel-wave-path {
+    stroke: #c5a059;
+}
+
+.travel-visualization.variant-land .travel-point-icon {
+    color: #c5a059;
+}
+
 .travel-ship-icon {
     position: absolute;
     font-size: 60px;
@@ -894,6 +907,10 @@ body {
     transform: translateY(-50%);
     animation: ship-bob 3s ease-in-out infinite;
     text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.travel-visualization.variant-land .travel-ship-icon {
+    color: #e3c08d;
 }
 
 .travel-card .text-body {
