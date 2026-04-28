@@ -346,7 +346,7 @@ function createPostCardHtml(post, isRecap) {
 
         case 'travel':
             const isLand = post.variant === 'land';
-            const fromIcon = isLand ? 'hiking' : 'moved_location';
+            const fromIcon = 'moved_location';
             const centerIcon = isLand ? 'hiking' : 'sailing';
             const toIcon = isLand ? 'mountain_flag' : 'anchor';
             const travelClass = isLand ? 'variant-land' : '';

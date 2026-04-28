@@ -1592,12 +1592,15 @@ Block code
         <div class="rp-card-body">${renderMarkdown(e.content)}</div>
       </div>`;
         } else if (e.type === 'travel') {
-          inner = `<div class="rp-travel">
+          const isLand = e.variant === 'land';
+          const travelColor = isLand ? '#81c784' : '#64b5f6';
+          const travelIcon = isLand ? '🥾' : '⛵';
+          inner = `<div class="rp-travel" style="border-left-color:${travelColor}">
         <div style="flex:1">
           <div class="rp-travel-route">
-            <span class="rp-travel-from">⛵ ${escHtml(e.from || '?')}</span>
+            <span class="rp-travel-from" style="color:${travelColor}">${travelIcon} ${escHtml(e.from || '?')}</span>
             <span class="rp-travel-arrow">→</span>
-            <span class="rp-travel-to">${escHtml(e.to || '?')}</span>
+            <span class="rp-travel-to" style="color:${travelColor}">${escHtml(e.to || '?')}</span>
           </div>
           ${e.content ? `<div class="rp-travel-body">${renderMarkdown(e.content)}</div>` : ''}
         </div>
