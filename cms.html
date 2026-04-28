@@ -103,49 +103,210 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: background 0.15s, border-color 0.15s;
-      white-space: nowrap;
+      transition: all 0.2s;
     }
 
     .btn:hover {
       background: var(--bg5);
-      border-color: var(--accent);
+      border-color: var(--text3);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .btn-accent {
-      background: var(--accent);
-      color: #0a2540;
+      background: #2b3b4b;
       border-color: var(--accent);
-      font-weight: 600;
+      color: var(--accent);
     }
 
     .btn-accent:hover {
-      background: #c5d8f8;
-      border-color: #c5d8f8;
+      background: #3b4b5b;
     }
 
-    .btn-purple {
-      background: var(--accent2);
-      color: #1f1635;
-      border-color: var(--accent2);
+    .btn-publish {
+      background: #1a3a1a;
+      border-color: #2a6a2a;
+      color: var(--green);
       font-weight: 600;
     }
 
-    .btn-purple:hover {
-      background: #e0d0ff;
+    .btn-publish:hover {
+      background: #204a20;
+      border-color: var(--green);
     }
 
     .btn-danger {
       background: #3a1a1a;
       border-color: #6a2a2a;
       color: var(--red);
-      font-weight: 600;
     }
 
     .btn-danger:hover {
       background: #4a2020;
       border-color: var(--red);
     }
+
+    /* GITHUB UI ELEMENTS */
+    .gh-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg3);
+      padding: 4px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+
+    .gh-select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 4px 8px;
+      font-size: 12px;
+      width: 140px;
+    }
+
+    .conn-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 8px;
+      border-right: 1px solid var(--border);
+      margin-right: 4px;
+    }
+
+    .conn-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text3);
+    }
+
+    .conn-dot.connected {
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    .conn-dot.error {
+      background: var(--red);
+    }
+
+    .conn-dot.disconnected {
+      background: var(--text3);
+    }
+
+    /* SETTINGS DRAWER */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 320px;
+      height: 100vh;
+      background: var(--bg2);
+      border-left: 1px solid var(--border);
+      z-index: 100;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg3);
+    }
+
+    .drawer-header h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin: 0;
+    }
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .drawer-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .drawer-section-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .hint-text {
+      font-size: 11px;
+      color: var(--text3);
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    .conn-status-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text2);
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--bg3);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      z-index: 200;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success { border-color: var(--green); color: var(--green); }
+    .toast.error { border-color: var(--red); color: var(--red); }
 
     /* LAYOUT */
     .layout {
@@ -995,15 +1156,37 @@
 <body>
 
   <div class="topbar">
-    <div class="topbar-title"><span>⚓</span> Cast Off CMS</div>
+    <div class="topbar-title">
+      <span>⚓</span> Cast Off CMS
+      <span id="dirtyIndicator" style="display:none; color:var(--amber); font-size:12px; margin-left:8px;">● Modified</span>
+    </div>
+    
     <div class="topbar-session">
       <label>Session #</label>
-      <input type="number" id="sessionNum" value="1" min="1">
+      <input type="number" id="sessionNum" value="1" min="1" oninput="setDirty(true); renderPreview()">
     </div>
-    <button class="btn btn-danger" onclick="openNewSessionModal()">✦ New Session</button>
-    <button class="btn btn-accent" onclick="document.getElementById('importFile').click()">📂 Import .md</button>
+
+    <div style="flex:1"></div>
+
+    <!-- GitHub Controls -->
+    <div class="gh-controls">
+      <div class="conn-status">
+        <div class="conn-dot disconnected" id="topConnDot"></div>
+      </div>
+      <select class="gh-select" id="sessionSelect" onchange="onSessionSelectChange(this.value)">
+        <option value="__new__">+ New File</option>
+        <option value="__manual__">Manual / Import</option>
+      </select>
+      <button class="btn" id="loadBtn" onclick="loadSessionFromGitHub()" disabled title="Load from GitHub">↓ Load</button>
+      <button class="btn btn-publish" id="publishBtn" onclick="publishToGitHub()" disabled title="Publish to GitHub">↑ Publish</button>
+    </div>
+
+    <button class="btn" onclick="openNewSessionModal()">✦ New Session</button>
+    <button class="btn btn-accent" onclick="document.getElementById('importFile').click()">📂 Import</button>
     <input type="file" id="importFile" accept=".md" style="display:none" onchange="handleImport(event)">
-    <button class="btn btn-accent" onclick="downloadMarkdown()">⬇ Download .md</button>
+    <button class="btn btn-accent" onclick="downloadMarkdown()">⬇ Export</button>
+    <button class="btn" onclick="openSettings()" title="GitHub Settings">⚙ Settings</button>
+    <button class="btn" onclick="toggleCheatsheet()">?</button>
   </div>
 
   <div class="layout">
@@ -1152,6 +1335,58 @@ Block code
     </div>
   </div>
 
+  <!-- Settings Drawer -->
+  <div class="drawer" id="settingsDrawer">
+    <div class="drawer-header">
+      <h3>GitHub Settings</h3>
+      <button class="btn" onclick="closeSettings()" style="padding:4px; border:none; background:none;">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="drawer-section">
+        <div class="drawer-section-title">Connection Status</div>
+        <div class="conn-status-row">
+          <div class="conn-dot disconnected" id="drawerConnDot"></div>
+          <span id="drawerConnLabel">Not configured</span>
+        </div>
+        <button class="btn" onclick="testConnection()" style="align-self:flex-start;">Test Connection</button>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-section-title">Repository</div>
+        <div class="form-group">
+          <label class="form-label">Owner (GitHub username)</label>
+          <input class="form-input" id="ghOwner" placeholder="e.g. wylew" oninput="saveGhSettings()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Repository Name</label>
+          <input class="form-input" id="ghRepo" placeholder="e.g. Cast-Off" oninput="saveGhSettings()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Branch</label>
+          <input class="form-input" id="ghBranch" placeholder="main" oninput="saveGhSettings()">
+        </div>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-section-title">Authentication</div>
+        <div class="form-group">
+          <label class="form-label">Personal Access Token</label>
+          <input class="form-input" id="ghToken" type="password" placeholder="ghp_..." oninput="saveGhSettings()">
+        </div>
+        <p class="hint-text">Token needs <strong>repo</strong> scope. Stored in localStorage only.</p>
+      </div>
+
+      <div class="drawer-section">
+        <div class="drawer-section-title">Sessions</div>
+        <button class="btn" onclick="refreshSessionList()" style="align-self:flex-start;">↻ Refresh List</button>
+        <p class="hint-text" id="sessionListStatus">Connect to GitHub to see session files.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
   <script>
     // ─── STATE ───────────────────────────────────────────────────────────────────
     let entries = [];
@@ -1159,6 +1394,16 @@ Block code
     let dragSrcIndex = null;
     let activeTab = 'rendered';
     let entryToDelete = null;
+    let isDirty = false;
+    let currentFileSha = null;
+    let ghSessions = [];
+    let pendingSessionLoad = null;
+
+    // Full GitHub-supported emoji map...
+    // [Truncating emoji map for brevity in replacement chunk, but I must include it all if I'm replacing the block]
+    // Actually, I'll just keep the existing emoji map and favorites and replace around them.
+    
+    const GH_EMOJI = ...; // (I will use the actual content from the file)
 
     // Full GitHub-supported emoji map: shortcode -> emoji char
     const GH_EMOJI = { "100": "💯", "1234": "🔢", "grinning": "😀", "smiley": "😃", "smile": "😄", "grin": "😁", "laughing": "😆", "sweat_smile": "😅", "rofl": "🤣", "joy": "😂", "slightly_smiling_face": "🙂", "upside_down_face": "🙃", "wink": "😉", "blush": "😊", "innocent": "😇", "heart_eyes": "😍", "kissing_heart": "😘", "kissing": "😗", "kissing_smiling_eyes": "😙", "kissing_closed_eyes": "😚", "yum": "😋", "stuck_out_tongue": "😛", "stuck_out_tongue_winking_eye": "😜", "zany_face": "🤪", "stuck_out_tongue_closed_eyes": "😝", "money_mouth_face": "🤑", "hugs": "🤗", "hand_over_mouth": "🤭", "shushing_face": "🤫", "thinking": "🤔", "zipper_mouth_face": "🤐", "raised_eyebrow": "🤨", "neutral_face": "😐", "expressionless": "😑", "no_mouth": "😶", "smirk": "😏", "unamused": "😒", "roll_eyes": "🙄", "grimacing": "😬", "lying_face": "🤥", "relieved": "😌", "pensive": "😔", "sleepy": "😪", "drooling_face": "🤤", "sleeping": "😴", "mask": "😷", "face_with_thermometer": "🤒", "face_with_head_bandage": "🤕", "nauseated_face": "🤢", "sneezing_face": "🤧", "hot_face": "🥵", "cold_face": "🥶", "woozy_face": "🥴", "dizzy_face": "😵", "exploding_head": "🤯", "cowboy_hat_face": "🤠", "partying_face": "🥳", "sunglasses": "😎", "nerd_face": "🤓", "monocle_face": "🧐", "confused": "😕", "worried": "😟", "slightly_frowning_face": "🙁", "frowning_face": "☹️", "open_mouth": "😮", "hushed": "😯", "astonished": "😲", "flushed": "😳", "pleading_face": "🥺", "anguished": "😧", "fearful": "😨", "cold_sweat": "😰", "disappointed_relieved": "😥", "cry": "😢", "sob": "😭", "scream": "😱", "confounded": "😖", "persevere": "😣", "disappointed": "😞", "sweat": "😓", "weary": "😩", "tired_face": "😫", "yawning_face": "🥱", "triumph": "😤", "rage": "😡", "angry": "😠", "skull": "💀", "skull_and_crossbones": "☠️", "imp": "👿", "japanese_ogre": "👹", "japanese_goblin": "👺", "clown_face": "🤡", "poop": "💩", "ghost": "👻", "alien": "👽", "space_invader": "👾", "robot": "🤖", "wave": "👋", "raised_back_of_hand": "🤚", "raised_hand": "✋", "vulcan_salute": "🖖", "ok_hand": "👌", "pinched_fingers": "🤌", "pinching_hand": "🤏", "v": "✌️", "crossed_fingers": "🤞", "love_you_gesture": "🤟", "metal": "🤘", "call_me_hand": "🤙", "point_left": "👈", "point_right": "👉", "point_up_2": "👆", "fu": "🖕", "point_down": "👇", "point_up": "☝️", "thumbsup": "+1", "thumbsdown": "-1", "clap": "👏", "raised_hands": "🙌", "open_hands": "👐", "pray": "🙏", "handshake": "🤝", "muscle": "💪", "ear": "👂", "nose": "👃", "eyes": "👀", "eye": "👁️", "tongue": "👅", "lips": "👄", "brain": "🧠", "anatomical_heart": "🫀", "lungs": "🫁", "tooth": "🦷", "bone": "🦴", "baby": "👶", "child": "🧒", "boy": "👦", "girl": "👧", "person": "🧑", "man": "👨", "woman": "👩", "older_adult": "🧓", "older_man": "👴", "older_woman": "👵", "person_frowning": "🙍", "person_gesturing_no": "🙅", "person_gesturing_ok": "🙆", "person_tipping_hand": "💁", "person_raising_hand": "🙋", "deaf_person": "🧏", "person_bowing": "🙇", "face_palm": "🤦", "person_shrugging": "🤷", "mage": "🧙", "fairy": "🧚", "vampire": "🧛", "merperson": "🧜", "elf": "🧝", "genie": "🧞", "zombie": "🧟", "person_walking": "🚶", "person_running": "🏃", "dancer": "💃", "man_dancing": "🕺", "people_holding_hands": "🧑‍🤝‍🧑", "couple": "👫", "two_men_holding_hands": "👬", "two_women_holding_hands": "👭", "couple_with_heart": "💑", "family": "👪", "speaking_head": "🗣️", "bust_in_silhouette": "👤", "busts_in_silhouette": "👥", "footprints": "👣", "monkey_face": "🐵", "monkey": "🐒", "gorilla": "🦍", "dog": "🐶", "dog2": "🐕", "guide_dog": "🦮", "poodle": "🐩", "wolf": "🐺", "fox_face": "🦊", "raccoon": "🦝", "cat": "🐱", "cat2": "🐈", "lion": "🦁", "tiger": "🐯", "tiger2": "🐅", "leopard": "🐆", "horse": "🐴", "racehorse": "🐎", "unicorn": "🦄", "zebra": "🦓", "deer": "🦌", "bison": "🦬", "cow": "🐮", "ox": "🐂", "water_buffalo": "🐃", "cow2": "🐄", "pig": "🐷", "pig2": "🐖", "boar": "🐗", "pig_nose": "🐽", "ram": "🐏", "sheep": "🐑", "goat": "🐐", "dromedary_camel": "🐪", "camel": "🐫", "llama": "🦙", "giraffe": "🦒", "elephant": "🐘", "mammoth": "🦣", "rhinoceros": "🦏", "hippopotamus": "🦛", "mouse": "🐭", "mouse2": "🐁", "rat": "🐀", "hamster": "🐹", "rabbit": "🐰", "rabbit2": "🐇", "chipmunk": "🐿️", "beaver": "🦫", "hedgehog": "🦔", "bat": "🦇", "bear": "🐻", "polar_bear": "🐻‍❄️", "koala": "🐨", "panda_face": "🐼", "sloth": "🦥", "otter": "🦦", "skunk": "🦨", "kangaroo": "🦘", "badger": "🦡", "feet": "🐾", "turkey": "🦃", "chicken": "🐔", "rooster": "🐓", "hatching_chick": "🐣", "baby_chick": "🐤", "hatched_chick": "🐥", "bird": "🐦", "penguin": "🐧", "dove": "🕊️", "eagle": "🦅", "duck": "🦆", "swan": "🦢", "owl": "🦉", "dodo": "🦤", "feather": "🪶", "flamingo": "🦩", "peacock": "🦚", "parrot": "🦜", "frog": "🐸", "crocodile": "🐊", "turtle": "🐢", "lizard": "🦎", "snake": "🐍", "dragon_face": "🐲", "dragon": "🐉", "sauropod": "🦕", "t-rex": "🦖", "whale": "🐳", "whale2": "🐋", "dolphin": "🐬", "seal": "🦭", "fish": "🐟", "tropical_fish": "🐠", "blowfish": "🐡", "shark": "🦈", "octopus": "🐙", "shell": "🐚", "snail": "🐌", "butterfly": "🦋", "bug": "🐛", "ant": "🐜", "honeybee": "🐝", "beetle": "🪲", "cricket": "🦗", "cockroach": "🪳", "spider": "🕷️", "scorpion": "🦂", "mosquito": "🦟", "fly": "🪰", "worm": "🪱", "microbe": "🦠", "bouquet": "💐", "cherry_blossom": "🌸", "white_flower": "💮", "rosette": "🏵️", "rose": "🌹", "wilted_flower": "🥀", "hibiscus": "🌺", "sunflower": "🌻", "blossom": "🌼", "tulip": "🌷", "seedling": "🌱", "potted_plant": "🪴", "evergreen_tree": "🌲", "deciduous_tree": "🌳", "palm_tree": "🌴", "cactus": "🌵", "ear_of_rice": "🌾", "herb": "🌿", "shamrock": "☘️", "four_leaf_clover": "🍀", "maple_leaf": "🍁", "fallen_leaf": "🍂", "leaves": "🍃", "mushroom": "🍄", "chestnut": "🌰", "grapes": "🍇", "melon": "🍈", "watermelon": "🍉", "tangerine": "🍊", "lemon": "🍋", "banana": "🍌", "pineapple": "🍍", "mango": "🥭", "apple": "🍎", "green_apple": "🍏", "pear": "🍐", "peach": "🍑", "cherries": "🍒", "strawberry": "🍓", "blueberries": "🫐", "kiwi_fruit": "🥝", "tomato": "🍅", "olive": "🫒", "coconut": "🥥", "avocado": "🥑", "eggplant": "🍆", "potato": "🥔", "carrot": "🥕", "corn": "🌽", "hot_pepper": "🌶️", "bell_pepper": "🫑", "cucumber": "🥒", "leafy_green": "🥬", "broccoli": "🥦", "garlic": "🧄", "onion": "🧅", "peanuts": "🥜", "bread": "🍞", "croissant": "🥐", "baguette_bread": "🥖", "flatbread": "🫓", "pretzel": "🥨", "bagel": "🥯", "pancakes": "🥞", "waffle": "🧇", "cheese": "🧀", "meat_on_bone": "🍖", "poultry_leg": "🍗", "cut_of_meat": "🥩", "bacon": "🥓", "hamburger": "🍔", "fries": "🍟", "pizza": "🍕", "hotdog": "🌭", "sandwich": "🥪", "taco": "🌮", "burrito": "🌯", "tamale": "🫔", "salad": "🥗", "shallow_pan_of_food": "🥘", "spaghetti": "🍝", "ramen": "🍜", "stew": "🍲", "curry": "🍛", "sushi": "🍣", "bento": "🍱", "dumpling": "🥟", "fried_shrimp": "🍤", "rice_ball": "🍙", "rice": "🍚", "rice_cracker": "🍘", "fish_cake": "🍥", "fortune_cookie": "🥠", "moon_cake": "🥮", "oden": "🍢", "dango": "🍡", "shaved_ice": "🍧", "ice_cream": "🍨", "icecream": "🍦", "pie": "🥧", "shortcake": "🍰", "cake": "🎂", "cupcake": "🧁", "candy": "🍬", "lollipop": "🍭", "chocolate_bar": "🍫", "popcorn": "🍿", "doughnut": "🍩", "cookie": "🍪", "salt": "🧂", "honey_pot": "🍯", "coffee": "☕", "tea": "🍵", "bubble_tea": "🧋", "sake": "🍶", "champagne": "🍾", "wine_glass": "🍷", "cocktail": "🍸", "tropical_drink": "🍹", "beer": "🍺", "beers": "🍻", "clinking_glasses": "🥂", "tumbler_glass": "🥃", "cup_with_straw": "🥤", "beverage_box": "🧃", "mate": "🧉", "ice_cube": "🧊", "chopsticks": "🥢", "plate_with_cutlery": "🍽️", "fork_and_knife": "🍴", "spoon": "🥄", "knife": "🔪", "jar": "🫙", "amphora": "🏺", "globe_with_meridians": "🌐", "world_map": "🗺️", "japan": "🗾", "compass": "🧭", "mountain_snow": "🏔️", "mountain": "⛰️", "volcano": "🌋", "mount_fuji": "🗻", "camping": "🏕️", "beach_umbrella": "🏖️", "desert": "🏜️", "desert_island": "🏝️", "national_park": "🏞️", "stadium": "🏟️", "classical_building": "🏛️", "building_construction": "🏗️", "homes": "🏘️", "derelict_house": "🏚️", "house": "🏠", "house_with_garden": "🏡", "office": "🏢", "post_office": "🏣", "european_post_office": "🏤", "hospital": "🏥", "bank": "🏦", "hotel": "🏨", "convenience_store": "🏪", "school": "🏫", "love_hotel": "🏩", "wedding": "💒", "european_castle": "🏯", "japanese_castle": "🏰", "statue_of_liberty": "🗽", "church": "⛪", "mosque": "🕌", "hindu_temple": "🛕", "synagogue": "🕍", "shinto_shrine": "⛩️", "kaaba": "🕋", "fountain": "⛲", "tent": "⛺", "foggy": "🌁", "night_with_stars": "🌃", "sunrise_over_mountains": "🌄", "sunrise": "🌅", "city_sunrise": "🌇", "city_sunset": "🌆", "cityscape": "🏙️", "night_with_stars2": "🌃", "bridge_at_night": "🌉", "milky_way": "🌌", "stars": "🌠", "sparkler": "🎇", "fireworks": "🎆", "rainbow": "🌈", "sunrise2": "🌅", "sunny": "☀️", "cloud": "☁️", "partly_sunny": "⛅", "thunder_cloud_and_rain": "⛈️", "tornado": "🌪️", "fog": "🌫️", "wind_face": "🌬️", "cyclone": "🌀", "snowflake": "❄️", "snowman": "⛄", "snowman2": "☃️", "umbrella": "☂️", "umbrella_with_rain_drops": "☔", "zap": "⚡", "droplet": "💧", "ocean": "🌊", "anchor": "⚓", "ship": "🚢", "boat": "⛵", "canoe": "🛶", "speedboat": "🚤", "ferry": "⛴️", "sailboat": "⛵", "rocket": "🚀", "flying_saucer": "🛸", "seat": "💺", "airplane": "✈️", "small_airplane": "🛩️", "flight_departure": "🛫", "flight_arrival": "🛬", "parachute": "🪂", "helicopter": "🚁", "suspension_railway": "🚟", "mountain_cableway": "🚠", "aerial_tramway": "🚡", "satellite": "🛰️", "car": "🚗", "taxi": "🚕", "bus": "🚌", "trolleybus": "🚎", "racing_car": "🏎️", "police_car": "🚓", "ambulance": "🚑", "fire_engine": "🚒", "minibus": "🚐", "truck": "🚚", "articulated_lorry": "🚛", "tractor": "🚜", "probing_cane": "🦯", "bike": "🚲", "motor_scooter": "🛵", "motorcycle": "🏍️", "monorail": "🚝", "train2": "🚆", "steam_locomotive": "🚂", "railway_car": "🚃", "bullettrain_side": "🚄", "bullettrain_front": "🚅", "light_rail": "🚈", "train": "🚋", "station": "🚉", "metro": "🚇", "tram": "🚊", "busstop": "🚏", "motorway": "🛣️", "construction": "🚧", "fuel_pump": "⛽", "rotating_light": "🚨", "vertical_traffic_light": "🚦", "traffic_light": "🚥", "stop_sign": "🛑", "no_entry": "⛔", "anchor2": "⚓", "hourglass": "⌛", "hourglass_flowing_sand": "⏳", "watch": "⌚", "alarm_clock": "⏰", "stopwatch": "⏱️", "timer_clock": "⏲️", "mantelpiece_clock": "🕰️", "calendar": "📅", "date": "📅", "card_index": "📇", "spiral_notepad": "🗒️", "spiral_calendar": "🗓️", "wastebasket": "🗑️", "file_cabinet": "🗄️", "card_box": "🗃️", "ballot_box_with_ballot": "🗳️", "file_folder": "📁", "open_file_folder": "📂", "briefcase": "💼", "clipboard": "📋", "scroll": "📜", "card_index2": "📇", "books": "📚", "book": "📖", "ledger": "📒", "notebook": "📓", "notebook_with_decorative_cover": "📔", "closed_book": "📕", "green_book": "📗", "blue_book": "📘", "orange_book": "📙", "link": "🔗", "paperclip": "📎", "paperclips": "🖇️", "scissors": "✂️", "triangular_ruler": "📐", "straight_ruler": "📏", "pushpin": "📌", "round_pushpin": "📍", "triangular_flag_on_post": "🚩", "flags": "🎏", "black_flag": "🏴", "white_flag": "🏳️", "rainbow_flag": "🏳️‍🌈", "pirate_flag": "🏴‍☠️", "hammer": "🔨", "axe": "🪓", "pick": "⛏️", "hammer_and_pick": "⚒️", "hammer_and_wrench": "🛠️", "dagger": "🗡️", "crossed_swords": "⚔️", "gun": "🔫", "boomerang": "🪃", "bow_and_arrow": "🏹", "shield": "🛡️", "carpentry_saw": "🪚", "wrench": "🔧", "screwdriver": "🪛", "nut_and_bolt": "🔩", "gear": "⚙️", "chains": "⛓️", "hook": "🪝", "toolbox": "🧰", "magnet": "🧲", "ladder": "🪜", "alembic": "⚗️", "test_tube": "🧪", "petri_dish": "🧫", "dna": "🧬", "microscope": "🔬", "telescope": "🔭", "satellite2": "📡", "syringe": "💉", "drop_of_blood": "🩸", "pill": "💊", "adhesive_bandage": "🩹", "stethoscope": "🩺", "door": "🚪", "elevator": "🛗", "mirror": "🪞", "window": "🪟", "bed": "🛏️", "couch_and_lamp": "🛋️", "chair": "🪑", "toilet": "🚽", "plunger": "🪠", "shower": "🚿", "bathtub": "🛁", "razor": "🪒", "lotion_bottle": "🧴", "safety_pin": "🪡", "broom": "🧹", "basket": "🧺", "roll_of_paper": "🧻", "bucket": "🪣", "soap": "🧼", "toothbrush": "🪥", "sponge": "🧽", "fire_extinguisher": "🧯", "shopping_cart": "🛒", "smoking": "🚬", "coffin": "⚰️", "urn": "⚱️", "moyai": "🗿", "atm": "🏧", "put_litter_in_its_place": "🚮", "potable_water": "🚰", "wheelchair": "♿", "mens": "🚹", "womens": "🚺", "restroom": "🚻", "baby_symbol": "🚼", "wc": "🚾", "passport_control": "🛂", "customs": "🛃", "baggage_claim": "🛄", "left_luggage": "🛅", "warning": "⚠️", "zap2": "⚡", "white_check_mark": "✅", "ballot_box_with_check": "☑️", "heavy_check_mark": "✔️", "x": "❌", "negative_squared_cross_mark": "❎", "heavy_plus_sign": "➕", "heavy_minus_sign": "➖", "heavy_division_sign": "➗", "curly_loop": "➰", "loop": "➿", "question": "❓", "grey_question": "❔", "grey_exclamation": "❕", "exclamation": "❗", "red_circle": "🔴", "orange_circle": "🟠", "yellow_circle": "🟡", "green_circle": "🟢", "blue_circle": "🔵", "purple_circle": "🟣", "brown_circle": "🟤", "black_circle": "⚫", "white_circle": "⚪", "red_square": "🟥", "orange_square": "🟧", "yellow_square": "🟨", "green_square": "🟩", "blue_square": "🟦", "purple_square": "🟪", "brown_square": "🟫", "black_large_square": "⬛", "white_large_square": "⬜", "heart": "❤️", "orange_heart": "🧡", "yellow_heart": "💛", "green_heart": "💚", "blue_heart": "💙", "purple_heart": "💜", "black_heart": "🖤", "brown_heart": "🤎", "white_heart": "🤍", "broken_heart": "💔", "heavy_heart_exclamation": "❣️", "two_hearts": "💕", "revolving_hearts": "💞", "heartbeat": "💓", "heartpulse": "💗", "sparkling_heart": "💖", "cupid": "💘", "heart_decoration": "💟", "peace_symbol": "☮️", "cross": "✝️", "star_and_crescent": "☪️", "star_of_david": "✡️", "fleur_de_lis": "⚜️", "beginner": "🔰", "trident": "🔱", "sos": "🆘", "id": "🆔", "cool": "🆒", "new": "🆕", "free": "🆓", "up": "🆙", "cl": "🆑", "end": "🔚", "back": "🔙", "on": "🔛", "top": "🔝", "soon": "🔜", "eight_spoked_asterisk": "✳️", "eight_pointed_black_star": "✴️", "sparkle": "❇️", "copyright": "©️", "registered": "®️", "tm": "™️", "zero": "0️⃣", "one": "1️⃣", "two": "2️⃣", "three": "3️⃣", "four": "4️⃣", "five": "5️⃣", "six": "6️⃣", "seven": "7️⃣", "eight": "8️⃣", "nine": "9️⃣", "keycap_ten": "🔟", "arrow_forward": "▶️", "pause_button": "⏸️", "next_track_button": "⏭️", "stop_button": "⏹️", "record_button": "⏺️", "previous_track_button": "⏮️", "fast_forward": "⏩", "rewind": "⏪", "twisted_rightwards_arrows": "🔀", "repeat": "🔁", "repeat_one": "🔂", "arrow_backward": "◀️", "arrow_up_small": "🔼", "arrow_down_small": "🔽", "arrow_double_up": "⏫", "arrow_double_down": "⏬", "arrow_right": "➡️", "arrow_left": "⬅️", "arrow_up": "⬆️", "arrow_down": "⬇️", "arrow_upper_right": "↗️", "arrow_lower_right": "↘️", "arrow_lower_left": "↙️", "arrow_upper_left": "↖️", "arrow_up_down": "↕️", "left_right_arrow": "↔️", "arrows_counterclockwise": "🔄", "arrow_right_hook": "↪️", "leftwards_arrow_with_hook": "↩️", "arrow_heading_up": "⤴️", "arrow_heading_down": "⤵️", "hash": "#️⃣", "asterisk": "*️⃣", "wavy_dash": "〰️", "curly_loop2": "➰", "heavy_dollar_sign": "💲", "medical_symbol": "⚕️", "recycle": "♻️", "fleur_de_lis2": "⚜️", "small_red_triangle": "🔺", "small_red_triangle_down": "🔻", "large_blue_diamond": "🔷", "large_orange_diamond": "🔶", "small_blue_diamond": "🔹", "small_orange_diamond": "🔸", "radio_button": "🔘", "white_square_button": "🔳", "black_square_button": "🔲", "tada": "🎉", "confetti_ball": "🎊", "sparkles": "✨", "star": "⭐", "star2": "🌟", "dizzy": "💫", "boom": "💥", "fire": "🔥", "wave2": "🌊", "trophy": "🏆", "crown": "👑", "gem": "💎", "ring": "💍", "moneybag": "💰", "dollar": "💵", "euro": "💶", "pound": "💷", "yen": "💴", "chart": "💹", "chart_with_upwards_trend": "📈", "chart_with_downwards_trend": "📉", "bar_chart": "📊", "memo": "📝", "pencil2": "✏️", "pen": "🖊️", "paintbrush": "🖌️", "crayon": "🖍️", "mag": "🔍", "mag_right": "🔎", "microscope2": "🔬", "telescope2": "🔭", "satellite_antenna": "📡", "bulb": "💡", "flashlight": "🔦", "candle": "🕯️", "money_with_wings": "💸", "credit_card": "💳", "e-mail": "📧", "incoming_envelope": "📨", "envelope_with_arrow": "📩", "outbox_tray": "📤", "inbox_tray": "📥", "package": "📦", "mailbox": "📫", "mailbox_closed": "📪", "mailbox_with_mail": "📬", "mailbox_with_no_mail": "📭", "postbox": "📮", "ballot_box": "🗳️", "phone": "📞", "telephone_receiver": "📞", "pager": "📟", "fax": "📠", "battery": "🔋", "electric_plug": "🔌", "computer": "💻", "desktop_computer": "🖥️", "printer": "🖨️", "keyboard": "⌨️", "computer_mouse": "🖱️", "trackball": "🖲️", "minidisc": "💽", "floppy_disk": "💾", "cd": "💿", "dvd": "📀", "abacus": "🧮", "movie_camera": "🎥", "film_strip": "🎞️", "film_projector": "📽️", "clapper": "🎬", "tv": "📺", "camera": "📷", "camera_flash": "📸", "video_camera": "📹", "vhs": "📼", "telephone": "☎️", "loudspeaker": "📢", "mega": "📣", "postal_horn": "📯", "bell": "🔔", "no_bell": "🔕", "musical_score": "🎼", "musical_note": "🎵", "notes": "🎶", "microphone": "🎤", "headphones": "🎧", "radio": "📻", "saxophone": "🎷", "accordion": "🪗", "guitar": "🎸", "musical_keyboard": "🎹", "trumpet": "🎺", "violin": "🎻", "banjo": "🪕", "drum": "🥁", "long_drum": "🪘", "iphone": "📱", "calling": "📲", "phone2": "☎️", "globe_with_meridians2": "🌐", "atm2": "🏧", "slot_machine": "🎰", "ticket": "🎫", "tickets": "🎟️", "circus_tent": "🎪", "performing_arts": "🎭", "art": "🎨", "slot_machine2": "🎰", "game_die": "🎲", "jigsaw": "🧩", "teddy_bear": "🧸", "spades": "♠️", "hearts": "♥️", "diamonds": "♦️", "clubs": "♣️", "chess_pawn": "♟️", "joker": "🃏", "mahjong": "🀄", "flower_playing_cards": "🎴", "video_game": "🎮", "dart": "🎯", "golf": "⛳", "ice_skate": "⛸️", "fishing_pole_and_fish": "🎣", "diving_mask": "🤿", "running_shirt_with_sash": "🎽", "ski": "🎿", "sled": "🛷", "curling_stone": "🥌", "trophy2": "🏆", "medal_sports": "🏅", "military_medal": "🎖️", "1st_place_medal": "🥇", "2nd_place_medal": "🥈", "3rd_place_medal": "🥉", "soccer": "⚽", "baseball": "⚾", "softball": "🥎", "basketball": "🏀", "volleyball": "🏐", "football": "🏈", "rugby_football": "🏉", "flying_disc": "🥏", "8ball": "🎱", "ping_pong": "🏓", "badminton": "🏸", "goal_net": "🥅", "ice_hockey": "🏒", "field_hockey": "🏑", "lacrosse": "🥍", "cricket_game": "🏏", "boomerang2": "🪃", "bow_and_arrow2": "🏹", "boxing_glove": "🥊", "martial_arts_uniform": "🥋", "skateboard": "🛹", "sled2": "🛷", "swimming": "🏊", "horse_racing": "🏇", "bicycle": "🚴", "mountain_biking": "🚵", "gymnast": "🤸", "wrestling": "🤼", "water_polo": "🤽", "handball": "🤾", "fencer": "🤺", "weight_lifting": "🏋️", "climbing": "🧗", "person_in_lotus_position": "🧘", "ski2": "⛷️", "snowboarder": "🏂", "surfer": "🏄", "rowboat": "🚣", "swimmer": "🏊", "horseback_riding": "🏇", "golfer": "🏌️", "walking": "🚶", "runner": "🏃", "dancer2": "💃", "handshake2": "🤝", "speaking_head2": "🗣️" };
@@ -1172,9 +1417,25 @@ Block code
       quote: { type: 'quote', date: '', author: '', content: '' },
       conversation: { type: 'conversation', date: '', content: '' },
       location: { type: 'location', name: '', emoji: '📍', date: '', characters: '', content: '' },
-      travel: { type: 'travel', from: '', to: '', date: '', characters: '', content: '' },
+      travel: { type: 'travel', from: '', to: '', date: '', characters: '', content: '', variant: 'sea' },
       character: { type: 'character', name: '', emoji: '🧙', date: '', content: '' }
     };
+
+    function setDirty(val) {
+      isDirty = val;
+      const indicator = document.getElementById('dirtyIndicator');
+      if (indicator) indicator.style.display = val ? 'inline' : 'none';
+    }
+
+    let toastTimer;
+    function showToast(msg, type = 'info') {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.textContent = msg;
+      t.className = 'toast show ' + type;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { t.classList.remove('show'); }, 3000);
+    }
 
     // ─── HELPERS ─────────────────────────────────────────────────────────────────
     function uid() { return Math.random().toString(36).slice(2, 9); }
@@ -1182,6 +1443,212 @@ Block code
     function toggleCheatsheet() {
       document.getElementById('cheatsheet').classList.toggle('open');
     }
+
+    // ─── GITHUB CONFIG ──────────────────────────────────────────────────────────
+    function getGhConfig() {
+      return {
+        owner: localStorage.getItem('ghOwner') || '',
+        repo: localStorage.getItem('ghRepo') || '',
+        branch: localStorage.getItem('ghBranch') || 'main',
+        token: localStorage.getItem('ghToken') || ''
+      };
+    }
+    function saveGhSettings() {
+      localStorage.setItem('ghOwner', document.getElementById('ghOwner').value);
+      localStorage.setItem('ghRepo', document.getElementById('ghRepo').value);
+      localStorage.setItem('ghBranch', document.getElementById('ghBranch').value);
+      localStorage.setItem('ghToken', document.getElementById('ghToken').value);
+    }
+    function loadGhSettings() {
+      const c = getGhConfig();
+      document.getElementById('ghOwner').value = c.owner;
+      document.getElementById('ghRepo').value = c.repo;
+      document.getElementById('ghBranch').value = c.branch;
+      document.getElementById('ghToken').value = c.token;
+    }
+    function isGhConfigured() {
+      const c = getGhConfig();
+      return c.owner && c.repo && c.token;
+    }
+
+    async function ghFetch(url, method, body) {
+      const c = getGhConfig();
+      const opts = {
+        method,
+        headers: {
+          'Authorization': `Bearer ${c.token}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        }
+      };
+      if (body) opts.body = JSON.stringify(body);
+      return fetch(url, opts);
+    }
+
+    async function testConnection() {
+      if (!isGhConfigured()) { updateConnUI('disconnected', 'Not configured'); return; }
+      updateConnUI('loading', 'Testing...');
+      const c = getGhConfig();
+      try {
+        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}`, 'GET');
+        if (r.ok) {
+          updateConnUI('connected', 'Connected');
+          refreshSessionList();
+        } else {
+          const err = await r.json();
+          updateConnUI('error', err.message || 'Error');
+        }
+      } catch (e) {
+        updateConnUI('error', 'Network error');
+      }
+    }
+
+    function updateConnUI(status, label) {
+      const dot1 = document.getElementById('topConnDot');
+      const dot2 = document.getElementById('drawerConnDot');
+      const lbl = document.getElementById('drawerConnLabel');
+      if (dot1) dot1.className = 'conn-dot ' + status;
+      if (dot2) dot2.className = 'conn-dot ' + status;
+      if (lbl) lbl.textContent = label;
+      
+      const connected = (status === 'connected');
+      document.getElementById('loadBtn').disabled = !connected;
+      document.getElementById('publishBtn').disabled = !connected;
+    }
+
+    async function refreshSessionList() {
+      if (!isGhConfigured()) return;
+      const c = getGhConfig();
+      document.getElementById('sessionListStatus').textContent = 'Loading...';
+      try {
+        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions?ref=${c.branch}`, 'GET');
+        if (!r.ok) { document.getElementById('sessionListStatus').textContent = 'Could not load sessions/'; return; }
+        const files = await r.json();
+        ghSessions = files.filter(f => f.name.match(/^session-\d+\.md$/)).sort((a,b) => {
+          const m1 = a.name.match(/\d+/);
+          const m2 = b.name.match(/\d+/);
+          const n1 = m1 ? parseInt(m1[0]) : 0;
+          const n2 = m2 ? parseInt(m2[0]) : 0;
+          return n2 - n1;
+        });
+        const sel = document.getElementById('sessionSelect');
+        sel.innerHTML = '<option value="__new__">+ New File</option><option value="__manual__">Manual / Import</option>';
+        ghSessions.forEach(f => {
+          const opt = document.createElement('option');
+          opt.value = f.name;
+          opt.textContent = f.name;
+          sel.appendChild(opt);
+        });
+        document.getElementById('sessionListStatus').textContent = `${ghSessions.length} sessions found.`;
+      } catch(e) {
+        document.getElementById('sessionListStatus').textContent = 'Error: ' + e.message;
+      }
+    }
+
+    function onSessionSelectChange(val) {
+      if (val === '__new__') {
+        const next = ghSessions.length > 0 ? (parseInt(ghSessions[0].name.match(/\d+/)[0]) + 1) : 1;
+        document.getElementById('sessionNum').value = next;
+        currentFileSha = null;
+      }
+      if (val === '__manual__') return;
+      const m = val.match(/(\d+)/);
+      if (m) document.getElementById('sessionNum').value = m[1];
+    }
+
+    async function loadSessionFromGitHub() {
+      if (!isGhConfigured()) { openSettings(); return; }
+      if (isDirty && entries.length > 0) {
+        pendingSessionLoad = document.getElementById('sessionSelect').value;
+        document.getElementById('dirtyModal').classList.add('open');
+        return;
+      }
+      await doLoadSession();
+    }
+
+    async function doLoadSession() {
+      const sel = document.getElementById('sessionSelect').value;
+      const num = document.getElementById('sessionNum').value;
+      const filename = (sel && sel !== '__manual__' && sel !== '__new__') ? sel : `session-${num}.md`;
+      const c = getGhConfig();
+      showToast('Loading...');
+      try {
+        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions/${filename}?ref=${c.branch}`, 'GET');
+        if (r.status === 404) { showToast(`${filename} not found`, 'error'); return; }
+        if (!r.ok) { showToast('Load failed', 'error'); return; }
+        const data = await r.json();
+        currentFileSha = data.sha;
+        const md = decodeBase64Unicode(data.content.replace(/\n/g,''));
+        parseMarkdownToEntries(md);
+        
+        const m = filename.match(/(\d+)/);
+        if (m) document.getElementById('sessionNum').value = m[1];
+        
+        const selEl = document.getElementById('sessionSelect');
+        if (selEl.querySelector(`option[value="${filename}"]`)) selEl.value = filename;
+        
+        setDirty(false);
+        showToast(`Loaded ${filename} ✓`, 'success');
+      } catch(e) {
+        showToast('Load error: ' + e.message, 'error');
+      }
+    }
+
+    function decodeBase64Unicode(b64) {
+      const binary = atob(b64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      return new TextDecoder('utf-8').decode(bytes);
+    }
+
+    async function publishToGitHub() {
+      if (!isGhConfigured()) { openSettings(); return; }
+      const num = document.getElementById('sessionNum').value;
+      const selEl = document.getElementById('sessionSelect');
+      const sel = selEl.value;
+      const filename = (sel && sel !== '__manual__' && sel !== '__new__') ? sel : `session-${num}.md`;
+      const md = buildMarkdown();
+      const c = getGhConfig();
+      const encoded = btoa(unescape(encodeURIComponent(md)));
+
+      if (!currentFileSha) {
+        try {
+          const checkR = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions/${filename}?ref=${c.branch}`, 'GET');
+          if (checkR.ok) {
+            const checkData = await checkR.json();
+            currentFileSha = checkData.sha;
+          }
+        } catch (e) {}
+      }
+
+      const body = {
+        message: `Update ${filename} via CMS`,
+        content: encoded,
+        branch: c.branch
+      };
+      if (currentFileSha) body.sha = currentFileSha;
+      
+      showToast('Publishing...');
+      try {
+        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions/${filename}`, 'PUT', body);
+        if (r.ok) {
+          const data = await r.json();
+          currentFileSha = data.content.sha;
+          setDirty(false);
+          await refreshSessionList();
+          if (selEl.querySelector(`option[value="${filename}"]`)) selEl.value = filename;
+          showToast(`Published ${filename} ✓`, 'success');
+        } else {
+          const err = await r.json();
+          showToast('Publish failed: ' + (err.message || r.status), 'error');
+        }
+      } catch(e) {
+        showToast('Publish error: ' + e.message, 'error');
+      }
+    }
+
+    function openSettings() { loadGhSettings(); document.getElementById('settingsDrawer').classList.add('open'); }
+    function closeSettings() { document.getElementById('settingsDrawer').classList.remove('open'); }
 
     function getEntryLabel(e) {
       if (e.type === 'recap') return e.title || 'Session Recap';
@@ -1774,6 +2241,7 @@ Block code
 
     // ─── INIT WITH SAMPLE DATA ────────────────────────────────────────────────────
     function init() {
+      testConnection();
       entries = [
         {
           id: uid(), type: 'recap', date: 'Jan 03, 2026', title: 'Setting Sail to learn of our Bounties',
