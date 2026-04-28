@@ -646,6 +646,18 @@ async function publishToGitHub() {
   const md = buildMarkdown();
   const c = getGhConfig();
   const encoded = btoa(unescape(encodeURIComponent(md)));
+
+  // If we don't have a SHA but the file might exist, try to fetch its current SHA first to avoid "sha" missing errors
+  if (!currentFileSha) {
+    try {
+      const checkR = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions/${filename}?ref=${c.branch}`, 'GET');
+      if (checkR.ok) {
+        const checkData = await checkR.json();
+        currentFileSha = checkData.sha;
+      }
+    } catch (e) { /* Ignore error, assume new file */ }
+  }
+
   const body = {
     message: `Update ${filename} via CMS`,
     content: encoded,
