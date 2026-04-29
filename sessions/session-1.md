@@ -53,17 +53,11 @@ The Tide Caller agent stood with the artifact in hand—a crystalline orb that p
 And then the fighting began.
 
 ---
-
 type: travel
-variant: sea
-from: 
-to: 
-date: 
-characters: 
-
 variant: land
 from: Seattle
-To: Seaside
-Date: Dec 20, 2024
+to: Seaside
+date: Dec 20, 2024
 characters: Luigi, Clovis
+
 the long and winding road...

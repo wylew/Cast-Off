@@ -2243,13 +2243,11 @@ Block code
         let parsingMetadata = true;
         const validKeys = KNOWN_KEYS[type] || [];
 
-        for (let i = 1; i < lines.length; i++) {
-          let line = lines[i];
+        for (let line of lines.slice(1)) {
           if (parsingMetadata) {
-            if (line.trim() === '') {
-              parsingMetadata = false;
-              continue;
-            }
+            const trimmed = line.trim();
+            if (trimmed === '') continue; // Skip empty lines in metadata block
+            
             let metaMatch = line.match(/^([a-z]+):\s*(.*)$/i);
             if (metaMatch && validKeys.includes(metaMatch[1].trim().toLowerCase())) {
               let key = metaMatch[1].trim().toLowerCase();

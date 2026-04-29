@@ -65,17 +65,14 @@ function parseMarkdownFile(mdContent) {
         let bodyLines = [];
 
         lines.forEach(line => {
+            const trimmed = line.trim();
             if (!isBody) {
-                if (line.trim() === '') {
-                    isBody = true;
-                    return;
-                }
+                if (trimmed === '') return; // Skip empty lines in metadata block
 
-                const match = line.match(/^([a-zA-Z]+):\s*(.*)$/);
+                const match = line.match(/^\s*([a-zA-Z0-9_-]+):\s*(.*)$/);
                 if (match) {
                     post[match[1].toLowerCase()] = match[2].trim();
                 } else {
-                    // Not a metadata line and not empty, must be the body
                     isBody = true;
                     bodyLines.push(line);
                 }
