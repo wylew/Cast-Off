@@ -1450,10 +1450,11 @@ Block code
       };
     }
     function saveGhSettings() {
-      localStorage.setItem('ghOwner', document.getElementById('ghOwner').value);
-      localStorage.setItem('ghRepo', document.getElementById('ghRepo').value);
-      localStorage.setItem('ghBranch', document.getElementById('ghBranch').value);
-      localStorage.setItem('ghToken', document.getElementById('ghToken').value);
+      localStorage.setItem('ghOwner', document.getElementById('ghOwner').value.trim());
+      localStorage.setItem('ghRepo', document.getElementById('ghRepo').value.trim());
+      localStorage.setItem('ghBranch', (document.getElementById('ghBranch').value || 'main').trim());
+      localStorage.setItem('ghToken', document.getElementById('ghToken').value.trim());
+      testConnection();
     }
     function loadGhSettings() {
       const c = getGhConfig();
@@ -1482,20 +1483,26 @@ Block code
     }
 
     async function testConnection() {
-      if (!isGhConfigured()) { updateConnUI('disconnected', 'Not configured'); return; }
+      if (!isGhConfigured()) { 
+        updateConnUI('disconnected', 'Not configured'); 
+        return; 
+      }
       updateConnUI('loading', 'Testing...');
       const c = getGhConfig();
       try {
         const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}`, 'GET');
         if (r.ok) {
           updateConnUI('connected', 'Connected');
+          showToast('Successfully connected to GitHub!', 'success');
           refreshSessionList();
         } else {
-          const err = await r.json();
-          updateConnUI('error', err.message || 'Error');
+          const err = await r.json().catch(() => ({ message: r.statusText }));
+          updateConnUI('error', 'Bad Credentials');
+          showToast(`GitHub Error: ${err.message || r.statusText}`, 'error');
         }
       } catch (e) {
         updateConnUI('error', 'Network error');
+        showToast('Connection failed: ' + e.message, 'error');
       }
     }
 
