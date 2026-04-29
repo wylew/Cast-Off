@@ -54,7 +54,7 @@ function parseMarkdownFile(mdContent) {
     }
 
     const chunks = mdContent
-        .split(/\r?\n---\r?\n/)
+        .split(/\r?\n\s*-{3,}\s*\r?\n/)
         .map(c => c.trim())
         .filter(c => c.length > 0);
 
