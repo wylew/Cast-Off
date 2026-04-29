@@ -1468,13 +1468,21 @@ Block code
       return c.owner && c.repo && c.token;
     }
 
-    async function ghFetch(url, method, body) {
+    async function ghFetch(path, method = 'GET', body = null) {
       const c = getGhConfig();
+      if (!c.token) throw new Error('No token provided');
+      
+      const owner = encodeURIComponent(c.owner);
+      const repo = encodeURIComponent(c.repo);
+      const url = `https://api.github.com/repos/${owner}/${repo}${path}`;
+      
+      console.log(`[GitHub API] ${method} ${url.split('?')[0]}`);
+      
       const opts = {
         method,
         headers: {
           'Authorization': `Bearer ${c.token}`,
-          'Accept': 'application/vnd.github+json',
+          'Accept': 'application/vnd.github.v3+json',
           'Content-Type': 'application/json'
         }
       };
@@ -1488,19 +1496,21 @@ Block code
         return; 
       }
       updateConnUI('loading', 'Testing...');
-      const c = getGhConfig();
       try {
-        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}`, 'GET');
+        const r = await ghFetch('', 'GET');
+        
         if (r.ok) {
           updateConnUI('connected', 'Connected');
           showToast('Successfully connected to GitHub!', 'success');
           refreshSessionList();
         } else {
           const err = await r.json().catch(() => ({ message: r.statusText }));
-          updateConnUI('error', 'Bad Credentials');
-          showToast(`GitHub Error: ${err.message || r.statusText}`, 'error');
+          console.error('[GitHub API Error]', r.status, err);
+          updateConnUI('error', r.status === 401 ? 'Invalid Token' : 'Not Found');
+          showToast(`GitHub Error (${r.status}): ${err.message || r.statusText}`, 'error');
         }
       } catch (e) {
+        console.error('[Network Error]', e);
         updateConnUI('error', 'Network error');
         showToast('Connection failed: ' + e.message, 'error');
       }
@@ -1524,7 +1534,7 @@ Block code
       const c = getGhConfig();
       document.getElementById('sessionListStatus').textContent = 'Loading...';
       try {
-        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions?ref=${c.branch}`, 'GET');
+        const r = await ghFetch(`/contents/sessions?ref=${c.branch}`, 'GET');
         if (!r.ok) { document.getElementById('sessionListStatus').textContent = 'Could not load sessions/'; return; }
         const files = await r.json();
         ghSessions = files.filter(f => f.name.match(/^session-\d+\.md$/)).sort((a,b) => {
@@ -1576,7 +1586,7 @@ Block code
       const c = getGhConfig();
       showToast('Loading...');
       try {
-        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions/${filename}?ref=${c.branch}`, 'GET');
+        const r = await ghFetch(`/contents/sessions/${filename}?ref=${c.branch}`, 'GET');
         if (r.status === 404) { showToast(`${filename} not found`, 'error'); return; }
         if (!r.ok) { showToast('Load failed', 'error'); return; }
         const data = await r.json();
@@ -1616,7 +1626,7 @@ Block code
 
       if (!currentFileSha) {
         try {
-          const checkR = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions/${filename}?ref=${c.branch}`, 'GET');
+          const checkR = await ghFetch(`/contents/sessions/${filename}?ref=${c.branch}`, 'GET');
           if (checkR.ok) {
             const checkData = await checkR.json();
             currentFileSha = checkData.sha;
@@ -1633,7 +1643,7 @@ Block code
       
       showToast('Publishing...');
       try {
-        const r = await ghFetch(`https://api.github.com/repos/${c.owner}/${c.repo}/contents/sessions/${filename}`, 'PUT', body);
+        const r = await ghFetch(`/contents/sessions/${filename}`, 'PUT', body);
         if (r.ok) {
           const data = await r.json();
           currentFileSha = data.content.sha;
