@@ -4,7 +4,7 @@ Title: The Port of Saltmere
 
 Our adventure began in the bustling port city of **Saltmere**, where our party first met at the Rusty Anchor tavern.
 
-## The Party
+## The Party Test
 
 - **Kaelen** - A mysterious half-elf ranger with a haunted past
 - **Mira** - A clever human rogue seeking her fortune  
@@ -55,6 +55,12 @@ And then the fighting began.
 ---
 
 type: travel
+variant: sea
+from: 
+to: 
+date: 
+characters: 
+
 variant: land
 from: Seattle
 To: Seaside
