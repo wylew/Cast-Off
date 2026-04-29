@@ -283,7 +283,7 @@ function createPostCardHtml(post, isRecap) {
     switch (post.type.toLowerCase()) {
         case 'recap':
         case 'text':
-            extraClass += post.type === 'recap' ? ' recap-card' : '';
+            extraClass += post.type === 'recap' ? ' recap-card' : ' text-card';
             contentHtml = `
                 <div class="card-padding">
                     ${post.type === 'recap' ? '<span class="post-type-label">Session Recap</span>' : ''}
@@ -378,6 +378,7 @@ function createPostCardHtml(post, isRecap) {
             break;
 
         case 'conversation':
+            extraClass += ' conversation-card';
             const lines = post.bodyRaw.split('\n').filter(line => line.trim());
             const messagesHtml = lines.map((line, index) => {
                 const sep = line.indexOf(':');

@@ -671,6 +671,7 @@ body {
 .quote-card {
     background: linear-gradient(135deg, var(--md-sys-color-tertiary-container) 0%, rgba(16, 87, 86, 0.6) 100%);
     border: 1px solid rgba(199, 102, 28, 0.2);
+    border-left: 6px solid var(--md-sys-color-error);
 }
 
 .character-card {
@@ -684,13 +685,21 @@ body {
 }
 
 .travel-card {
-    background: linear-gradient(135deg, #0d47a1 0%, rgba(10, 20, 40, 0.85) 100%);
-    border-left: 6px solid #64b5f6;
+    background: linear-gradient(135deg, #1D7DAB 0%, rgba(10, 35, 50, 0.85) 100%);
+    border-left: 6px solid #49A9D9;
 }
 
 .travel-card.variant-land {
-    background: linear-gradient(135deg, #1b5e20 0%, rgba(15, 30, 15, 0.85) 100%);
-    border-left: 6px solid #81c784;
+    background: linear-gradient(135deg, #57873B 0%, rgba(25, 40, 15, 0.85) 100%);
+    border-left: 6px solid #82B366;
+}
+
+.text-card {
+    border-left: 6px solid var(--md-sys-color-outline);
+}
+
+.conversation-card {
+    border-left: 6px solid var(--md-sys-color-secondary);
 }
 
 .quote-text {
@@ -856,7 +865,7 @@ body {
 
 .travel-point-icon {
     font-size: 48px;
-    color: #64b5f6;
+    color: #49A9D9;
     text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
 }
 
@@ -885,24 +894,24 @@ body {
 
 .travel-wave-path {
     fill: none;
-    stroke: #64b5f6;
+    stroke: #49A9D9;
     stroke-width: 2;
     stroke-dasharray: 6 4;
     opacity: 0.6;
 }
 
 .travel-visualization.variant-land .travel-wave-path {
-    stroke: #81c784;
+    stroke: #82B366;
 }
 
 .travel-visualization.variant-land .travel-point-icon {
-    color: #81c784;
+    color: #82B366;
 }
 
 .travel-ship-icon {
     position: absolute;
     font-size: 60px;
-    color: #bbdefb;
+    color: #A8DFFF;
     top: 50%;
     transform: translateY(-50%);
     animation: ship-bob 3s ease-in-out infinite;
@@ -910,7 +919,7 @@ body {
 }
 
 .travel-visualization.variant-land .travel-ship-icon {
-    color: #c8e6c9;
+    color: #D5E8D4;
 }
 
 .travel-card .text-body {

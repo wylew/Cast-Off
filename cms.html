@@ -799,6 +799,25 @@
       border-radius: var(--radius-lg);
       padding: 16px;
       margin-bottom: 12px;
+      border-left: 3px solid var(--text3);
+    }
+
+    .rp-recap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .rp-text {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 3px solid var(--text3);
     }
 
     .rp-card-header {
@@ -874,7 +893,8 @@
     .rp-travel {
       background: var(--bg3);
       border: 1px dashed var(--border);
-      border-radius: var(--radius-lg);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
       padding: 14px 16px;
       margin-bottom: 12px;
       display: flex;
@@ -911,6 +931,7 @@
       border-radius: var(--radius-lg);
       padding: 14px 16px;
       margin-bottom: 12px;
+      border-left: 3px solid var(--text3);
     }
 
     .rp-convo-line {
@@ -2077,7 +2098,7 @@ Block code
       </div>`;
         } else if (e.type === 'travel') {
           const isLand = e.variant === 'land';
-          const travelColor = isLand ? '#81c784' : '#64b5f6';
+          const travelColor = isLand ? '#82B366' : '#49A9D9';
           const travelIcon = isLand ? '🥾' : '⛵';
           inner = `<div class="rp-travel" style="border-left-color:${travelColor}">
         <div style="flex:1">
