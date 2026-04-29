@@ -103,14 +103,24 @@ Description of the harbor, trade, and important landmarks...
 ```
 
 #### **Travel**
-A nautical journey visualization with a wavy dashed line and bobbing ship.
+A visualization for journeys, supporting both nautical and land-based themes.
 ```markdown
 Type: travel
+Variant: sea  (default, uses sailboat/anchor icons and ocean blue theme)
 From: New Haven
 To: Traitor Joe's
 Date: Jan 10, 2026
 
 We set sail at dawn, navigating the choppy waters...
+```
+
+**Land Variant:**
+```markdown
+Type: travel
+Variant: land (uses hiking/mountain flag icons and grass green theme)
+From: The High Pass
+To: Ironforge
+Date: Feb 12, 2026
 ```
 
 #### **Conversation**
@@ -233,13 +243,34 @@ Customize in Settings → Masthead:
 - **Background Image URL**: Link to your header image
 - **Campaign Title**: Your campaign name
 
+## 🛠️ CMS (Content Management System)
+
+The project includes a powerful, built-in CMS (`cms.html`) designed to manage your campaign data without ever touching a text editor.
+
+### Key Features
+- **Live Side-by-Side Preview**: See exactly how your posts will look in the main app as you edit.
+- **GitHub Sync**: Seamlessly fetch, edit, and publish sessions directly to your repository.
+- **Smart Session Loading**: Automatically detects existing session files in your `sessions/` folder.
+- **Interactive List Management**: Drag and drop (or use arrows) to reorder posts within a session.
+- **Visual Editors**: Custom forms for every post type, including an emoji search for Locations and Characters.
+- **Markdown Cheatsheet**: Built-in reference for formatting and metadata keys.
+
+### Using the CMS
+1. Open `cms.html` in your browser (locally or via your GitHub Pages URL).
+2. Open the ⚙️ **Settings** drawer and enter your GitHub credentials (Token, Repo, Owner).
+3. The **Connection Status** dot will turn green when configured correctly.
+4. Select a session from the dropdown or click **+ New File** to start a new one.
+5. Use the **Add Post** button to append new entries.
+6. When finished, click **Publish to GitHub**. The CMS will handle the Base64 encoding and SHA verification for you.
+
 ## 📂 File Structure
 
 ```
 your-campaign/
-├── index.html              # Main HTML file
-├── styles.css              # All styles and theme
-├── script.js               # Application logic
+├── index.html              # Main Diary view
+├── cms.html                # Content Management System
+├── styles.css              # All styles and theme tokens
+├── script.js               # Main application logic
 ├── DUNGRG__.TTF            # Custom font (optional)
 ├── README.md               # This file
 ├── campaign.md             # Campaign details and meta-notes
@@ -467,7 +498,13 @@ This project is open source and available for personal and commercial use.
 
 ## 📊 Version History
 
-### v2.1.0 (Current)
+### v2.2.0 (Current)
+- ✨ Added **Travel Variants**: Support for `sea` (Nautical) and `land` (Hiking) travel types.
+- ✨ Integrated **Built-in CMS**: Added `cms.html` for visual editing and GitHub publishing.
+- ✨ Added **Color-Coded Borders**: Standardized "drop shadow" borders across all post types.
+- ✨ Improved **Markdown Parser**: Resilience against extra whitespace and empty lines in session files.
+
+### v2.1.0
 - ✨ Added **Character**, **Location**, and **Travel** post types
 - ✨ Implemented **Campaign Details** view with structured post support
 - ✨ Added **Session Subtitles** and **Material Icons** to sidebar
