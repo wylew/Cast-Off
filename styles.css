@@ -671,7 +671,7 @@ body {
 .quote-card {
     background: linear-gradient(135deg, var(--md-sys-color-tertiary-container) 0%, rgba(16, 87, 86, 0.6) 100%);
     border: 1px solid rgba(199, 102, 28, 0.2);
-    border-left: 6px solid var(--md-sys-color-error);
+    border-left: 6px solid var(--md-sys-color-primary-container);
 }
 
 .character-card {
